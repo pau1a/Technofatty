@@ -1,0 +1,12 @@
+/* Community hook (CTA + image) */
+.community{ padding:s(8) s(6); }
+.community__inner{ @extend .split; align-items:center; }
+
+.community__copy h2{ color:c(blue); margin:0 0 .5rem; }
+.community__copy p{ margin:0 0 s(4); }
+
+.community__img{
+  /* When adding real image, ensure descriptive alt text or empty alt if decorative */
+  width:100%; @include ratio(16,9); border-radius:r(sm);
+  /* swap to <img> later; keep space with placeholder until assets arrive */
+}

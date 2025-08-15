@@ -1,0 +1,20 @@
+/* Cards & responsive grid */
+.cards { display:grid; grid-template-columns:1fr; gap:s(6); }
+@include mq(md){ .cards{ grid-template-columns:repeat(2,1fr); } }
+@include mq(lg){ .cards{ grid-template-columns:repeat(4,1fr); } }
+
+.card{
+  background:c(white); border:1px solid #ddd; border-radius:r(md);
+  padding:.75rem; transition:background $dur ease;
+  &:hover,&:focus-within{ background:c(mid); }
+}
+
+.card__img{
+  /* When adding real image, ensure descriptive alt text or empty alt if decorative */
+  width:100%; @include ratio(3,2); border-radius:r(sm); margin-bottom:.5rem;
+  /* If/when real images arrive, replace placeholder div with <img> and keep ratio */
+}
+
+.card__title{ color:c(blue); margin:.25rem 0; }
+.card__meta{ color:rgba(0,0,0,.6); font-size:.875rem; }
+.card__link{ color:c(blue); text-decoration:none; &:hover{ text-decoration:underline; } }

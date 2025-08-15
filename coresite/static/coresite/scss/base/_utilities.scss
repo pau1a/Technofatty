@@ -1,0 +1,7 @@
+.container { @include container; }
+.skip-link { @include sr-only; }
+.skip-link:focus {
+  position: fixed; left: 8px; top: 8px;
+  background: #000; color: #fff; padding: .5rem;
+  z-index: z(overlay);
+}

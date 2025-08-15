@@ -1,0 +1,86 @@
+/* =====================
+   Hamburger Component
+   ===================== */
+
+/* Variables */
+$hamburger-line-color: map-get($colors, blue);
+$hamburger-bg-color: rgba(map-get($colors, gold), 0.45); // slightly more transparent gold
+$hamburger-size: 44px;
+$hamburger-line-height: 3px;
+$hamburger-line-radius: 2px;
+$hamburger-padding: 10px;
+$hamburger-bg-radius: map-get($radii, lg); // softer rounded square
+
+/* Global Hamburger Wrapper */
+.global-hamburger {
+  display: none; // hidden by default, shown only on small screens
+  position: relative;
+  z-index: map-get($z, header);
+
+  .hamburger-btn {
+    width: $hamburger-size;
+    height: $hamburger-size;
+    padding: $hamburger-padding;
+    border: none;
+    border-radius: $hamburger-bg-radius; /* Softer rounded square */
+    background-color: $hamburger-bg-color; /* More transparent gold */
+    backdrop-filter: blur(2px); /* subtle background blur */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      background-color: rgba(map-get($colors, gold), 0.85);
+    }
+
+    &:focus {
+      outline: 2px solid $hamburger-line-color;
+      outline-offset: 3px;
+    }
+
+    .hamburger-line {
+      width: 100%;
+      height: $hamburger-line-height;
+      background-color: $hamburger-line-color;
+      border-radius: $hamburger-line-radius;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+  }
+
+  /* Active State (morph to X) */
+  .hamburger-btn[aria-expanded="true"] {
+    .hamburger-line:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger-line:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+}
+
+/* Homepage hero positioning */
+.hero-mode .global-hamburger {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Inner page fixed positioning */
+.fixed-mode .global-hamburger {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Show only on small screens */
+@media (max-width: map-get($bp, sm)) {
+  .global-hamburger {
+    display: block;
+  }
+}

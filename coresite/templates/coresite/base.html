@@ -1,0 +1,53 @@
+{% load static sass_tags %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Technofatty{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Tech resources and community.{% endblock %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% sass_src 'coresite/scss/main.scss' %}">
+  {% block head_extras %}{% endblock %}
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header {% if is_homepage %}hero-mode{% else %}fixed-mode{% endif %}">
+  {% block header %}
+    <!-- Global Hamburger -->
+    <div class="global-hamburger">
+      <button class="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  {% endblock %}
+</header>
+
+<!-- Slide-in Menu Overlay -->
+<nav id="menu-overlay" class="menu-overlay" aria-hidden="true" hidden>
+  <div class="menu-overlay__content">
+    <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
+    <ul class="menu-overlay__links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/services/">Services</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    {% block footer %}{% endblock %}
+  </footer>
+
+  <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
+</body>
+</html>

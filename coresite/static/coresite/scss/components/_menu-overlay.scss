@@ -1,0 +1,75 @@
+/* =====================
+   Menu Overlay Component
+   ===================== */
+
+$overlay-bg: rgba(map-get($colors, blue), 0.95);
+$overlay-width: 80%;
+$overlay-max-width: 320px;
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: $overlay-width;
+  max-width: $overlay-max-width;
+  height: 100%;
+  background-color: $overlay-bg;
+  color: map-get($colors, white);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 9999; // force on top of everything
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  &__content {
+    padding: map-get($space, 5);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: map-get($colors, white);
+    cursor: pointer;
+
+    &:hover {
+      color: map-get($colors, gold);
+    }
+  }
+
+  &__links {
+    list-style: none;
+    padding: 0;
+    margin: map-get($space, 5) 0 0;
+
+    li {
+      margin-bottom: map-get($space, 4);
+    }
+
+    a {
+      color: map-get($colors, white);
+      text-decoration: none;
+      font-size: 1.25rem;
+
+      &:hover {
+        color: map-get($colors, gold);
+      }
+    }
+  }
+}
+
+/* Show only on small screens */
+@media (max-width: map-get($bp, sm)) {
+  .menu-overlay {
+    display: block;
+  }
+}

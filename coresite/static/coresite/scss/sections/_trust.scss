@@ -1,0 +1,46 @@
+/* Three-up trust points */
+.trust {
+  padding: s(8) s(6);
+}
+
+/* Reduce top padding when following the hero on the homepage */
+.hero + .trust {
+  padding-top: s(4); // tighten gap above the fold
+}
+
+.trust__grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: s(6);
+  padding: 0;
+  margin: 0;
+
+  @include mq(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.trust__item {
+  background: c(mid);
+  border-radius: r(md);
+  padding: s(6);
+}
+
+.trust__icon {
+  width: 64px;
+  height: 64px;
+  background: c(ph);
+  border-radius: r(sm);
+  margin-bottom: .5rem;
+}
+/* When adding real image, ensure descriptive alt text or empty alt if decorative */
+
+.trust__title {
+  color: c(blue);
+  margin: .25rem 0 .5rem;
+}
+
+.trust__copy {
+  margin: 0;
+}

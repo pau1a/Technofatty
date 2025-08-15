@@ -1,0 +1,23 @@
+/* --- Technofatty ↔ Bootstrap button shims --- */
+
+/* Our base class becomes an alias of Bootstrap's .btn */
+.btn { @extend .btn; } // noop if already present, keeps markup consistent
+
+/* Our primary = Bootstrap primary */
+.btn--primary { @extend .btn; @extend .btn-primary; }
+
+/* Our CTA = Bootstrap success themed with Technofatty green */
+.btn--cta     { @extend .btn; @extend .btn-success; }
+
+/* Hover/contrast overrides to keep the “Warm Gold” interaction */
+.btn-primary:hover,
+.btn-primary:focus-visible,
+.btn-success:hover,
+.btn-success:focus-visible {
+  background: c(gold) !important;
+  color: #000 !important;
+}
+
+/* Optional: legacy aliases for any existing markup */
+.btn-primary { @extend .btn; @extend .btn-primary; }
+.btn-success { @extend .btn; @extend .btn-success; }

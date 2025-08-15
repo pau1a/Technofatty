@@ -1,0 +1,21 @@
+/* Lightweight layout helpers (play nice with Bootstrap grid) */
+
+/* A centered max-width wrapper that doesn't clash with Bootstrap .container */
+.wrap { @include container; }
+
+/* Auto-fit grid for flexible card galleries */
+.grid-auto{
+  --min: 16rem; /* tweak per section */
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
+  gap:s(6);
+}
+
+/* Vertical stack with consistent rhythm */
+.stack > * + * { margin-top:s(4); }
+
+/* Split: two columns that collapse on mobile */
+.split{
+  display:grid; gap:s(6); grid-template-columns:1fr;
+  @include mq(md){ grid-template-columns:1fr 1fr; }
+}

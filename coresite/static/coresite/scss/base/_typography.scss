@@ -1,0 +1,5 @@
+.section-title {
+  color: c(blue);
+  @include fluid-type(1.25rem, 1.5rem);
+  margin: s(8) 0 s(6);
+}

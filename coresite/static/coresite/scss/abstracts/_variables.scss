@@ -1,0 +1,100 @@
+/* =========================================
+   Technofatty — Design Tokens (variables)
+   Single source of truth for SCSS + CSS vars
+   ========================================= */
+
+/* Colors */
+$colors: (
+  white:   #FFFFFF,
+  mid:     #F1EEFF,  // subtle panels / hovers
+  blue:    #4B6CB7,  // primary brand / headings / primary CTA
+  gold:    #FFD166,  // hover accents / secondary emphasis
+  green:   #56FF8D,  // community CTA
+  magenta: #D94BCD,  // rare accent
+  ph:      #D5EDF2,  // placeholder blocks for images
+  text:    #333333,
+  black:   #000000
+);
+
+/* Layout width */
+$container-max: 68rem; // ≈1088px target content width
+
+/* Spacing scale (t-shirt friendly) */
+$space: (
+  0: 0,
+  1: .25rem,   // 4px
+  2: .5rem,    // 8px
+  3: .75rem,   // 12px
+  4: 1rem,     // 16px
+  5: 1.5rem,   // 24px
+  6: 2rem,     // 32px
+  7: 3rem,     // 48px
+  8: 4rem      // 64px
+);
+
+/* Corner radii */
+$radii: (
+  xs: .25rem,
+  sm: .5rem,
+  md: .75rem,
+  lg: 1rem,
+  full: 9999px
+);
+
+/* Breakpoints */
+$bp: (
+  xs: 480px,
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px
+);
+
+/* Z-index layers */
+$z: (
+  base: 0,
+  content: 1,
+  header: 100,
+  overlay: 200,
+  dropdown: 400,
+  modal: 1000,
+  toast: 1100
+);
+
+/* Timing & easing (nice-to-have) */
+$easing-standard: cubic-bezier(.2, .6, .2, 1);
+$dur-fast: 120ms;
+$dur: 200ms;
+
+/* ------------------------------------------------
+   Optional: expose CSS variables for runtime usage
+   (keeps brand tokens available in plain CSS/JS)
+   ------------------------------------------------ */
+:root{
+  --color-white:   #{map-get($colors, white)};
+  --color-mid:     #{map-get($colors, mid)};
+  --color-blue:    #{map-get($colors, blue)};
+  --color-gold:    #{map-get($colors, gold)};
+  --color-green:   #{map-get($colors, green)};
+  --color-magenta: #{map-get($colors, magenta)};
+  --color-ph:      #{map-get($colors, ph)};
+  --color-text:    #{map-get($colors, text)};
+
+  --container-max: #{$container-max};
+
+  --radius-xs: #{map-get($radii, xs)};
+  --radius-sm: #{map-get($radii, sm)};
+  --radius-md: #{map-get($radii, md)};
+  --radius-lg: #{map-get($radii, lg)};
+
+  --space-1: #{map-get($space, 1)};
+  --space-2: #{map-get($space, 2)};
+  --space-3: #{map-get($space, 3)};
+  --space-4: #{map-get($space, 4)};
+  --space-5: #{map-get($space, 5)};
+  --space-6: #{map-get($space, 6)};
+
+  --easing-standard: #{$easing-standard};
+  --dur-fast: #{$dur-fast};
+  --dur: #{$dur};
+}

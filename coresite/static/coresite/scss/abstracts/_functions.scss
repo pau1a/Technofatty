@@ -1,0 +1,25 @@
+// Map readers (fail loudly if a key is missing)
+@function c($name) {
+  @if map-has-key($colors, $name) { @return map-get($colors, $name); }
+  @error "colors[#{$name}] not found in $colors map.";
+}
+
+@function s($step) {
+  @if map-has-key($space, $step) { @return map-get($space, $step); }
+  @error "space[#{$step}] not found in $space map.";
+}
+
+@function r($key) {
+  @if map-has-key($radii, $key) { @return map-get($radii, $key); }
+  @error "radii[#{$key}] not found in $radii map.";
+}
+
+@function bp($key) {
+  @if map-has-key($bp, $key) { @return map-get($bp, $key); }
+  @error "bp[#{$key}] not found in $bp map.";
+}
+
+@function z($key) {
+  @if map-has-key($z, $key) { @return map-get($z, $key); }
+  @error "z[#{$key}] not found in $z map.";
+}
