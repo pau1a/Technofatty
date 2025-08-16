@@ -61,7 +61,7 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
       margin-bottom: map-get($space, 4);
     }
 
-    a {
+    a:not(.btn) {
       color: map-get($colors, white);
       text-decoration: none;
       font-size: 1.25rem;
