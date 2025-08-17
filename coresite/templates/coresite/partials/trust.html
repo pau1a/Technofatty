@@ -1,31 +1,40 @@
 {% load static %}
 
 <section class="trust" aria-labelledby="trust-heading">
-  <h2 id="trust-heading" class="section-title">Smarter AI Strategies & Tools for Faster Growth</h2>
+  <!-- Reusable SVG gradient definition -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#4B6CB7;" />
+        <stop offset="100%" style="stop-color:#182848;" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <h2 id="trust-heading" class="section-title">Your AI Advantage Starts Here</h2>
   
   <p class="trust__intro">
-    Whatever slows you down, costs you money, or keeps you awake at night — we can make it faster, cheaper, and easier.
-    AI that does everything you wish you had time, money, or people for.
+    AI that works the late shift, crunches the numbers, and never needs coffee. Save time, cut costs, and act faster than your competitors.
   </p>
   
   <ul class="trust__grid">
     <li class="trust__item">
       <div class="trust__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-label="Clock icon, time savings."><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <svg class="trust__icon-svg--clock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-label="Clock icon, time savings."><circle cx="12" cy="12" r="10" stroke="url(#icon-gradient)"></circle><polyline class="clock-hand" points="12 6 12 12 16 14" stroke="url(#icon-gradient)"></polyline></svg>
       </div>
       <h3 class="trust__title">Save Hours Every Week</h3>
       <p class="trust__copy">From drafting emails to crunching numbers — the boring stuff disappears, so you can focus on what matters.</p>
     </li>
     <li class="trust__item">
       <div class="trust__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-label="Dollar sign icon, cost savings."><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <svg class="trust__icon-svg--dollar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-label="Dollar sign icon, cost savings."><line x1="12" y1="1" x2="12" y2="23" stroke="url(#icon-gradient)"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#icon-gradient)"></path></svg>
       </div>
       <h3 class="trust__title">Cut Costs Without Cutting Corners</h3>
       <p class="trust__copy">Automate the work that eats your budget, without losing quality or control.</p>
     </li>
     <li class="trust__item">
       <div class="trust__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-label="Upward arrow icon, new opportunities."><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+        <svg class="trust__icon-svg--arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-label="Upward arrow icon, new opportunities."><line x1="12" y1="19" x2="12" y2="5" stroke="url(#icon-gradient)"></line><polyline points="5 12 12 5 19 12" stroke="url(#icon-gradient)"></polyline></svg>
       </div>
       <h3 class="trust__title">Never Miss an Opportunity</h3>
       <p class="trust__copy">Spot trends, fix problems, and act faster than your competitors — all on autopilot.</p>

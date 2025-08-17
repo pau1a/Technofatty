@@ -25,6 +25,7 @@
   background: c(mid);
   border-radius: r(md);
   padding: s(6);
+  transition: transform 200ms ease-in-out;
 }
 
 .trust__icon {
@@ -36,14 +37,13 @@
   svg {
     width: 100%;
     height: 100%;
-    stroke: c(blue);
-    stroke-width: 1.5; // Slightly thinner for a more refined look
   }
 }
 
 .trust__title {
   color: c(blue);
   margin: .25rem 0 .5rem;
+  font-weight: bold;
 }
 
 .trust__copy {
@@ -60,5 +60,47 @@
     max-width: 45ch; // Improve readability
     margin-inline: auto;
     margin-bottom: s(4);
+  }
+}
+
+/* --- Icon Animations --- */
+@keyframes tick {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.trust__item:hover {
+  transform: translateY(-5px);
+
+  .trust__icon-svg--clock .clock-hand {
+    // Set the rotation point to the center of the clock face
+    transform-origin: center;
+    animation: tick 2s linear infinite;
+  }
+
+  .trust__icon-svg--dollar {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .trust__icon-svg--arrow {
+    animation: bounce 1s ease-in-out infinite;
+  }
+}
+
+/* Accessibility: pause animations if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .trust__item:hover .trust__icon-svg--clock .clock-hand,
+  .trust__item:hover .trust__icon-svg--dollar,
+  .trust__item:hover .trust__icon-svg--arrow {
+    animation: none;
   }
 }
