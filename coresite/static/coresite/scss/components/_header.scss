@@ -3,8 +3,6 @@
    =============================== */
 
 .site-header {
-  position: sticky;
-  top: 0;
   z-index: map-get($z, header);
 
   // Hide hamburger by default
@@ -14,12 +12,18 @@
 
   // Hero mode for homepage
   &.hero-mode {
-    background: transparent !important;
+    background: rgba(255, 255, 255, var(--header-bg-opacity, 0.5));
     transition: background-color 0.3s ease;
+    position: absolute; // Initially absolute
+    width: 100%;
+    top: 0;
 
     &.is-sticky {
       background: map-get($colors, white);
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      position: fixed; // Becomes fixed on scroll
+      width: 100%; // Ensure it covers full width when fixed
+      top: 0; // Ensure it's at the top when fixed
     }
   }
 
@@ -27,6 +31,9 @@
   &.fixed-mode {
     background: map-get($colors, white);
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    position: fixed; // Always fixed on inner pages
+    width: 100%;
+    top: 0;
   }
 
   // Show only on small screens

@@ -1,7 +1,7 @@
 /* --- Technofatty ↔ Bootstrap button shims --- */
 
 /* Our base class becomes an alias of Bootstrap's .btn */
-.btn { @extend .btn; } // noop if already present, keeps markup consistent
+.btn { @extend .btn; padding: 0.15rem 0.75rem; } // noop if already present, keeps markup consistent
 
 /* Our primary = Bootstrap primary */
 .btn--primary { @extend .btn; @extend .btn-primary; }
