@@ -20,3 +20,12 @@ $spacers: (
   4: map-get($space, 6),
   5: map-get($space, 7)
 );
+
+// Custom button hover states to match Technofatty brand
+$btn-primary-hover-bg:    map-get($colors, gold);
+$btn-primary-hover-color: map-get($colors, black);
+$btn-success-hover-bg:    map-get($colors, gold);
+$btn-success-hover-color: map-get($colors, black);
+
+// Use gold for the focus ring instead of the default blue
+$btn-focus-box-shadow: 0 0 0 0.25rem rgba(map-get($colors, gold), 0.5);

@@ -4,12 +4,13 @@
 
 /* Variables */
 $hamburger-line-color: map-get($colors, blue);
-$hamburger-bg-color: rgba(map-get($colors, gold), 0.45); // slightly more transparent gold
-$hamburger-size: 44px;
-$hamburger-line-height: 3px;
-$hamburger-line-radius: 2px;
-$hamburger-padding: 10px;
-$hamburger-bg-radius: map-get($radii, lg); // softer rounded square
+$hamburger-bg-color: rgba(map-get($colors, gold), 0.45);
+$hamburger-size: 2.75rem; // 44px - good touch target size
+$hamburger-line-height: 0.1875rem; // 3px
+$hamburger-line-radius: 0.125rem; // 2px
+$hamburger-padding: 0.625rem; // 10px
+$hamburger-focus-offset: 0.1875rem; // 3px
+$hamburger-bg-radius: map-get($radii, lg);
 
 /* Global Hamburger Wrapper */
 .global-hamburger {
@@ -22,23 +23,23 @@ $hamburger-bg-radius: map-get($radii, lg); // softer rounded square
     height: $hamburger-size;
     padding: $hamburger-padding;
     border: none;
-    border-radius: $hamburger-bg-radius; /* Softer rounded square */
-    background-color: $hamburger-bg-color; /* More transparent gold */
-    backdrop-filter: blur(2px); /* subtle background blur */
+    border-radius: $hamburger-bg-radius;
+    background-color: $hamburger-bg-color;
+    backdrop-filter: blur(map-get($blurs, sm));
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: map-get($shadows, md);
 
     &:hover {
       background-color: rgba(map-get($colors, gold), 0.85);
     }
 
     &:focus {
-      outline: 2px solid $hamburger-line-color;
-      outline-offset: 3px;
+      outline: map-get($border-widths, md) solid $hamburger-line-color;
+      outline-offset: $hamburger-focus-offset;
     }
 
     .hamburger-line {
@@ -46,36 +47,30 @@ $hamburger-bg-radius: map-get($radii, lg); // softer rounded square
       height: $hamburger-line-height;
       background-color: $hamburger-line-color;
       border-radius: $hamburger-line-radius;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+      transition: transform $dur $easing-standard, opacity $dur $easing-standard;
     }
   }
 
   /* Active State (morph to X) */
   .hamburger-btn[aria-expanded="true"] {
     .hamburger-line:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
+      transform: rotate(45deg) translate(map-get($space, 1), map-get($space, 1));
     }
     .hamburger-line:nth-child(2) {
       opacity: 0;
     }
     .hamburger-line:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
+      transform: rotate(-45deg) translate(map-get($space, 1), - map-get($space, 1));
     }
   }
 }
 
-/* Homepage hero positioning */
-.hero-mode .global-hamburger {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
-
-/* Inner page fixed positioning */
+/* Positioning for the hamburger menu */
+.hero-mode .global-hamburger,
 .fixed-mode .global-hamburger {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
+  position: absolute;
+  top: map-get($space, 4);
+  right: map-get($space, 4);
 }
 
 /* Show only on small screens */

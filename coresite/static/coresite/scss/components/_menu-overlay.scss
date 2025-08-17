@@ -8,10 +8,9 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
   position: fixed;
   top: 0;
   right: 0;
-  width: auto;
-  max-width: 80%;
-  min-width: 12rem;
-  padding: 1rem;
+  width: clamp(16rem, 50vw, 24rem); // Flexible width with min/max
+  max-width: 90vw;
+  padding: map-get($space, 4);
   height: 100%;
   background-color: $overlay-bg;
   color: map-get($colors, white);
@@ -19,12 +18,12 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
   transform: translateX(100%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transition: transform $dur $easing-standard, opacity $dur $easing-standard;
 
-  z-index: 10001;
+  z-index: map-get($z, menu);
   display: flex;
   flex-direction: column;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+  box-shadow: map-get($shadows, lg);
 
   &.is-open {
     transform: translateX(0);
@@ -43,11 +42,12 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
     align-self: flex-end;
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: fs(xxl);
     color: map-get($colors, white);
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: map-get($colors, gold);
     }
   }
@@ -64,9 +64,10 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
     a:not(.btn) {
       color: map-get($colors, white);
       text-decoration: none;
-      font-size: 1.25rem;
+      font-size: fs(lg);
 
-      &:hover {
+      &:hover,
+      &:focus {
         color: map-get($colors, gold);
       }
     }
@@ -80,23 +81,16 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(map-get($colors, black), 0.5);
 
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity $dur $easing-standard;
 
-  z-index: 10000;
+  z-index: map-get($z, overlay);
 
   &.is-active {
     opacity: 1;
     pointer-events: auto;
-  }
-}
-
-/* Show only on small screens */
-@media (max-width: map-get($bp, sm)) {
-  .menu-overlay {
-    display: block;
   }
 }

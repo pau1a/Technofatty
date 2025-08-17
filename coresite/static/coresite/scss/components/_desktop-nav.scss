@@ -2,9 +2,9 @@
   display: none;
   align-items: center;
   justify-content: space-between;
-  padding: 0.25rem 2rem;
+  padding: map-get($space, 1) map-get($space, 6);
 
-  @media (min-width: map-get($bp, sm)) {
+  @include mq(sm) {
     display: flex;
   }
 
@@ -12,6 +12,12 @@
     font-weight: bold;
     text-decoration: none;
     color: inherit;
+    transition: color $dur-fast $easing-standard;
+
+    &:hover,
+    &:focus {
+      color: map-get($colors, blue);
+    }
   }
 
   &__links {
@@ -19,11 +25,20 @@
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 2rem;
+    gap: map-get($space, 6);
 
     a {
       text-decoration: none;
       color: inherit;
+      padding-bottom: map-get($space, 1); // Creates space for the underline
+      border-bottom: map-get($border-widths, md) solid transparent;
+      transition: color $dur-fast $easing-standard, border-color $dur-fast $easing-standard;
+
+      &:hover,
+      &:focus {
+        color: map-get($colors, blue);
+        border-bottom-color: map-get($colors, gold);
+      }
     }
   }
 

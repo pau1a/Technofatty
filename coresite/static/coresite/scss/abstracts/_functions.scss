@@ -19,6 +19,11 @@
   @error "bp[#{$key}] not found in $bp map.";
 }
 
+@function fs($key) {
+  @if map-has-key($font-sizes, $key) { @return map-get($font-sizes, $key); }
+  @error "font-sizes[#{$key}] not found in $font-sizes map.";
+}
+
 @function z($key) {
   @if map-has-key($z, $key) { @return map-get($z, $key); }
   @error "z[#{$key}] not found in $z map.";

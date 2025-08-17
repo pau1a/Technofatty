@@ -4,45 +4,31 @@
 
 .site-header {
   z-index: map-get($z, header);
-
-  // Hide hamburger by default
-  .global-hamburger {
-    display: none;
-  }
+  width: 100%;
+  top: 0;
 
   // Hero mode for homepage
   &.hero-mode {
     background: rgba(255, 255, 255, var(--header-bg-opacity, 0.5));
-    transition: background-color 0.3s ease;
+    transition: background-color $dur $easing-standard;
     position: absolute; // Initially absolute
-    width: 100%;
-    top: 0;
-
-    &.is-sticky {
-      background: map-get($colors, white);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-      position: fixed; // Becomes fixed on scroll
-      width: 100%; // Ensure it covers full width when fixed
-      top: 0; // Ensure it's at the top when fixed
-    }
   }
 
-  // Fixed mode for inner pages
-  &.fixed-mode {
+  // Sticky state for hero-mode on scroll, and default for fixed-mode
+  &.fixed-mode,
+  &.hero-mode.is-sticky {
     background: map-get($colors, white);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    position: fixed; // Always fixed on inner pages
-    width: 100%;
-    top: 0;
+    box-shadow: map-get($shadows, sm);
+    position: fixed;
   }
 
-  // Show only on small screens
+  // The hamburger is part of the header, but its display logic
+  // is handled within its own component file based on screen size.
+  // This keeps the header component cleaner.
   @media (max-width: map-get($bp, sm)) {
     .global-hamburger {
-      display: block;
-      position: absolute;
-      top: map-get($space, 4);
-      right: map-get($space, 4);
+      // Positioning is now handled in _hamburger.scss
+      // We just need to ensure it's part of the layout flow.
     }
   }
 }
