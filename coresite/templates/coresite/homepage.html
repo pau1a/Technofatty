@@ -1,4 +1,5 @@
 {% extends "coresite/base.html" %}
+{% load static %}
 {% block title %}Technofatty Front Page{% endblock %}
 {% block meta_description %}Modern tech resources—fast, accessible, and community-driven.{% endblock %}
 
@@ -11,4 +12,8 @@
 
 {% block footer %}
   {% include "coresite/partials/footer.html" %}
+{% endblock %}
+
+{% block body_scripts %}
+<script src="{% static 'coresite/js/nav-home.js' %}?v={{ now|date:'U' }}" defer></script>
 {% endblock %}

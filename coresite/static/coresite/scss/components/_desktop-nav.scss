@@ -1,0 +1,33 @@
+.desktop-nav {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+
+  @media (min-width: map-get($bp, sm)) {
+    display: flex;
+  }
+
+  &__logo a {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
+  &__cta {
+    // CTA button styles are already defined in _buttons.scss
+  }
+}
