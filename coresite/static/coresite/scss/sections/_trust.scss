@@ -31,12 +31,12 @@
 .trust__icon {
   width: 64px;
   height: 64px;
-  border-radius: r(sm);
   margin-bottom: .5rem;
 
   svg {
     width: 100%;
     height: 100%;
+    stroke-width: 2; // thicker for visibility
   }
 }
 
