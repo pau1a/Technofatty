@@ -2,14 +2,6 @@
 
 <section class="trust" aria-labelledby="trust-heading">
   <!-- Reusable SVG gradient definition -->
-  <svg width="0" height="0" style="position:absolute">
-    <defs>
-      <linearGradient id="trust-icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color: var(--bs-primary);" />
-        <stop offset="100%" style="stop-color: var(--bs-primary-text-emphasis);" />
-      </linearGradient>
-    </defs>
-  </svg>
 
   <h2 id="trust-heading" class="section-title">Your AI Advantage Starts Here</h2>
   
@@ -20,9 +12,15 @@
   <ul class="trust__grid">
     <li class="trust__item">
       <div class="trust__icon">
-        <svg class="trust__icon-svg--clock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="url(#trust-icon-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Clock icon, time savings.">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline class="clock-hand" points="12 6 12 12 16 14"></polyline>
+        <svg class="trust__icon-svg--clock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Clock icon, time savings.">
+          <defs>
+            <linearGradient id="clock-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4B6CB7" />
+              <stop offset="100%" stop-color="#182848" />
+            </linearGradient>
+          </defs>
+          <circle cx="12" cy="12" r="10" stroke="url(#clock-gradient)"></circle>
+          <polyline class="clock-hand" points="12 6 12 12 16 14" stroke="url(#clock-gradient)"></polyline>
         </svg>
       </div>
       <h3 class="trust__title">Save Hours Every Week</h3>
@@ -30,9 +28,15 @@
     </li>
     <li class="trust__item">
       <div class="trust__icon">
-        <svg class="trust__icon-svg--dollar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="url(#trust-icon-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Dollar sign icon, cost savings.">
-          <line x1="12" y1="1" x2="12" y2="23"></line>
-          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        <svg class="trust__icon-svg--dollar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Dollar sign icon, cost savings.">
+          <defs>
+            <linearGradient id="dollar-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4B6CB7" />
+              <stop offset="100%" stop-color="#182848" />
+            </linearGradient>
+          </defs>
+          <line x1="12" y1="1" x2="12" y2="23" stroke="url(#dollar-gradient)"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#dollar-gradient)"></path>
         </svg>
       </div>
       <h3 class="trust__title">Cut Costs Without Cutting Corners</h3>
@@ -40,9 +44,15 @@
     </li>
     <li class="trust__item">
       <div class="trust__icon">
-        <svg class="trust__icon-svg--arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="url(#trust-icon-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Upward arrow icon, new opportunities.">
-          <line x1="12" y1="19" x2="12" y2="5"></line>
-          <polyline points="5 12 12 5 19 12"></polyline>
+        <svg class="trust__icon-svg--arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Upward arrow icon, new opportunities.">
+          <defs>
+            <linearGradient id="arrow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4B6CB7" />
+              <stop offset="100%" stop-color="#182848" />
+            </linearGradient>
+          </defs>
+          <line x1="12" y1="19" x2="12" y2="5" stroke="url(#arrow-gradient)"></line>
+          <polyline points="5 12 12 5 19 12" stroke="url(#arrow-gradient)"></polyline>
         </svg>
       </div>
       <h3 class="trust__title">Never Miss an Opportunity</h3>
