@@ -87,8 +87,8 @@
     animation: tick 2s linear infinite;
   }
 
-  .trust__icon-svg--piggybank {
-    animation: pulse 1.5s ease-in-out infinite; // Re-using pulse for the new icon
+  .trust__icon-svg--coin {
+    animation: pulse 1.5s ease-in-out infinite;
   }
 
   .trust__icon-svg--arrow {
@@ -99,9 +99,8 @@
 /* Accessibility: pause animations if user prefers */
 @media (prefers-reduced-motion: reduce) {
   .trust__item:hover .trust__icon-svg--clock .clock-hand,
-  .trust__item:hover .trust__icon-svg--piggybank,
+  .trust__item:hover .trust__icon-svg--coin,
   .trust__item:hover .trust__icon-svg--arrow {
     animation: none;
   }
 }
-
