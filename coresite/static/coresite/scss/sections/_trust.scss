@@ -84,7 +84,7 @@
   .trust__icon-svg--clock .clock-hand {
     // Set the rotation point to the center of the clock face
     transform-origin: center;
-    animation: tick 2s linear infinite;
+    animation: tick 2s steps(12, end) infinite;
   }
 
   .trust__icon-svg--coin {
