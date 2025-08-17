@@ -14,11 +14,27 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header {% if is_homepage %}hero-mode{% else %}fixed-mode{% endif %}">
+  <header class="site-header {% if request.path == '/' %}hero-mode{% else %}fixed-mode{% endif %}">
     {% block header %}
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
+        <div class="desktop-nav__logo">
+          <a href="/">Technofatty</a>
+        </div>
+        <ul class="desktop-nav__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+        <div class="desktop-nav__cta">
+          <a class="btn btn--cta" href="#">Join Us</a>
+        </div>
+      </nav>
+
       <!-- Global Hamburger -->
       <div class="global-hamburger">
-        <button class="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false">
+        <button class="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-overlay">
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
@@ -53,5 +69,6 @@
   </footer>
 
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
+  {% block body_scripts %}{% endblock %}
 </body>
 </html>

@@ -42,4 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
       closeMenu();
     });
   }
+
+  // Sticky Header
+  const header = document.querySelector('.site-header');
+  if (header) {
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) { // Add class after scrolling 50px
+        header.classList.add('is-sticky');
+      } else {
+        header.classList.remove('is-sticky');
+      }
+    });
+  }
 });
