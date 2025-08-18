@@ -88,7 +88,7 @@
     animation: tick 2s steps(12, end) infinite;
   }
 
-  .trust__icon-svg--coin {
+  .trust__icon-svg--dollar {
     animation: pulse 1.5s ease-in-out infinite;
   }
 
@@ -100,7 +100,7 @@
 /* Accessibility: pause animations if user prefers */
 @media (prefers-reduced-motion: reduce) {
   .trust__item:hover .trust__icon-svg--clock .clock-hand,
-  .trust__item:hover .trust__icon-svg--coin,
+  .trust__item:hover .trust__icon-svg--dollar,
   .trust__item:hover .trust__icon-svg--arrow {
     animation: none;
   }
