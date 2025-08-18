@@ -25,7 +25,24 @@
   background: c(mid);
   border-radius: r(md);
   padding: s(6);
-  transition: transform 200ms ease-in-out;
+
+  // --- Entry Animation ---
+  // Initial state for items before they enter the viewport.
+  opacity: 0;
+  transform: scale(0.8);
+  will-change: opacity, transform; // Performance hint for the browser.
+
+  // Stagger the animation start for each item.
+  &:nth-child(1) { transition-delay: 100ms; }
+  &:nth-child(2) { transition-delay: 200ms; }
+  &:nth-child(3) { transition-delay: 300ms; }
+
+  // State when the item is visible (class added by JS).
+  &.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms ease-out, transform 300ms cubic-bezier(0.25, 1, 0.5, 1) 300ms;
+  }
 }
 
 .trust__icon {
@@ -79,8 +96,13 @@
   50% { transform: translateY(-8px); }
 }
 
-.trust__item:hover {
-  transform: translateY(-5px);
+// --- Hover Animations (for desktop/pointer devices only) ---
+@media (hover: hover) and (pointer: fine) {
+  .trust__item:hover {
+    // Combine hover effect with the final state of the entry animation.
+    transform: translateY(-5px) scale(1);
+    // Use a faster transition for the hover interaction itself.
+    transition: transform 20
 
   .trust__icon-svg--clock .clock-hand {
     // Set the rotation point to the center of the clock face
