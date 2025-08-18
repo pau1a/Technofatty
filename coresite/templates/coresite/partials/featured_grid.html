@@ -1,13 +1,18 @@
 <section id="featured" class="featured" aria-labelledby="featured-heading">
   <h2 id="featured-heading" class="section-title">Featured Resources</h2>
 
-  <!-- Background motifs -->
-  <div class="featured__bg-motif featured__bg-motif--tl">
-    {% include "coresite/partials/motifs/motif1.svg" %}
-  </div>
-  <div class="featured__bg-motif featured__bg-motif--br">
-    {% include "coresite/partials/motifs/motif2.svg" %}
-  </div>
+<!-- Background motifs -->
+<div class="featured__bg-motif featured__bg-motif--tl">
+  <img src="{% static 'coresite/img/motifs/motif1.svg' %}" 
+       alt="" 
+       role="presentation">
+</div>
+
+<div class="featured__bg-motif featured__bg-motif--br">
+  <img src="{% static 'coresite/img/motifs/motif2.svg' %}" 
+       alt="" 
+       role="presentation">
+</div>
 
   <div class="cards">
     <article class="card">
