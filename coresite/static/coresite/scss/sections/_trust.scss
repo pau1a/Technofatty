@@ -102,25 +102,32 @@
     // Combine hover effect with the final state of the entry animation.
     transform: translateY(-5px) scale(1);
     // Use a faster transition for the hover interaction itself.
-    transition: transform 20
+    transition: transform 200ms ease-in-out;
 
-  .trust__icon-svg--clock .clock-hand {
-    // Set the rotation point to the center of the clock face
-    transform-origin: center;
-    animation: tick 2s steps(12, end) infinite;
-  }
+    .trust__icon-svg--clock .clock-hand {
+      // Set the rotation point to the center of the clock face
+      transform-origin: center;
+      animation: tick 2s steps(12, end) infinite;
+    }
 
-  .trust__icon-svg--dollar {
-    animation: pulse 1.5s ease-in-out infinite;
-  }
+    .trust__icon-svg--dollar {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
 
-  .trust__icon-svg--arrow {
-    animation: bounce 1s ease-in-out infinite;
+    .trust__icon-svg--arrow {
+      animation: bounce 1s ease-in-out infinite;
+    }
   }
 }
 
 /* Accessibility: pause animations if user prefers */
 @media (prefers-reduced-motion: reduce) {
+  .trust__item, .trust__item.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   .trust__item:hover .trust__icon-svg--clock .clock-hand,
   .trust__item:hover .trust__icon-svg--dollar,
   .trust__item:hover .trust__icon-svg--arrow {
