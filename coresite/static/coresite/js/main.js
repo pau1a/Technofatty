@@ -91,4 +91,49 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  /**
+   * Handles the hero video fade-in to ensure the placeholder image is the LCP.
+   * This script looks for a placeholder image and a video. If found, it waits for
+   * the video to be ready and for a minimum delay, then smoothly fades the video in.
+   */
+  function initHeroVideoSwap() {
+    const video = document.querySelector('.hero__video');
+    const placeholder = document.querySelector('.hero__placeholder');
+
+    // Exit if the required hero elements aren't on this page
+    if (!video || !placeholder) {
+      return;
+    }
+
+    let videoReady = false;
+    let minDelayDone = false;
+
+    const trySwap = () => {
+      // Check if swap can happen and hasn't already
+      if (videoReady && minDelayDone && video.classList.contains('is-loading')) {
+        
+        // Make video renderable by removing the loading class and attributes
+        video.classList.remove('is-loading');
+        video.removeAttribute('inert');
+        video.removeAttribute('aria-hidden');
+
+        // Use requestAnimationFrame to ensure the 'display' change is painted
+        // before we trigger the opacity transition for a smooth fade.
+        requestAnimationFrame(() => {
+          placeholder.style.opacity = '0';
+          video.style.opacity = '1';
+        });
+      }
+    };
+
+    // Listen for when the video is ready to play through
+    video.addEventListener('canplaythrough', () => { videoReady = true; trySwap(); }, { once: true });
+
+    // Enforce a minimum 2-second delay to ensure a fast LCP paint
+    setTimeout(() => { minDelayDone = true; trySwap(); }, 2000);
+  }
+
+  // Initialize the hero video swap logic
+  initHeroVideoSwap();
 });

@@ -1,8 +1,16 @@
 <section class="hero" role="region" aria-label="{{ site_images.hero1.alt_text|default:'Technofatty hero' }}">
   <div class="hero__bg" aria-hidden="true">
     {% if site_images.hero1 and site_images.hero1.video and site_images.hero1.image %}
-      <img src="{{ site_images.hero1.image.url }}" alt="{{ site_images.hero1.alt_text|default:'' }}" class="hero__image hero__placeholder">
-      <video autoplay muted loop playsinline preload="auto" class="hero__video" style="opacity: 0;">
+      <img src="{{ site_images.hero1.image.url }}"
+           alt="{{ site_images.hero1.alt_text|default:'' }}"
+           class="hero__image hero__placeholder"
+           fetchpriority="high"
+           loading="eager"
+           decoding="async">
+      <video autoplay muted loop playsinline preload="auto"
+             class="hero__video is-loading"
+             aria-hidden="true"
+             inert>
         <source src="{{ site_images.hero1.video.url }}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -68,38 +76,4 @@
     </p>
     <a class="btn btn--primary" href="#signup">Get AI Growth Tips</a>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const video = document.querySelector('.hero__video');
-      const placeholder = document.querySelector('.hero__placeholder');
-
-      if (video && placeholder) {
-        let videoReady = false;
-        let minDelayDone = false;
-
-        // Wait for both: video loaded + 2 second delay
-        const trySwap = () => {
-          if (videoReady && minDelayDone) {
-            video.style.transition = 'opacity 0.8s ease';
-            placeholder.style.transition = 'opacity 0.8s ease';
-            placeholder.style.opacity = '0';
-            video.style.opacity = '1';
-          }
-        };
-
-        // Track when video is ready
-        video.addEventListener('canplaythrough', () => {
-          videoReady = true;
-          trySwap();
-        });
-
-        // Minimum 2 second delay
-        setTimeout(() => {
-          minDelayDone = true;
-          trySwap();
-        }, 2000);
-      }
-    });
-  </script>
 </section>

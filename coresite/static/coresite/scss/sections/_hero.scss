@@ -24,6 +24,11 @@
   inset: 0;
   z-index: 0;
   opacity: 0;
+  transition: opacity 0.8s ease; // Have transition ready
+
+  &.is-loading {
+    display: none; // Hide video initially to prevent it from being LCP
+  }
 }
 
 /* Image background */
@@ -35,6 +40,7 @@
   inset: 0;
   z-index: 0;
   opacity: 1;
+  transition: opacity 0.8s ease;
 }
 
 /* Hero text content */
