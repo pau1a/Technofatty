@@ -1,19 +1,11 @@
 {% extends "coresite/base.html" %}
-{% load static %}
-{% block title %}Technofatty Front Page{% endblock %}
-{% block meta_description %}Modern tech resources—fast, accessible, and community-driven.{% endblock %}
+{% load static thumbnail %}
 
 {% block content %}
-  {% include "coresite/partials/hero.html" %}
-  {% include "coresite/partials/trust.html" %}
-  {% include "coresite/partials/featured_grid.html" %}
-  {% include "coresite/partials/community_hook.html" %}
-{% endblock %}
-
-{% block footer %}
-  {% include "coresite/partials/footer.html" %}
-{% endblock %}
-
-{% block body_scripts %}
-<script src="{% static 'coresite/js/nav-home.js' %}?v={{ now|date:'U' }}" defer></script>
+  {# Placeholder content to make the page functional #}
+  <div class="container" style="padding-top: 150px; padding-bottom: 50px;">
+    <h1>Welcome to Technofatty</h1>
+    <p>This is a placeholder homepage to demonstrate the signup form.</p>
+  </div>
+  {% include "coresite/partials/_signup.html" with form=signup_form %}
 {% endblock %}
