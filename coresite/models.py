@@ -34,3 +34,18 @@ class DevImage(models.Model):
 
     def __str__(self):
         return self.title or f"Image {self.id}"
+# ----- Subscriber model (added to match migration 0004_subscriber.py) -----
+from django.db import models
+
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=150, blank=True)
+    company = models.CharField(max_length=200, blank=True)
+    consent = models.BooleanField(default=False)
+    mailchimp_status = models.CharField(max_length=50, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+
+    def __str__(self):
+        return self.email
+# -------------------------------------------------------------------------
