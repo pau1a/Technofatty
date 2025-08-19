@@ -151,3 +151,10 @@ CSRF_TRUSTED_ORIGINS = [
 # Auto field
 # -------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# -------------------------------------------------
+# Third-Party Services (Mailchimp)
+# -------------------------------------------------
+# These must be set in the production environment for the sync to work.
+MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY")
+MAILCHIMP_LIST_ID = os.environ.get("MAILCHIMP_LIST_ID")

@@ -1,34 +1,28 @@
-// Abstracts
-@import "abstracts/variables";
+/* =========================================
+   Technofatty — Main SCSS Entrypoint
+   ========================================= */
 
-@import "abstracts/bootstrap-overrides";
-@import "bootstrap/scss/bootstrap";
+// 1. Design Tokens (Variables)
+@import 'base/variables';
 
-@import "abstracts/functions";
-@import "abstracts/mixins";
+// 2. Bootstrap Framework (and our overrides)
+@import 'bootstrap_overrides';
+@import 'bootstrap/scss/bootstrap';
 
-// Base
-@import "base/reset";
-@import "base/typography";
-@import "base/utilities";
+// 3. Base/Core Styles
+@import 'base/reset';
+@import 'base/base';
+@import 'base/typography';
+@import 'base/utilities';
 
-// Components
-@import "components/header";
-@import "components/buttons";
-@import "components/cards";
-@import 'components/hamburger';
-@import 'components/menu-overlay';
-@import 'components/desktop-nav';
+// 4. Components
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/forms';
 
-// Layout
-@import "layout/grid";
-
-// Sections
-@import "sections/hero";
-@import "sections/trust";
-@import "sections/featured";
-@import "sections/community";
-@import "sections/footer";
-
-// Pages
-@import "pages/home";
+// 5. Layout Sections
+@import 'layout/header';
+@import 'layout/footer';
+@import 'sections/hero';
+@import 'sections/community';
+@import 'sections/signup';

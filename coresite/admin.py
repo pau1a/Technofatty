@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import SiteSettings, SiteImage, DevImage
+from django.utils.html import format_html
+from .models import SiteSettings, SiteImage, DevImage, Subscriber
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
@@ -17,14 +18,21 @@ class SiteImageAdmin(admin.ModelAdmin):
 
 @admin.register(DevImage)
 class DevImageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'image', 'uploaded_at')
+    list_display = ('id', 'title', 'image_tag', 'uploaded_at')
     search_fields = ('title',)
     list_per_page = 20
     ordering = ('-uploaded_at',)
-    # This lets you preview uploaded images right in the list view
+
+    @admin.display(description='Preview')
     def image_tag(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" style="max-height: 60px;" />'
+            return format_html('<img src="{}" style="max-height: 60px;" />', obj.image.url)
         return ""
-    image_tag.allow_tags = True
-    image_tag.short_description = 'Preview'
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('email', 'name', 'mailchimp_status', 'consent', 'created_at', 'ip_address')
+    list_filter = ('mailchimp_status', 'consent', 'created_at')
+    search_fields = ('email', 'name', 'company', 'ip_address')
+    ordering = ('-created_at',)

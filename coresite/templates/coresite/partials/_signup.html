@@ -1,0 +1,47 @@
+{% comment %}
+  coresite/templates/coresite/partials/_signup.html
+  Server-rendered signup form.
+  To use, include in a template and pass a `SignupForm` instance as `form`.
+  e.g., {% include "coresite/partials/_signup.html" with form=signup_form %}
+{% endcomment %}
+<section class="signup-section" id="signup">
+  <div class="wrap">
+    <h2>Join the Community</h2>
+    <p>Get updates, resources, and connect with other tech enthusiasts.</p>
+
+    <form action="{% url 'coresite:signup' %}" method="post" class="signup-form" novalidate>
+      {% csrf_token %}
+
+      {# Honeypot: must be present but hidden #}
+      <div style="position: absolute; left: -5000px;" aria-hidden="true">
+          {{ form.hp_field }}
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        {{ form.name }}
+      </div>
+
+      <div class="form-group">
+        {{ form.email }}
+      </div>
+
+      <div class="form-group form-check">
+        {{ form.consent }}
+        <label for="{{ form.consent.id_for_label }}">
+          I agree to the <a href="/privacy-policy/" target="_blank">privacy policy</a> and to receive communications.
+          {# UNCERTAINTY: Final legal copy for consent and privacy policy URL to be confirmed. #}
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn--cta">Subscribe</button>
+
+      <div id="signup-status" role="status" aria-live="polite" class="visually-hidden"></div>
+    </form>
+  </div>
+</section>

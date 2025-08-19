@@ -136,4 +136,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize the hero video swap logic
   initHeroVideoSwap();
+
+  /**
+   * Handles newsletter signup form submission with Fetch API for a smooth UX.
+   * This is a progressive enhancement; the form works without JS.
+   */
+  function initSignupForm() {
+    const signupForm = document.querySelector('.signup-form');
+    if (!signupForm) {
+      return;
+    }
+
+    const statusEl = signupForm.querySelector('#signup-status');
+
+    signupForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = new FormData(signupForm);
+      const submitButton = signupForm.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.textContent;
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+
+      fetch(signupForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      })
+      .then(response => response.json())
+      .then(data => {
+        statusEl.textContent = data.message;
+        statusEl.classList.remove('visually-hidden');
+        if (data.success) {
+          signupForm.reset();
+          if (window.dataLayer) {
+            window.dataLayer.push({ 'event': 'generate_lead', 'lead_type': 'newsletter_signup' });
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Signup form submission error:', error);
+        statusEl.textContent = 'Could not connect. Please try again later.';
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+      });
+    });
+  }
+  initSignupForm();
 });

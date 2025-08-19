@@ -1,0 +1,39 @@
+// coresite/static/coresite/scss/sections/_signup.scss
+
+.signup-section {
+  // UNCERTAINTY: Using CSS variables directly as the s() and c()
+  // functions were not found. This is the assumed equivalent.
+  background-color: var(--color-mid);
+  padding: var(--space-6) var(--space-4);
+  margin-block: var(--space-6);
+
+  .wrap {
+    text-align: center;
+  }
+
+  h2 {
+    color: var(--color-blue);
+    margin-top: 0;
+  }
+}
+
+.signup-form {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 500px;
+  margin-inline: auto;
+  margin-top: var(--space-5);
+
+  input[type="text"],
+  input[type="email"] {
+    @extend .form-control;
+  }
+
+  .form-check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    text-align: left;
+  }
+}
