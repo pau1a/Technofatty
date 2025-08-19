@@ -3,25 +3,15 @@
 <section id="featured" class="featured" aria-labelledby="featured-heading">
   <h2 id="featured-heading" class="section-title">Featured Resources</h2>
 
-<!-- Background motifs -->
-<div class="featured__bg-motif featured__bg-motif--tl">
-  <img src="{% static 'coresite/img/motifs/motif1.svg' %}" 
-       alt="" 
-       role="presentation">
-</div>
-
-<div class="featured__bg-motif featured__bg-motif--br">
-  <img src="{% static 'coresite/img/motifs/motif2.svg' %}" 
-       alt="" 
-       role="presentation">
-</div>
-
-  <div class="cards">
+<div class="cards">
+  {% for resource in resources %}
     <article class="card">
-      <div class="card__img" role="img" aria-label="Resource image placeholder"></div>
-      <h3 class="card__title">Title</h3>
-      <p class="card__blurb">Short description goes here.</p>
-      <a class="card__link" href="#">Read more</a>
+      <div class="card__img" role="img" aria-label="{{ resource.image_alt|default:'Resource image' }}"></div>
+      <h3 class="card__title">{{ resource.title }}</h3>
+      <p class="card__blurb">{{ resource.blurb }}</p>
+      <a class="card__link" href="{{ resource.url }}">Read more</a>
     </article>
-  </div>
+  {% endfor %}
+</div>
+
 </section>
