@@ -1,21 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
-  <g stroke="#4B6CB7" stroke-opacity="0.12" stroke-width="1.2" fill="none">
-    <!-- Connections -->
-    <line x1="50" y1="60" x2="200" y2="120"/>
-    <line x1="200" y1="120" x2="400" y2="80"/>
-    <line x1="400" y1="80" x2="550" y2="200"/>
-    <line x1="200" y1="120" x2="320" y2="260"/>
-    <line x1="50" y1="60" x2="150" y2="260"/>
-    <line x1="320" y1="260" x2="550" y2="200"/>
-    <line x1="150" y1="260" x2="400" y2="360"/>
-    <!-- Nodes -->
-    <circle cx="50" cy="60" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
-    <circle cx="200" cy="120" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
-    <circle cx="400" cy="80" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
-    <circle cx="550" cy="200" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
-    <circle cx="320" cy="260" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
-    <circle cx="150" cy="260" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
-    <circle cx="400" cy="360" r="6" fill="#4B6CB7" fill-opacity="0.3"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="2000" viewBox="0 0 2000 2000">
+  <rect width="2000" height="2000" fill="white"/>
+
+  <!-- Connections -->
+  <g stroke="#4B6CB7" stroke-width="2" stroke-opacity="0.15">
+    <line x1="150" y1="200" x2="600" y2="350"/>
+    <line x1="600" y1="350" x2="950" y2="600"/>
+    <line x1="950" y1="600" x2="1350" y2="400"/>
+    <line x1="1350" y1="400" x2="1800" y2="250"/>
+    <line x1="300" y1="700" x2="700" y2="900"/>
+    <line x1="700" y1="900" x2="1100" y2="1100"/>
+    <line x1="1100" y1="1100" x2="1600" y2="900"/>
+    <line x1="1600" y1="900" x2="1850" y2="1300"/>
+    <line x1="200" y1="1500" x2="600" y2="1400"/>
+    <line x1="600" y1="1400" x2="1000" y2="1700"/>
+    <line x1="1000" y1="1700" x2="1500" y2="1500"/>
+    <line x1="1500" y1="1500" x2="1800" y2="1800"/>
+    <!-- extra random links -->
+    <line x1="400" y1="400" x2="1600" y2="1600"/>
+    <line x1="600" y1="1800" x2="1400" y2="200"/>
+    <line x1="1800" y1="500" x2="200" y2="1800"/>
+    <line x1="900" y1="200" x2="1900" y2="1000"/>
+    <line x1="100" y1="100" x2="1900" y2="1900"/>
+  </g>
+
+  <!-- Nodes -->
+  <g fill="#4B6CB7">
+    <circle cx="150" cy="200" r="20" opacity="0.8"/>
+    <circle cx="600" cy="350" r="18" opacity="0.6"/>
+    <circle cx="950" cy="600" r="22" opacity="0.7"/>
+    <circle cx="1350" cy="400" r="16" opacity="0.8"/>
+    <circle cx="1800" cy="250" r="24" opacity="0.9"/>
+    <circle cx="300" cy="700" r="28" opacity="0.7"/>
+    <circle cx="700" cy="900" r="22" opacity="0.6"/>
+    <circle cx="1100" cy="1100" r="25" opacity="0.8"/>
+    <circle cx="1600" cy="900" r="20" opacity="0.8"/>
+    <circle cx="1850" cy="1300" r="26" opacity="0.9"/>
+    <circle cx="200" cy="1500" r="18" opacity="0.6"/>
+    <circle cx="600" cy="1400" r="22" opacity="0.8"/>
+    <circle cx="1000" cy="1700" r="24" opacity="0.7"/>
+    <circle cx="1500" cy="1500" r="28" opacity="0.9"/>
+    <circle cx="1800" cy="1800" r="20" opacity="0.8"/>
+    <circle cx="400" cy="400" r="30" opacity="0.8"/>
+    <circle cx="1600" cy="1600" r="26" opacity="0.7"/>
+    <circle cx="600" cy="1800" r="22" opacity="0.8"/>
+    <circle cx="1400" cy="200" r="20" opacity="0.7"/>
+    <circle cx="1800" cy="500" r="28" opacity="0.9"/>
+    <circle cx="200" cy="1800" r="24" opacity="0.7"/>
+    <circle cx="900" cy="200" r="20" opacity="0.8"/>
+    <circle cx="1900" cy="1000" r="32" opacity="0.9"/>
+    <circle cx="100" cy="100" r="22" opacity="0.8"/>
+    <circle cx="1900" cy="1900" r="30" opacity="0.9"/>
   </g>
 </svg>
-
