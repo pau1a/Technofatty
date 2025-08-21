@@ -12,32 +12,38 @@
     {% if messages %}
       {% for m in messages %}
         {% if forloop.first %}
-          <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="is-{{ m.tags }}">
+          <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="is-{{ m.tags }}" aria-busy="false">
             {% csrf_token %}
-            <label for="newsletter-email">Email address</label>
-            <input type="email" id="newsletter-email" name="email"
-                   placeholder="name@example.com"
-                   aria-label="Email address for newsletter subscription"
-                   required autocomplete="email" inputmode="email" spellcheck="false"
-                   aria-describedby="newsletter-privacy">
-            <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-            <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
-            <div role="status" aria-live="polite" class="form-message is-{{ m.tags }}">{{ m }}</div>
+            <fieldset>
+              <legend class="visually-hidden">Newsletter</legend>
+              <label for="newsletter-email">Email address</label>
+              <input type="email" id="newsletter-email" name="email"
+                     placeholder="name@example.com"
+                     aria-label="Email address for newsletter subscription"
+                     required autocomplete="email" inputmode="email" spellcheck="false"
+                     aria-describedby="newsletter-privacy newsletter-status">
+              <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
+              <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
+              <div id="newsletter-status" role="status" aria-live="polite" class="form-message is-{{ m.tags }}">{{ m }}</div>
+            </fieldset>
           </form>
         {% endif %}
       {% endfor %}
     {% else %}
-      <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}">
+      <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" aria-busy="false">
         {% csrf_token %}
-        <label for="newsletter-email">Email address</label>
-        <input type="email" id="newsletter-email" name="email"
-               placeholder="name@example.com"
-               aria-label="Email address for newsletter subscription"
-               required autocomplete="email" inputmode="email" spellcheck="false"
-               aria-describedby="newsletter-privacy">
-        <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-        <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
-        <div role="status" aria-live="polite" class="form-message"></div>
+        <fieldset>
+          <legend class="visually-hidden">Newsletter</legend>
+          <label for="newsletter-email">Email address</label>
+          <input type="email" id="newsletter-email" name="email"
+                 placeholder="name@example.com"
+                 aria-label="Email address for newsletter subscription"
+                 required autocomplete="email" inputmode="email" spellcheck="false"
+                 aria-describedby="newsletter-privacy newsletter-status">
+          <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
+          <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
+          <div id="newsletter-status" role="status" aria-live="polite" class="form-message"></div>
+        </fieldset>
       </form>
     {% endif %}
 
