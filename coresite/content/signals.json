@@ -9,7 +9,7 @@
       "title": "Tuning models boosts accuracy 15%",
       "problem": "Baseline models plateaued at 70% F1 on noisy data.",
       "approach": "Iterative hyperparameter search with cross-validation avoided overfitting.",
-      "evidence": "Benchmarks on three datasets lifted F1 to 80% ±0.5 in reproducible tests.",
+      "evidence": "Benchmarks on three datasets lifted F1 to 80% plus or minus 0.5 in reproducible tests.",
       "cta_text": "See method"
     },
     {
