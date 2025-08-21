@@ -1,7 +1,45 @@
+{% if footer %}
+<footer class="footer">
   <nav aria-label="Footer">
-    <ul class="footer__links">
-      <li><a href="/about/">About</a></li>
-      <li><a href="/resources/">Resources</a></li>
-      <li><a href="/contact/">Contact</a></li>
-    </ul>
+    <div class="wrap">
+      {% if footer.headline %}
+        {% with tag=footer.heading_level|default:'h2' %}
+          <{{ tag }} class="footer__headline">{{ footer.headline }}</{{ tag }}>
+        {% endwith %}
+      {% endif %}
+      {% if footer.intro %}
+        <p class="footer__intro">{{ footer.intro }}</p>
+      {% endif %}
+      {% if footer.link_groups %}
+        <div class="footer__groups">
+          {% for group in footer.link_groups %}
+            {% if group.links %}
+              <div class="footer__group">
+                {% if group.label %}<p class="footer__group-label">{{ group.label }}</p>{% endif %}
+                <ul class="footer__links">
+                  {% for link in group.links %}
+                    <li><a href="{{ link.url }}"
+                           data-analytics-event="footer_link_click"
+                           data-analytics-group="{{ group.label }}"
+                           data-analytics-label="{{ link.label }}"
+                           data-analytics-url="{{ link.url }}">{{ link.label }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
   </nav>
+  {% if footer.meta %}
+    <div class="footer__meta">
+      <div class="wrap">
+        {% if footer.meta.copyright %}<p>{{ footer.meta.copyright }}</p>{% endif %}
+        {% if footer.meta.made_in %}<p>{{ footer.meta.made_in }}</p>{% endif %}
+        {% if footer.meta.email %}<p><a href="mailto:{{ footer.meta.email }}">{{ footer.meta.email }}</a></p>{% endif %}
+      </div>
+    </div>
+  {% endif %}
+</footer>
+{% endif %}
