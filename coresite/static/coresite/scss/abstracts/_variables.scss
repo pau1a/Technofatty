@@ -116,6 +116,11 @@ $shadows: (
 $easing-standard: cubic-bezier(.2, .6, .2, 1);
 $dur-fast: 120ms;
 $dur: 200ms;
+/* Navigation tokens */
+$nav-height: 4rem;
+$nav-padding: 1rem;
+$link-color: map-get($colors, blue);
+
 
 /* ------------------------------------------------
    Optional: expose CSS variables for runtime usage
