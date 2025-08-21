@@ -1,0 +1,42 @@
+{
+  "heading_level": "h2",
+  "headline": "Signals",
+  "intro": "Three quick looks at reproducible tech wins.",
+  "cards": [
+    {
+      "slug": "model-tuning",
+      "kicker": "Modeling",
+      "title": "Tuning models boosts accuracy 15%",
+      "problem": "Baseline models plateaued at 70% F1 on noisy data.",
+      "approach": "Iterative hyperparameter search with cross-validation avoided overfitting.",
+      "evidence": "Benchmarks on three datasets lifted F1 to 80% ±0.5 in reproducible tests.",
+      "cta_text": "See method"
+    },
+    {
+      "slug": "cache-warm",
+      "kicker": "Caching",
+      "title": "Prewarming slashes load times",
+      "problem": "Cold starts slowed API responses to 900 ms under load.",
+      "approach": "Introduced staged cache warming and connection pooling on deploy.",
+      "evidence": "Synthetic traffic showed median latency drop to 250 ms.",
+      "cta_text": "View lab note"
+    },
+    {
+      "slug": "risk-sim",
+      "kicker": "Risk",
+      "title": "Simulated stress tests flag weak spots",
+      "problem": "Unclear how system handled burst traffic and partial failures.",
+      "approach": "Ran distributed chaos simulations modeling node loss and spikes.",
+      "evidence": "Results mapped threshold where error rate exceeds 2%.",
+      "cta_text": "Explore scenarios"
+    }
+  ],
+  "tokens": {
+    "color": "gold",
+    "spacing": "s(3)",
+    "radius": "r(md)"
+  },
+  "messages": {
+    "no_cards": "No signals available."
+  }
+}

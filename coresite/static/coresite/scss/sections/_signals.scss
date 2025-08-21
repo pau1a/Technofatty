@@ -1,0 +1,79 @@
+// coresite/static/coresite/scss/sections/_signals.scss
+// -----------------------------------------------------------------------------
+// Token map:
+// white      → c(white)
+// tech-blue  → c(blue)
+// warm-gold  → c(gold)
+// border     → c(border)
+// radius-sm  → r(sm)
+// radius-md  → r(md)
+// space-1    → s(1)
+// space-2    → s(2)
+// space-3    → s(3)
+// space-6    → s(6)
+// space-7    → s(7)
+// space-8    → s(8)
+// bp.md      → mq(md)
+// bp.lg      → mq(lg)
+// -----------------------------------------------------------------------------
+
+$signals-accent: c(gold); // swap to c(blue) for all-blue scheme
+
+.section--signals {
+  background: c(white);
+  padding-block: s(6);
+  @include mq(md) { padding-block: s(7); }
+  @include mq(lg) { padding-block: s(8); }
+
+  .wrap {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    gap: s(3);
+  }
+
+  .section-title { color: c(blue); }
+
+  .signals__intro { max-width: 45ch; margin: 0; }
+
+  .signals__grid {
+    display: grid;
+    gap: s(3);
+    grid-template-columns: 1fr;
+    @include mq(md) { grid-template-columns: repeat(2, 1fr); }
+    @include mq(lg) { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .signals__card {
+    background: c(white);
+    border: map-get($border-widths, sm) solid c(border);
+    border-radius: r(md);
+    padding: s(3);
+    display: flex;
+    flex-direction: column;
+    gap: s(3);
+
+    p { margin: 0; max-width: 45ch; }
+    h3 { color: c(blue); margin: 0; }
+
+    .signals__kicker {
+      align-self: flex-start;
+      padding: s(1) s(2);
+      background: $signals-accent;
+      color: c(white);
+      border-radius: r(sm);
+      font-size: fs(xs);
+    }
+
+    .signals__label { font-weight: 600; margin-right: s(1); }
+
+    .signals__cta {
+      @extend .btn;
+      @extend .btn--primary;
+      align-self: flex-start;
+      min-height: s(7);
+      @include focus-ring($signals-accent);
+    }
+  }
+}
+

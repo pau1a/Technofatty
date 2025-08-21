@@ -1,0 +1,13 @@
+{% extends "coresite/base.html" %}
+{% block title %}Signal: {{ slug|title }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap">
+    <h1>{{ slug|title }}</h1>
+    <p>Full signal coming soon.</p>
+  </div>
+</section>
+{% endblock %}
+{% block footer %}
+  {% include "coresite/partials/footer.html" %}
+{% endblock %}

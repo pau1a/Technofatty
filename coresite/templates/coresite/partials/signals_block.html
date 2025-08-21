@@ -1,0 +1,25 @@
+<section class="section section--signals" role="region" aria-labelledby="signals-heading" data-section="signals">
+  <div class="wrap">
+    {% with level=signals.heading_level|default:'h2' %}
+      <{{ level }} id="signals-heading" class="section-title">{{ signals.headline }}</{{ level }}>
+    {% endwith %}
+    {% if signals.intro %}
+      <p class="signals__intro">{{ signals.intro }}</p>
+    {% endif %}
+    <div class="signals__grid">
+      {% for card in signals.cards %}
+        <article id="signal-{{ card.slug }}" class="signals__card" data-card="{{ card.slug }}">
+          {% if card.kicker %}<p class="signals__kicker">{{ card.kicker }}</p>{% endif %}
+          {% if card.title %}<h3 class="signals__title">{{ card.title }}</h3>{% endif %}
+          {% if card.problem %}<p class="signals__text"><span class="signals__label">Problem:</span> {{ card.problem }}</p>{% endif %}
+          {% if card.approach %}<p class="signals__text"><span class="signals__label">Approach:</span> {{ card.approach }}</p>{% endif %}
+          {% if card.evidence %}<p class="signals__text"><span class="signals__label">Evidence:</span> {{ card.evidence }}</p>{% endif %}
+          {% if card.cta_text %}
+            <a class="btn btn--primary signals__cta" href="/signals/{{ card.slug }}/">{{ card.cta_text }}</a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+    <div class="signals__status" aria-live="polite"></div>
+  </div>
+</section>
