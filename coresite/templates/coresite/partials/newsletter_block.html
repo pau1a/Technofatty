@@ -1,5 +1,4 @@
 <!-- TODO: Stakeholder decision: headline_scope (music) -->
-<!-- TODO: Stakeholder decision: opt_in_path (single vs double) -->
 <section id="signup"
          class="section section--newsletter newsletter-block surface radius-md space-3"
          role="region"
@@ -9,24 +8,29 @@
   <div class="wrap">
     <h2 id="newsletter-heading" class="section-title">Subscribe for short, useful tech & music tips</h2>
     <p>Actionable ideas and recommendations you can use — one clear note in your inbox every Friday.</p>
-    <form id="newsletter_form" method="post">
+    {% with msg=messages|first %}
+    <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="{% if msg %}is-{{ msg.tags }}{% endif %}">
       {% csrf_token %}
       <label for="newsletter-email">Email address</label>
-      <input type="email" id="newsletter-email" name="email" placeholder="name@example.com" aria-label="Email address for newsletter subscription" required>
+      <input type="email" id="newsletter-email" name="email" placeholder="name@example.com" aria-label="Email address for newsletter subscription" required autocomplete="email" inputmode="email" spellcheck="false" aria-describedby="newsletter-privacy">
+      <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
       <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{APPROVED_CTA}}</button>
+      {% if msg %}
+        <div role="status" aria-live="polite" class="form-message is-{{ msg.tags }}">{{ msg }}</div>
+      {% else %}
+        <div role="status" aria-live="polite" class="form-message"></div>
+      {% endif %}
     </form>
-    <div aria-live="polite" class="sr-only"></div>
-    <p>We respect your inbox. Unsubscribe any time. We never sell your email.</p>
+    {% endwith %}
+    <p id="newsletter-privacy">We respect your inbox. Unsubscribe any time. We never sell your email.</p>
     {#
       Messages:
-        success: Thanks — please check your inbox and confirm your subscription to start receiving the newsletter.
         success_no_confirm: Thanks — you’re subscribed and will get the next newsletter.
         error: Something went wrong. Please try again.
         server_busy: We’re having trouble right now. Try again in a few minutes.
       Errors:
         required_email: Please enter your email address to subscribe.
         invalid_email: Enter a valid email address (example: name@example.com).
-        network: Couldn’t connect — check your internet and try again.
     #}
   </div>
 </section>

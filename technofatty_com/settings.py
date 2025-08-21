@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # Local app(s)
     "coresite",
+    "newsletter",
 
     # Third-party
     "sass_processor",
@@ -151,3 +152,11 @@ CSRF_TRUSTED_ORIGINS = [
 # Auto field
 # -------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# -------------------------------------------------
+# Newsletter settings
+# -------------------------------------------------
+NEWSLETTER_PROVIDER = os.environ.get("NEWSLETTER_PROVIDER", "stub")
+OPT_IN_MODE = os.environ.get("OPT_IN_MODE", "single")
+NEWSLETTER_TIMEOUT_SECONDS = int(os.environ.get("NEWSLETTER_TIMEOUT_SECONDS", "3"))
+NEWSLETTER_RATE_LIMITS = {"ip_per_hour": 10, "email_per_hour": 5}
