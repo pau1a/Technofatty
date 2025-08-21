@@ -23,9 +23,9 @@
         </div>
         <ul class="desktop-nav__links">
           <li><a href="/">Home</a></li>
-          <li><a href="/about/">About</a></li>
-          <li><a href="/services/">Services</a></li>
-          <li><a href="/contact/">Contact</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'services' %}">Services</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
         <div class="desktop-nav__cta">
           <a class="btn btn--cta" href="/community/join/">Join Us</a>
@@ -52,9 +52,9 @@
       <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
       <ul class="menu-overlay__links">
         <li><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/services/">Services</a></li>
-        <li><a href="/contact/">Contact</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'services' %}">Services</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
         <li><a class="btn btn--cta" href="/community/join/">Join Us</a></li>
       </ul>
     </div>
