@@ -21,7 +21,7 @@
                    required autocomplete="email" inputmode="email" spellcheck="false"
                    aria-describedby="newsletter-privacy">
             <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-            <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{ APPROVED_CTA }}</button>
+            <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
             <div role="status" aria-live="polite" class="form-message is-{{ m.tags }}">{{ m }}</div>
           </form>
         {% endif %}
@@ -36,7 +36,7 @@
                required autocomplete="email" inputmode="email" spellcheck="false"
                aria-describedby="newsletter-privacy">
         <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-        <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{ APPROVED_CTA }}</button>
+        <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
         <div role="status" aria-live="polite" class="form-message"></div>
       </form>
     {% endif %}
