@@ -8,20 +8,39 @@
   <div class="wrap">
     <h2 id="newsletter-heading" class="section-title">Subscribe for short, useful tech & music tips</h2>
     <p>Actionable ideas and recommendations you can use — one clear note in your inbox every Friday.</p>
-    {% with msg=messages|first %}
-    <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="{% if msg %}is-{{ msg.tags }}{% endif %}">
-      {% csrf_token %}
-      <label for="newsletter-email">Email address</label>
-      <input type="email" id="newsletter-email" name="email" placeholder="name@example.com" aria-label="Email address for newsletter subscription" required autocomplete="email" inputmode="email" spellcheck="false" aria-describedby="newsletter-privacy">
-      <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-      <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{APPROVED_CTA}}</button>
-      {% if msg %}
-        <div role="status" aria-live="polite" class="form-message is-{{ msg.tags }}">{{ msg }}</div>
-      {% else %}
+
+    {% if messages %}
+      {% for m in messages %}
+        {% if forloop.first %}
+          <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="is-{{ m.tags }}">
+            {% csrf_token %}
+            <label for="newsletter-email">Email address</label>
+            <input type="email" id="newsletter-email" name="email"
+                   placeholder="name@example.com"
+                   aria-label="Email address for newsletter subscription"
+                   required autocomplete="email" inputmode="email" spellcheck="false"
+                   aria-describedby="newsletter-privacy">
+            <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
+            <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{ APPROVED_CTA }}</button>
+            <div role="status" aria-live="polite" class="form-message is-{{ m.tags }}">{{ m }}</div>
+          </form>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}">
+        {% csrf_token %}
+        <label for="newsletter-email">Email address</label>
+        <input type="email" id="newsletter-email" name="email"
+               placeholder="name@example.com"
+               aria-label="Email address for newsletter subscription"
+               required autocomplete="email" inputmode="email" spellcheck="false"
+               aria-describedby="newsletter-privacy">
+        <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
+        <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn-cta radius-md">{{ APPROVED_CTA }}</button>
         <div role="status" aria-live="polite" class="form-message"></div>
-      {% endif %}
-    </form>
-    {% endwith %}
+      </form>
+    {% endif %}
+
     <p id="newsletter-privacy">We respect your inbox. Unsubscribe any time. We never sell your email.</p>
     {#
       Messages:
