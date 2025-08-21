@@ -14,11 +14,14 @@ $colors: (
   ph:      #D5EDF2,  // placeholder blocks for images
   text:    #333333,
   border:  #DDDDDD,  // neutral border color
-  black:   #000000
+  black:   #000000,
+  bg-alt:  #F9FAFB,  // pale background bands
+  bg-accent-light: #F5FBFF  // light accent backgrounds
 );
 
 /* Layout width */
 $container-max: 68rem; // ≈1088px target content width
+$container-max-width-wide: 90rem; // ≈1440px wide container
 
 /* Spacing scale (t-shirt friendly) */
 $space: (
@@ -118,6 +121,7 @@ $dur: 200ms;
   }
 
   --container-max: #{$container-max};
+  --container-max-width-wide: #{$container-max-width-wide};
 
   // Radii
   @each $name, $value in $radii {

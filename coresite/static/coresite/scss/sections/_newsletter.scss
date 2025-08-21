@@ -24,8 +24,8 @@
   @include focus-ring(c(gold));
 }
 
-#signup.section--newsletter {
-  background: c(white);
+.newsletter-band {
+  background: c(bg-accent-light);
   padding-block: s(6);
   @include mq(md) { padding-block: s(7); }
   @include mq(lg) { padding-block: s(8); }
@@ -84,7 +84,7 @@
 }
 
 // Optional decorative motif
-// .section--newsletter.has-motif {
+// .newsletter-band.has-motif {
 //   position: relative;
 //   &::before {
 //     content: '';
@@ -99,7 +99,7 @@
 /* Checklist:
 - no hex or pixel literals; only design tokens and mixins.
 - input and button use focus-ring mixin and min-height s(7) for ≥44px tap targets.
-- white section background with c(white); heading uses c(blue); CTA uses existing .btn-cta.
+ - light accent background with c(bg-accent-light); heading uses c(blue); CTA uses existing .btn-cta.
 - inner spacing uses s(6) padding and s(3) gaps.
 - layout remains single column at all widths; tested ~360–400px.
 - this partial is imported in main.scss under Sections.

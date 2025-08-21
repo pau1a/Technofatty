@@ -1,4 +1,8 @@
 .container { @include container; }
+.container-wide {
+  @include container;
+  max-width: $container-max-width-wide;
+}
 .skip-link { @include sr-only; }
 .skip-link:focus {
   position: fixed; left: 8px; top: 8px;
