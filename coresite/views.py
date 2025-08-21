@@ -3,6 +3,7 @@ from newsletter.utils import log_newsletter_event
 from .models import SiteImage
 from datetime import datetime
 from .signals import get_signals_content
+from .support import get_support_content
 
 
 def homepage(request):
@@ -25,12 +26,14 @@ def homepage(request):
     ]
     images = {img.key.replace("-", "_"): img for img in SiteImage.objects.all()}
     signals = get_signals_content()
+    support = get_support_content()
     context = {
         "site_images": images,
         "is_homepage": True,
         "now": datetime.now(),
         "resources": resources,
         "signals": signals,
+        "support": support,
     }
     log_newsletter_event(request, "newsletter_block_view")
     return render(request, "coresite/homepage.html", context)
