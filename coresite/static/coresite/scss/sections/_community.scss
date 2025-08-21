@@ -1,12 +1,56 @@
-/* Community hook (CTA + image) */
-.community{ padding:s(8) s(6); }
-.community__inner{ @extend .split; align-items:center; }
+// coresite/static/coresite/scss/sections/_community.scss
+// Tokens used: c(white), c(blue), c(border), r(md), s(1), s(3), s(6..8), mq(md|lg)
 
-.community__copy h2{ color:c(blue); margin:0 0 .5rem; }
-.community__copy p{ margin:0 0 s(4); }
+.section--community {
+  background: c(white);
+  padding-block: s(6);
+  @include mq(md) { padding-block: s(7); }
+  @include mq(lg) { padding-block: s(8); }
 
-.community__img{
-  /* When adding real image, ensure descriptive alt text or empty alt if decorative */
-  width:100%; @include ratio(16,9); border-radius:r(sm);
-  /* swap to <img> later; keep space with placeholder until assets arrive */
+  .wrap {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    gap: s(3);
+  }
+
+  .section-title { color: c(blue); }
+  .community__intro { margin: 0; max-width: 60ch; }
+
+  .community__actions {
+    display: flex;
+    gap: s(3);
+  }
+
+  .community__cta {
+    @extend .btn;
+    @extend .btn--cta;
+    border-radius: r(md);
+    min-height: s(7);
+    @include focus-ring(c(blue));
+  }
+
+  .community__grid {
+    display: grid;
+    gap: s(3);
+    grid-template-columns: 1fr;
+    @include mq(md) { grid-template-columns: repeat(2, 1fr); }
+    @include mq(lg) { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .community__card {
+    background: c(white);
+    border: map-get($border-widths, sm) solid c(border);
+    border-radius: r(md);
+    padding: s(3);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: s(1);
+    @include focus-ring(c(blue));
+  }
+
+  .community__label { font-weight: 600; margin: 0; }
+  .community__description, .community__empty { margin: 0; max-width: 60ch; }
 }

@@ -1,0 +1,32 @@
+<section class="section section--community" role="region" aria-labelledby="community-heading" data-section="community">
+  <div class="wrap">
+    {% with level=community.heading_level|default:'h2' %}
+      <{{ level }} id="community-heading" class="section-title">{{ community.headline }}</{{ level }}>
+    {% endwith %}
+
+    {% if community.intro %}
+      <p class="community__intro">{{ community.intro }}</p>
+    {% endif %}
+
+    <div class="community__actions">
+      {% if community.primary_cta %}
+        <a class="btn btn--cta community__cta" href="{{ community.primary_cta.url }}">{{ community.primary_cta.label }}</a>
+      {% endif %}
+    </div>
+
+    {% if community.secondary_links %}
+      <div class="community__grid">
+        {% for link in community.secondary_links %}
+          <a id="community-{{ link.slug }}" class="community__card" href="{{ link.url }}" aria-describedby="community-desc-{{ link.slug }}">
+            <span class="community__label">{{ link.label }}</span>
+            <p id="community-desc-{{ link.slug }}" class="community__description">{{ link.description }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="community__empty">{{ community.messages.empty }}</p>
+    {% endif %}
+
+    <div class="community__status" aria-live="polite"></div>
+  </div>
+</section>

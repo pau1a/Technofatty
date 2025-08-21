@@ -4,6 +4,7 @@ from .models import SiteImage
 from datetime import datetime
 from .signals import get_signals_content
 from .support import get_support_content
+from .community import get_community_content
 
 
 def homepage(request):
@@ -27,6 +28,7 @@ def homepage(request):
     images = {img.key.replace("-", "_"): img for img in SiteImage.objects.all()}
     signals = get_signals_content()
     support = get_support_content()
+    community = get_community_content()
     context = {
         "site_images": images,
         "is_homepage": True,
@@ -34,6 +36,7 @@ def homepage(request):
         "resources": resources,
         "signals": signals,
         "support": support,
+        "community": community,
     }
     log_newsletter_event(request, "newsletter_block_view")
     return render(request, "coresite/homepage.html", context)
@@ -41,3 +44,11 @@ def homepage(request):
 
 def signal_detail(request, slug: str):
     return render(request, "coresite/signal_placeholder.html", {"slug": slug})
+
+
+def community_join(request):
+    """
+    Lightweight landing stub for the Community primary CTA.
+    Keeps everything server-rendered and accessible. No JS dependence.
+    """
+    return render(request, "coresite/community_join.html", {})
