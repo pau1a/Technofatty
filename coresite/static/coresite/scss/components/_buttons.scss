@@ -11,4 +11,12 @@
 .btn--primary { @extend .btn; @extend .btn-primary; }
 
 /* Our CTA = Bootstrap success themed with Technofatty green */
-.btn--cta     { @extend .btn; @extend .btn-success; }
+.btn--cta {
+  @extend .btn;
+  @extend .btn-success;
+
+  &:hover {
+    background-color: $btn-success-hover-bg;
+    color: $btn-success-hover-color;
+  }
+}
