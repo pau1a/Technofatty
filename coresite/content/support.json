@@ -1,0 +1,39 @@
+{
+  "heading_level": "h2",
+  "headline": "Support Hub",
+  "intro": "Quick links to help, updates, and how to reach us.",
+  "links": [
+    {
+      "slug": "faq",
+      "label": "FAQ",
+      "description": "Short answers to common questions while we’re in early access.",
+      "url": "/support/faq/"
+    },
+    {
+      "slug": "status",
+      "label": "System status",
+      "description": "Current uptime and any incidents. (Stub during stealth.)",
+      "url": "/support/status/"
+    },
+    {
+      "slug": "contact",
+      "label": "Contact support",
+      "description": "Email us with issues or feedback — we reply fast.",
+      "url": "/contact/"
+    },
+    {
+      "slug": "updates",
+      "label": "Updates",
+      "description": "What’s new, fixed, and improved.",
+      "url": "/support/updates/"
+    }
+  ],
+  "tokens": {
+    "accent": "blue",
+    "spacing": "s(3)",
+    "radius": "r(md)"
+  },
+  "messages": {
+    "empty": "Support resources are coming soon."
+  }
+}

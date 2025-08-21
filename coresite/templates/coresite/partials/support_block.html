@@ -1,0 +1,23 @@
+<section class="section section--support" role="region" aria-labelledby="support-heading" data-section="support">
+  <div class="wrap">
+    {% with level=support.heading_level|default:'h2' %}
+      <{{ level }} id="support-heading" class="section-title">{{ support.headline }}</{{ level }}>
+    {% endwith %}
+    {% if support.intro %}
+      <p class="support__intro">{{ support.intro }}</p>
+    {% endif %}
+    {% if support.links %}
+      <div class="support__grid">
+        {% for link in support.links %}
+          <a id="support-{{ link.slug }}" class="support__card" href="{{ link.url }}" aria-describedby="support-desc-{{ link.slug }}">
+            <span class="support__label">{{ link.label }}</span>
+            <p id="support-desc-{{ link.slug }}" class="support__description">{{ link.description }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="support__empty">{{ support.messages.empty }}</p>
+    {% endif %}
+    <div class="support__status" aria-live="polite"></div>
+  </div>
+</section>
