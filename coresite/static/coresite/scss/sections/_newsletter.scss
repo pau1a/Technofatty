@@ -26,9 +26,9 @@
 
 .newsletter-band {
   background: c(bg-accent-light);
-  padding-block: s(6);
-  @include mq(md) { padding-block: s(7); }
-  @include mq(lg) { padding-block: s(8); }
+  padding-block: map-get($section-pad-y, base);
+  @include mq(md){ padding-block: map-get($section-pad-y, md); }
+  @include mq(lg){ padding-block: map-get($section-pad-y, lg); }
 
   .wrap {
     @include container;
@@ -64,8 +64,7 @@
 
       .btn {
         @extend %form-control-shared;
-        // CTA inherits .btn-cta (tech-blue)
-        // TODO: swap to warm-gold if design updates
+        // CTA inherits .btn--cta (gold base, blue hover)
       }
 
       .form-message { min-height: 1em; }

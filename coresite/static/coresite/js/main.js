@@ -1,13 +1,8 @@
-console.log("MAIN.JS LOADED FROM SERVER - START");
-
 document.addEventListener('DOMContentLoaded', function () {
-  console.log("DOMContentLoaded fired");
   const menuOverlay = document.querySelector('.menu-overlay');
   const hamburgerBtn = document.querySelector('.hamburger-btn');
   const closeBtn = document.querySelector('.menu-overlay__close');
   const backdrop = document.querySelector('.menu-backdrop');
-
-  console.log("Script loaded", { menuOverlay, hamburgerBtn, closeBtn, backdrop });
 
   function openMenu() {
     menuOverlay.classList.add('is-open');
@@ -24,80 +19,82 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (hamburgerBtn && menuOverlay) {
-    hamburgerBtn.addEventListener('click', function () {
-      console.log("Hamburger clicked");
-      openMenu();
-    });
+    hamburgerBtn.addEventListener('click', openMenu);
   }
 
   if (closeBtn && menuOverlay) {
-    closeBtn.addEventListener('click', function () {
-      console.log("Close clicked");
-      closeMenu();
-    });
+    closeBtn.addEventListener('click', closeMenu);
   }
 
   if (backdrop) {
-    backdrop.addEventListener('click', function () {
-      console.log("Backdrop clicked");
-      closeMenu();
-    });
+    backdrop.addEventListener('click', closeMenu);
   }
 
   const newsletterForm = document.getElementById('newsletter_form');
   if (newsletterForm) {
+    const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+
+    const setState = (state) => {
+      newsletterForm.classList.remove('is-success', 'is-error', 'is-busy');
+      if (state) { newsletterForm.classList.add(`is-${state}`); }
+
+      const busy = state === 'busy';
+      newsletterForm.setAttribute('aria-busy', busy ? 'true' : 'false');
+      if (busy) { newsletterForm.setAttribute('aria-disabled', 'true'); }
+      else { newsletterForm.removeAttribute('aria-disabled'); }
+
+      if (submitBtn) { submitBtn.disabled = busy; }
+    };
+
     newsletterForm.addEventListener('submit', function () {
-      newsletterForm.classList.add('is-busy');
-      newsletterForm.setAttribute('aria-busy', 'true');
-    }, { once: true });
+      setState('busy');
+    });
+
+    newsletterForm.addEventListener('newsletter:success', () => setState('success'));
+    newsletterForm.addEventListener('newsletter:error', () => setState('error'));
+    window.addEventListener('pageshow', () => setState());
   }
 
   // Sticky Header with Opacity Transition
   const header = document.querySelector('.site-header');
   const scrollThresholdForFullOpacity = 200; // Scroll distance in pixels for full opacity
-  let hasReachedFullOpacity = false; // Flag to keep opacity at 1 permanently
-
-  console.log("Header element:", header);
   if (header) {
-    window.addEventListener('scroll', function() {
-      const scrollY = window.scrollY;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let lastScrollY = 0;
+    let hasReachedFullOpacity = prefersReducedMotion;
+    let ticking = false;
 
-      if (hasReachedFullOpacity) {
-        // If already fully opaque, maintain opacity 1 and manage 'is-sticky' class
+    const updateHeader = () => {
+      const scrollY = lastScrollY;
+
+      if (prefersReducedMotion) {
         header.style.setProperty('--header-bg-opacity', '1');
-        if (scrollY > 0 && !header.classList.contains('is-sticky')) {
-          header.classList.add('is-sticky');
-        } else if (scrollY === 0 && header.classList.contains('is-sticky')) {
-          header.classList.remove('is-sticky');
+      } else if (!hasReachedFullOpacity) {
+        let opacity = 0.5;
+        if (scrollY > 0) {
+          const progress = Math.min(1, scrollY / scrollThresholdForFullOpacity);
+          opacity = 0.5 + (0.5 * progress);
         }
-        return; // Exit early as no further opacity calculation is needed
+        header.style.setProperty('--header-bg-opacity', opacity.toFixed(2));
+        if (opacity >= 1) { hasReachedFullOpacity = true; }
       }
 
-      let opacity = 0.5; // Starting opacity for hero-mode
+      if (scrollY > 0) { header.classList.add('is-sticky'); }
+      else { header.classList.remove('is-sticky'); }
 
-      if (scrollY > 0) {
-        // Calculate scroll progress (0 to 1) over the defined threshold
-        const scrollProgress = Math.min(1, scrollY / scrollThresholdForFullOpacity);
-        // Interpolate opacity from 0.5 to 1
-        opacity = 0.5 + (0.5 * scrollProgress); // 0.5 is the difference between 1 and 0.5
-      }
+      ticking = false;
+    };
 
-      // Apply the calculated opacity as a CSS custom property
-      header.style.setProperty('--header-bg-opacity', opacity.toFixed(2));
-
-      // Check if full opacity has been reached
-      if (opacity >= 1) {
-        hasReachedFullOpacity = true;
-        header.style.setProperty('--header-bg-opacity', '1'); // Ensure it's exactly 1
-      }
-
-      // Existing 'is-sticky' class logic for other visual changes (e.g., box-shadow, position: fixed)
-      if (scrollY > 0 && !header.classList.contains('is-sticky')) {
-        header.classList.add('is-sticky');
-      } else if (scrollY === 0 && header.classList.contains('is-sticky')) {
-        header.classList.remove('is-sticky');
+    window.addEventListener('scroll', () => {
+      lastScrollY = window.scrollY;
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
       }
     });
+
+    lastScrollY = window.scrollY;
+    updateHeader();
   }
 
   /**

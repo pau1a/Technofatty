@@ -7,10 +7,15 @@
     <div class="cards">
       {% for resource in resources %}
         <article class="card">
-          <div class="card__img" role="img" aria-label="{{ resource.image_alt|default:'Resource image' }}"></div>
+          <div class="card__img" aria-hidden="true"></div>
           <h3 class="card__title">{{ resource.title }}</h3>
           <p class="card__blurb">{{ resource.blurb }}</p>
-          <a class="card__link" href="{{ resource.url }}">Read more</a>
+          <a class="card__link"
+             href="{{ resource.url }}"
+             data-analytics-event="featured_card_click"
+             data-analytics-section="featured"
+             data-analytics-label="{{ resource.title }}"
+             data-analytics-url="{{ resource.url }}">Read more</a>
         </article>
       {% endfor %}
     </div>

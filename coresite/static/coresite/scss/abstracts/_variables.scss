@@ -36,6 +36,13 @@ $space: (
   8: 4rem      // 64px
 );
 
+/* Section vertical rhythm */
+$section-pad-y: (
+  base: s(6),
+  md: s(7),
+  lg: s(8)
+);
+
 /* Typographic Scale */
 $font-sizes: (
   xs: 0.75rem,    // 12px
