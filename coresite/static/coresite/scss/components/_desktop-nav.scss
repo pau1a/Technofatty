@@ -1,8 +1,10 @@
+
 .desktop-nav {
   display: none;
   align-items: center;
   justify-content: space-between;
-  padding: map-get($space, 1) map-get($space, 6);
+  @include container;
+  padding-block: map-get($space, 1);
 
   @include mq(sm) {
     display: flex;
