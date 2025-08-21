@@ -1,0 +1,31 @@
+{
+  "heading_level": "h2",
+  "headline": "Join the Community",
+  "intro": "Get updates, tools, and early access while we’re building.",
+  "primary_cta": {
+    "label": "Join Us",
+    "url": "/community/join/"
+  },
+  "secondary_links": [
+    {
+      "slug": "newsletter",
+      "label": "Newsletter",
+      "description": "Short, useful AI tips every Friday.",
+      "url": "#signup"
+    },
+    {
+      "slug": "updates",
+      "label": "Product updates",
+      "description": "What’s new, fixed, and improved.",
+      "url": "/support/updates/"
+    }
+  ],
+  "tokens": {
+    "accent": "blue",
+    "radius": "r(md)",
+    "spacing": "s(3)"
+  },
+  "messages": {
+    "empty": "Community links will appear here."
+  }
+}
