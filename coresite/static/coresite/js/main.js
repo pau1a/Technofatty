@@ -44,6 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  const newsletterForm = document.getElementById('newsletter_form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function () {
+      newsletterForm.classList.add('is-busy');
+      newsletterForm.setAttribute('aria-busy', 'true');
+    }, { once: true });
+  }
+
   // Sticky Header with Opacity Transition
   const header = document.querySelector('.site-header');
   const scrollThresholdForFullOpacity = 200; // Scroll distance in pixels for full opacity

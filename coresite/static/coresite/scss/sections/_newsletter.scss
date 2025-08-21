@@ -47,17 +47,28 @@
     gap: s(3);
     width: 100%;
 
-    label { margin-bottom: 0; }
+    fieldset {
+      border: 0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: s(3);
 
-    input[type="email"] {
-      @extend %form-control-shared;
-      padding-inline: s(3);
-    }
+      label { margin-bottom: 0; }
 
-    .btn {
-      @extend %form-control-shared;
-      // CTA inherits .btn-cta (tech-blue)
-      // TODO: swap to warm-gold if design updates
+      input[type="email"] {
+        @extend %form-control-shared;
+        padding-inline: s(3);
+      }
+
+      .btn {
+        @extend %form-control-shared;
+        // CTA inherits .btn-cta (tech-blue)
+        // TODO: swap to warm-gold if design updates
+      }
+
+      .form-message { min-height: 1em; }
     }
 
     &.is-error {
@@ -103,5 +114,5 @@
 - inner spacing uses s(6) padding and s(3) gaps.
 - layout remains single column at all widths; tested ~360–400px.
 - this partial is imported in main.scss under Sections.
-- no HTML or JS changes.
+ - HTML/JS updated for fieldset semantics and busy state.
 */
