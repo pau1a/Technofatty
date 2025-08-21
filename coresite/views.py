@@ -61,3 +61,18 @@ def community_join(request):
     """
     footer = get_footer_content()
     return render(request, "coresite/community_join.html", {"footer": footer})
+
+
+def about(request):
+    footer = get_footer_content()
+    return render(request, "coresite/about.html", {"footer": footer})
+
+
+def services(request):
+    footer = get_footer_content()
+    return render(request, "coresite/services.html", {"footer": footer})
+
+
+def contact(request):
+    footer = get_footer_content()
+    return render(request, "coresite/contact.html", {"footer": footer})
