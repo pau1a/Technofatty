@@ -12,59 +12,35 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-  <header class="site-header {% if request.path == '/' %}hero-mode{% else %}fixed-mode{% endif %}">
-    {% block header %}
-      <!-- Desktop Navigation -->
-      <nav class="desktop-nav">
-        <div class="desktop-nav__logo">
-          <a href="/">Technofatty</a>
-        </div>
-        <ul class="desktop-nav__links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/about/">About</a></li>
-          <li><a href="/services/">Services</a></li>
-          <li><a href="/contact/">Contact</a></li>
-        </ul>
-        <div class="desktop-nav__cta">
-          <a class="btn btn--cta" href="/community/join/">Join Us</a>
-        </div>
-      </nav>
-
-      <!-- Global Hamburger -->
-      <div class="global-hamburger">
-        <button class="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-overlay">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-      </div>
-    {% endblock %}
-  </header>
-
-  <!-- Backdrop -->
-  <div class="menu-backdrop"></div>
-
-  <!-- Slide-in Menu Overlay -->
-  <nav id="menu-overlay" class="menu-overlay" aria-hidden="true">
-    <div class="menu-overlay__content">
-      <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
-      <ul class="menu-overlay__links">
+  <header role="banner">
+    {% block nav %}
+    <nav role="navigation" aria-label="Primary">
+      <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/services/">Services</a></li>
         <li><a href="/contact/">Contact</a></li>
-        <li><a class="btn btn--cta" href="/community/join/">Join Us</a></li>
       </ul>
-    </div>
-  </nav>
+    </nav>
+    {% endblock %}
+  </header>
 
-  <main id="main">
+  <main id="main" role="main">
     {% block content %}{% endblock %}
   </main>
 
-  {% block footer %}{% endblock %}
+  <footer role="contentinfo">
+    {% block footer_nav %}
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/terms/">Terms</a></li>
+      </ul>
+    </nav>
+    {% endblock %}
+  </footer>
 
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
   {% block body_scripts %}{% endblock %}
