@@ -1,17 +1,19 @@
 {% load static %}
 
 <section id="featured" class="featured" aria-labelledby="featured-heading">
-  <h2 id="featured-heading" class="section-title">Featured Resources</h2>
+  <div class="wrap">
+    <h2 id="featured-heading" class="section-title">Featured Resources</h2>
 
-<div class="cards">
-  {% for resource in resources %}
-    <article class="card">
-      <div class="card__img" role="img" aria-label="{{ resource.image_alt|default:'Resource image' }}"></div>
-      <h3 class="card__title">{{ resource.title }}</h3>
-      <p class="card__blurb">{{ resource.blurb }}</p>
-      <a class="card__link" href="{{ resource.url }}">Read more</a>
-    </article>
-  {% endfor %}
-</div>
+    <div class="cards">
+      {% for resource in resources %}
+        <article class="card">
+          <div class="card__img" role="img" aria-label="{{ resource.image_alt|default:'Resource image' }}"></div>
+          <h3 class="card__title">{{ resource.title }}</h3>
+          <p class="card__blurb">{{ resource.blurb }}</p>
+          <a class="card__link" href="{{ resource.url }}">Read more</a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
 
 </section>
