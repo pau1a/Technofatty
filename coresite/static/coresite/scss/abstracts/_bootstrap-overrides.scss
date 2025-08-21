@@ -9,6 +9,8 @@ $body-bg:    map-get($colors, white);
 $body-color: map-get($colors, text);
 
 $border-radius:     map-get($radii, md);
+$btn-padding-y:     map-get($space, 1);
+$btn-padding-x:     map-get($space, 3);
 $btn-border-radius: map-get($radii, sm);
 
 $spacer: map-get($space, 4);

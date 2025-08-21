@@ -16,6 +16,14 @@
 // TODO: opacity-low → ?
 // -----------------------------------------------------------------------------
 
+// Placeholder for shared form control styles to keep things DRY.
+%form-control-shared {
+  width: 100%;
+  min-height: s(7); // ≥44px for tap targets
+  border-radius: r(md);
+  @include focus-ring(c(gold));
+}
+
 #signup.section--newsletter {
   background: c(white);
   padding-block: s(6);
@@ -42,18 +50,12 @@
     label { margin-bottom: 0; }
 
     input[type="email"] {
-      width: 100%;
-      min-height: s(7); // ≥44px
+      @extend %form-control-shared;
       padding-inline: s(3);
-      border-radius: r(md);
-      @include focus-ring(c(gold));
     }
 
     .btn {
-      width: 100%;
-      min-height: s(7);
-      border-radius: r(md);
-      @include focus-ring(c(gold));
+      @extend %form-control-shared;
       // CTA inherits .btn-cta (tech-blue)
       // TODO: swap to warm-gold if design updates
     }
@@ -75,7 +77,7 @@
     }
 
     &.is-busy {
-      opacity: .5; // TODO: replace with token
+      opacity: map-get($opacities, mid);
       pointer-events: none;
     }
   }
@@ -88,8 +90,8 @@
 //     content: '';
 //     position: absolute;
 //     inset: 0;
-//     background: url('../img/motifs/motif-neuralnet-1.svg') no-repeat center/cover;
-//     opacity: TODO-opac-low; // TODO: replace with token
+//     background: url('../img/motifs/motif-neuralnet-1.svg') no-repeat center / cover;
+//     opacity: map-get($opacities, low);
 //     // TODO: prove contrast AA if motif enabled
 //   }
 // }

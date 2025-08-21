@@ -67,6 +67,13 @@ $blurs: (
   lg: 8px
 );
 
+/* Opacities */
+$opacities: (
+  low: 0.1,
+  mid: 0.5,
+  high: 0.8
+);
+
 /* Breakpoints */
 $bp: (
   xs: 480px,
@@ -105,28 +112,22 @@ $dur: 200ms;
    (keeps brand tokens available in plain CSS/JS)
    ------------------------------------------------ */
 :root{
-  --color-white:   #{map-get($colors, white)};
-  --color-mid:     #{map-get($colors, mid)};
-  --color-blue:    #{map-get($colors, blue)};
-  --color-gold:    #{map-get($colors, gold)};
-  --color-green:   #{map-get($colors, green)};
-  --color-magenta: #{map-get($colors, magenta)};
-  --color-ph:      #{map-get($colors, ph)};
-  --color-text:    #{map-get($colors, text)};
+  // Colors
+  @each $name, $value in $colors {
+    --color-#{$name}: #{$value};
+  }
 
   --container-max: #{$container-max};
 
-  --radius-xs: #{map-get($radii, xs)};
-  --radius-sm: #{map-get($radii, sm)};
-  --radius-md: #{map-get($radii, md)};
-  --radius-lg: #{map-get($radii, lg)};
+  // Radii
+  @each $name, $value in $radii {
+    --radius-#{$name}: #{$value};
+  }
 
-  --space-1: #{map-get($space, 1)};
-  --space-2: #{map-get($space, 2)};
-  --space-3: #{map-get($space, 3)};
-  --space-4: #{map-get($space, 4)};
-  --space-5: #{map-get($space, 5)};
-  --space-6: #{map-get($space, 6)};
+  // Spacing
+  @each $name, $value in $space {
+    --space-#{$name}: #{$value};
+  }
 
   --easing-standard: #{$easing-standard};
   --dur-fast: #{$dur-fast};

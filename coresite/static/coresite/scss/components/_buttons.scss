@@ -1,11 +1,10 @@
 /* --- Technofatty ↔ Bootstrap button shims --- */
 
 /*
-  The .btn class provides a consistent base for all buttons.
   We use Bootstrap's variables in _bootstrap-overrides.scss to control
-  colors, padding, and hover/focus states, keeping this file clean.
+  colors, padding, and hover/focus states for the base .btn class,
+  keeping this file clean.
 */
-.btn { @extend .btn; padding: map-get($space, 1) map-get($space, 3); } // 0.25rem 0.75rem
 
 /* Our primary = Bootstrap primary */
 .btn--primary { @extend .btn; @extend .btn-primary; }
@@ -14,9 +13,4 @@
 .btn--cta {
   @extend .btn;
   @extend .btn-success;
-
-  &:hover {
-    background-color: $btn-success-hover-bg;
-    color: $btn-success-hover-color;
-  }
 }
