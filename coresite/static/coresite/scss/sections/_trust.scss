@@ -52,16 +52,14 @@
   margin: 0;
 }
 
-.trust__cta {
+.cta-band {
+  background: c(bg-alt);
+  padding-block: s(7);
   text-align: center;
-  margin-top: s(8);
-  padding-top: s(6);
-  border-top: 1px solid rgba(c(blue), 0.2);
 
   p {
-    max-width: 45ch; // Improve readability
-    margin-inline: auto;
-    margin-bottom: s(4);
+    max-width: 45ch;
+    margin: 0 auto s(4);
   }
 }
 

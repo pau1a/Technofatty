@@ -25,8 +25,7 @@ $signals-accent: c(gold); // swap to c(blue) for all-blue scheme
   @include mq(md) { padding-block: s(7); }
   @include mq(lg) { padding-block: s(8); }
 
-  .wrap {
-    @include container;
+  .container-wide {
     display: flex;
     flex-direction: column;
     gap: s(3);
