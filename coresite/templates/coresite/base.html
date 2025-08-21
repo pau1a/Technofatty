@@ -64,9 +64,7 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="site-footer">
-    {% block footer %}{% endblock %}
-  </footer>
+  {% block footer %}{% endblock %}
 
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
   {% block body_scripts %}{% endblock %}

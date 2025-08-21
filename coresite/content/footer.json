@@ -1,0 +1,27 @@
+{
+  "heading_level": "h2",
+  "headline": "Technofatty",
+  "intro": "Modern tech resources—fast, accessible, and community-driven.",
+  "link_groups": [
+    {
+      "label": "Explore",
+      "links": [
+        {"label": "About", "url": "/about/"},
+        {"label": "Resources", "url": "/resources/"},
+        {"label": "Contact", "url": "/contact/"}
+      ]
+    },
+    {
+      "label": "Company",
+      "links": [
+        {"label": "Privacy", "url": "/legal/privacy/"},
+        {"label": "Terms", "url": "/legal/terms/"}
+      ]
+    }
+  ],
+  "meta": {
+    "copyright": "© {{year}} Technofatty",
+    "made_in": "Built in Scotland.",
+    "email": "hello@technofatty.com"
+  }
+}

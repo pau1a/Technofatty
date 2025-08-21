@@ -5,6 +5,7 @@ from datetime import datetime
 from .signals import get_signals_content
 from .support import get_support_content
 from .community import get_community_content
+from .footer import get_footer_content
 
 
 def homepage(request):
@@ -29,6 +30,7 @@ def homepage(request):
     signals = get_signals_content()
     support = get_support_content()
     community = get_community_content()
+    footer = get_footer_content()
     context = {
         "site_images": images,
         "is_homepage": True,
@@ -37,13 +39,19 @@ def homepage(request):
         "signals": signals,
         "support": support,
         "community": community,
+        "footer": footer,
     }
     log_newsletter_event(request, "newsletter_block_view")
     return render(request, "coresite/homepage.html", context)
 
 
 def signal_detail(request, slug: str):
-    return render(request, "coresite/signal_placeholder.html", {"slug": slug})
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/signal_placeholder.html",
+        {"slug": slug, "footer": footer},
+    )
 
 
 def community_join(request):
@@ -51,4 +59,5 @@ def community_join(request):
     Lightweight landing stub for the Community primary CTA.
     Keeps everything server-rendered and accessible. No JS dependence.
     """
-    return render(request, "coresite/community_join.html", {})
+    footer = get_footer_content()
+    return render(request, "coresite/community_join.html", {"footer": footer})
