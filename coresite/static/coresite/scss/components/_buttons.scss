@@ -9,8 +9,19 @@
 /* Our primary = Bootstrap primary */
 .btn--primary { @extend .btn; @extend .btn-primary; }
 
-/* Our CTA = Bootstrap success themed with Technofatty green */
+/* CTA buttons: gold base with blue hover */
 .btn--cta {
   @extend .btn;
-  @extend .btn-success;
+  background: c(gold);
+  border-color: c(gold);
+  color: c(black);
+
+  &:hover,
+  &:focus {
+    background: c(blue);
+    border-color: c(blue);
+    color: c(white);
+  }
+
+  @include focus-ring(c(blue));
 }

@@ -6,11 +6,16 @@
            class="hero__image hero__placeholder"
            fetchpriority="high"
            loading="eager"
-           decoding="async">
+           decoding="async"
+           width="{{ site_images.hero1.image.width }}"
+           height="{{ site_images.hero1.image.height }}">
       <video autoplay muted loop playsinline preload="auto"
              class="hero__video is-loading"
              aria-hidden="true"
-             inert>
+             inert
+             poster="{{ site_images.hero1.image.url }}"
+             width="{{ site_images.hero1.image.width }}"
+             height="{{ site_images.hero1.image.height }}">
         <source src="{{ site_images.hero1.video.url }}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -20,7 +25,7 @@
         Your browser does not support the video tag.
       </video>
     {% elif site_images.hero1 and site_images.hero1.image %}
-      <img src="{{ site_images.hero1.image.url }}" alt="{{ site_images.hero1.alt_text|default:'' }}" class="hero__image">
+      <img src="{{ site_images.hero1.image.url }}" alt="{{ site_images.hero1.alt_text|default:'' }}" class="hero__image" decoding="async" fetchpriority="high" width="{{ site_images.hero1.image.width }}" height="{{ site_images.hero1.image.height }}">
     {% endif %}
   </div>
 
@@ -70,10 +75,12 @@
      aria-label="e c h n o f a t t y" />
 </svg>
 
-    <h1>Turn AI into Your Competitive Edge</h1>
-    <p class="hero__sub">
-      Technofatty is your hub for AI strategies, tools, and case studies that grow your bottom line.
-    </p>
-    <a class="btn btn--primary" href="#signup">Get AI Growth Tips</a>
+    <div class="wrap container-wide">
+      <h1>Turn AI into Your Competitive Edge</h1>
+      <p class="hero__sub">
+        Technofatty is your hub for AI strategies, tools, and case studies that grow your bottom line.
+      </p>
+      <a class="btn btn--primary" href="#signup">Get AI Growth Tips</a>
+    </div>
   </div>
 </section>

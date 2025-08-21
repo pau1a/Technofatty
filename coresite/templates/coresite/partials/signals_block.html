@@ -10,12 +10,21 @@
       {% for card in signals.cards %}
         <article id="signal-{{ card.slug }}" class="signals__card" data-card="{{ card.slug }}">
           {% if card.kicker %}<p class="signals__kicker">{{ card.kicker }}</p>{% endif %}
-          {% if card.title %}<h3 class="signals__title"><a href="/signals/{{ card.slug }}/">{{ card.title }}</a></h3>{% endif %}
+          {% if card.title %}<h3 class="signals__title"><a href="/signals/{{ card.slug }}/"
+              data-analytics-event="signals_card_click"
+              data-analytics-section="signals"
+              data-analytics-label="{{ card.title }}"
+              data-analytics-url="/signals/{{ card.slug }}/">{{ card.title }}</a></h3>{% endif %}
           {% if card.problem %}<p class="signals__text"><span class="signals__label">Problem:</span> {{ card.problem }}</p>{% endif %}
           {% if card.approach %}<p class="signals__text"><span class="signals__label">Approach:</span> {{ card.approach }}</p>{% endif %}
           {% if card.evidence %}<p class="signals__text"><span class="signals__label">Evidence:</span> {{ card.evidence }}</p>{% endif %}
           {% if card.cta_text %}
-            <a class="btn btn--primary signals__cta" href="/signals/{{ card.slug }}/">{{ card.cta_text }}</a>
+            <a class="btn btn--primary signals__cta"
+               href="/signals/{{ card.slug }}/"
+               data-analytics-event="signals_card_cta_click"
+               data-analytics-section="signals"
+               data-analytics-label="{{ card.cta_text }}"
+               data-analytics-url="/signals/{{ card.slug }}/">{{ card.cta_text }}</a>
           {% endif %}
         </article>
       {% endfor %}

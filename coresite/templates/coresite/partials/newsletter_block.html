@@ -24,7 +24,7 @@
                      aria-describedby="newsletter-privacy newsletter-status">
               <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
               <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
-              <div id="newsletter-status" role="status" aria-live="polite" class="form-message is-{{ m.tags }}">{{ m }}</div>
+              <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" class="form-message is-{{ m.tags }}">{{ m }}</div>
             </fieldset>
           </form>
         {% endif %}
@@ -42,7 +42,7 @@
                  aria-describedby="newsletter-privacy newsletter-status">
           <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
           <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
-          <div id="newsletter-status" role="status" aria-live="polite" class="form-message"></div>
+          <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" class="form-message"></div>
         </fieldset>
       </form>
     {% endif %}
