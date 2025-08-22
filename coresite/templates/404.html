@@ -3,10 +3,12 @@
 {% block title %}Page not found{% endblock %}
 
 {% block content %}
-<section id="error-404" class="section" role="region" aria-labelledby="error-404-heading">
-  <h1 id="error-404-heading">Sorry, we can't find that page.</h1>
-  <p>The page you're looking for doesn't exist. It may have been moved or deleted.</p>
-  <p><a href="/">Return home</a></p>
+<section id="error-section" class="section error" role="region" aria-labelledby="error-heading">
+  <div class="wrap">
+    <h1 id="error-heading">Sorry, we can't find that page.</h1>
+    <p>The page you're looking for doesn't exist. It may have been moved or deleted.</p>
+    <p><a href="/">Return home</a></p>
+  </div>
 </section>
 {% endblock %}
 
