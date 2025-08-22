@@ -29,5 +29,6 @@ $btn-primary-hover-color: map-get($colors, black);
 $btn-success-hover-bg:    map-get($colors, gold);
 $btn-success-hover-color: map-get($colors, black);
 
-// Use gold for the focus ring instead of the default blue
-$btn-focus-box-shadow: 0 0 0 s(1) rgba(c(gold), map-get($opacities, mid));
+/* Focus ring / outlines — overrides must read maps directly */
+$btn-focus-width: map-get($space, 1);
+$btn-focus-box-shadow: 0 0 0 $btn-focus-width rgba(map-get($colors, gold), 0.5);
