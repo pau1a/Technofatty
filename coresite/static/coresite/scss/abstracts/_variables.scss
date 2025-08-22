@@ -13,6 +13,9 @@ $colors: (
   magenta: #D94BCD,  // rare accent
   ph:      #D5EDF2,  // placeholder blocks for images
   text:    #333333,
+  text-strong: #222222, // strong headings
+  text-muted:  #555555, // muted text
+  gray-light:  #F5F5F5, // neutral light surfaces
   border:  #DDDDDD,  // neutral border color
   black:   #000000,
   bg-alt:  #F9FAFB,  // pale background bands
@@ -22,6 +25,10 @@ $colors: (
 /* Layout width */
 $container-max: 68rem; // ≈1088px target content width
 $container-max-width-wide: 90rem; // ≈1440px wide container
+
+/* Featured card dimensions */
+$featured-card-min-width: 17.5rem; // 280px
+$featured-card-img-height: 10rem; // 160px
 
 /* Spacing scale (t-shirt friendly) */
 $space: (
@@ -47,6 +54,7 @@ $section-pad-y: (
 $font-sizes: (
   xs: 0.75rem,    // 12px
   sm: 0.875rem,   // 14px
+  sm-md: 0.95rem, // ≈15px
   base: 1rem,     // 16px
   md: 1.125rem,   // 18px
   lg: 1.25rem,    // 20px
@@ -109,7 +117,9 @@ $z: (
 $shadows: (
   sm: 0 1px 2px rgba(map-get($colors, black), 0.05),
   md: 0 2px 6px rgba(map-get($colors, black), 0.15),
-  lg: -4px 0 12px rgba(map-get($colors, black), 0.3)
+  lg: -4px 0 12px rgba(map-get($colors, black), 0.3),
+  card: 0 4px 12px rgba(map-get($colors, black), 0.08),
+  card-hover: 0 6px 18px rgba(map-get($colors, black), 0.12)
 );
 
 /* Timing & easing (nice-to-have) */
