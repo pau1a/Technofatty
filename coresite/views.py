@@ -8,6 +8,9 @@ from .community import get_community_content
 from .footer import get_footer_content
 
 
+BASE_CANONICAL = "https://technofatty.com"
+
+
 def homepage(request):
     resources = [
         {
@@ -26,7 +29,10 @@ def homepage(request):
             "url": "/case-studies/",
         },
     ]
-    images = {img.key.replace("-", "_"): img for img in SiteImage.objects.all()}
+    try:
+        images = {img.key.replace("-", "_"): img for img in SiteImage.objects.all()}
+    except Exception:
+        images = {}
     signals = get_signals_content()
     support = get_support_content()
     community = get_community_content()
@@ -40,6 +46,7 @@ def homepage(request):
         "support": support,
         "community": community,
         "footer": footer,
+        "canonical_url": f"{BASE_CANONICAL}/",
     }
     log_newsletter_event(request, "newsletter_block_view")
     return render(request, "coresite/homepage.html", context)
@@ -65,7 +72,11 @@ def community_join(request):
 
 def about(request):
     footer = get_footer_content()
-    return render(request, "coresite/about.html", {"footer": footer})
+    return render(
+        request,
+        "coresite/about.html",
+        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/about/"},
+    )
 
 
 def services(request):
@@ -75,12 +86,24 @@ def services(request):
 
 def contact(request):
     footer = get_footer_content()
-    return render(request, "coresite/contact.html", {"footer": footer})
+    return render(
+        request,
+        "coresite/contact.html",
+        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/contact/"},
+    )
 
 def support(request):
     footer = get_footer_content()
-    return render(request, "coresite/support.html", {"footer": footer})
+    return render(
+        request,
+        "coresite/support.html",
+        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/support/"},
+    )
 
 def legal(request):
     footer = get_footer_content()
-    return render(request, "coresite/legal.html", {"footer": footer})
+    return render(
+        request,
+        "coresite/legal.html",
+        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/legal/"},
+    )

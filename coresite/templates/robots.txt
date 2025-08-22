@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /about/
+Allow: /contact/
+Allow: /support/
+Allow: /legal/
+Disallow: /admin/
+Disallow: /static/
+Disallow: /media/
+Sitemap: https://technofatty.com/sitemap.xml
+
