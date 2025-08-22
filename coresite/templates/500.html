@@ -3,10 +3,12 @@
 {% block title %}Server error{% endblock %}
 
 {% block content %}
-<section id="error-500" class="section" role="region" aria-labelledby="error-500-heading">
-  <h1 id="error-500-heading">Something went wrong on our end.</h1>
-  <p>We're working to fix the problem. Please try again later.</p>
-  <p><a href="/">Return home</a></p>
+<section id="error-section" class="section error" role="region" aria-labelledby="error-heading">
+  <div class="wrap">
+    <h1 id="error-heading">Something went wrong on our end.</h1>
+    <p>We're working to fix the problem. Please try again later.</p>
+    <p><a href="/">Return home</a></p>
+  </div>
 </section>
 {% endblock %}
 
