@@ -9,7 +9,7 @@
     {% if support.links %}
       <div class="support__grid">
         {% for link in support.links %}
-          <a id="support-{{ link.slug }}" class="support__card" href="{{ link.url }}" aria-describedby="support-desc-{{ link.slug }}">
+          <a id="support-{{ link.slug }}" class="support__card" href="{{ link.url }}" aria-describedby="support-desc-{{ link.slug }}" data-analytics-event="cta.support.{{ link.slug }}">
             <span class="support__label">{{ link.label }}</span>
             <p id="support-desc-{{ link.slug }}" class="support__description">{{ link.description }}</p>
           </a>

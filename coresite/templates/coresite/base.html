@@ -12,8 +12,15 @@
   {% block head_extras %}{% endblock %}
 </head>
 
-<body>
+<body data-analytics-enabled="{{ ANALYTICS_ENABLED|yesno:'true,false' }}"
+      data-analytics-provider="{{ ANALYTICS_PROVIDER }}"
+      data-analytics-site-id="{{ ANALYTICS_SITE_ID }}"
+      data-consent-required="{{ CONSENT_REQUIRED|yesno:'true,false' }}">
   <a class="skip-link" href="#main">Skip to content</a>
+
+  {% if ANALYTICS_ENABLED %}
+    {% include 'coresite/partials/global/analytics.html' %}
+  {% endif %}
 
   {% include 'coresite/partials/global/header_nav.html' %}
 
@@ -25,6 +32,9 @@
 
   {% include 'coresite/partials/global/footer.html' %}
 
+  {% if ANALYTICS_ENABLED %}
+    <script src="{% static 'coresite/js/analytics.js' %}?v={{ now|date:'U' }}" defer></script>
+  {% endif %}
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
   {% block body_scripts %}{% endblock %}
 </body>

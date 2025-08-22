@@ -10,7 +10,7 @@
 
     <div class="community__actions">
       {% if community.primary_cta %}
-        <a class="btn btn--cta community__cta" href="{{ community.primary_cta.url }}">{{ community.primary_cta.label }}</a>
+        <a class="btn btn--cta community__cta" href="{{ community.primary_cta.url }}" data-analytics-event="cta.community.primary">{{ community.primary_cta.label }}</a>
       {% endif %}
     </div>
 
