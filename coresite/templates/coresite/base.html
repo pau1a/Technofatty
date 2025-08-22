@@ -18,6 +18,8 @@
   {% include 'coresite/partials/global/header_nav.html' %}
 
   <main id="main">
+    {# Site-wide notice placeholder — renders nothing by default #}
+    {% include 'coresite/partials/global/notice.html' %}
     {% block content %}{% endblock %}
   </main>
 
