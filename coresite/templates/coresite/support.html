@@ -1,6 +1,21 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}Support{% endblock %}
+{% block title %}Support – Technofatty{% endblock %}
+
+{% block meta_description %}Find help resources for Technofatty services.{% endblock %}<!-- [ref:pending-support] -->
+
+{% block head_extras %}
+  <link rel="canonical" href="https://technofatty.com/support/">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Support – Technofatty">
+  <meta property="og:description" content="Find help resources for Technofatty services."><!-- [ref:pending-support] -->
+  <meta property="og:url" content="https://technofatty.com/support/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Support – Technofatty">
+  <meta name="twitter:description" content="Find help resources for Technofatty services."><!-- [ref:pending-support] -->
+  <meta name="twitter:url" content="https://technofatty.com/support/">
+{% endblock %}
 
 {% block content %}
 <section id="support-intro" class="section" role="region" aria-labelledby="support-intro-heading">
@@ -60,5 +75,21 @@
 
 {% block footer %}
   {% include "coresite/partials/footer.html" %}
+{% endblock %}
+
+{% block body_scripts %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "url": "https://technofatty.com/support/",
+      "name": "Support – Technofatty",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      }
+    }
+  </script>
 {% endblock %}
 
