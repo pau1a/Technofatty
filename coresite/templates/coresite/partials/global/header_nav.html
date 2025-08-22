@@ -1,0 +1,37 @@
+<header class="site-header {% if request.path == '/' %}hero-mode{% else %}fixed-mode{% endif %}">
+  <!-- Desktop Navigation -->
+  <nav class="desktop-nav" aria-label="Primary">
+    <div class="desktop-nav__logo">
+      <a href="/">Technofatty</a>
+    </div>
+    <ul class="desktop-nav__links">
+      {% include 'coresite/partials/global/nav_links.html' %}
+    </ul>
+    <div class="desktop-nav__cta">
+      {% include 'coresite/partials/global/nav_cta.html' %}
+    </div>
+  </nav>
+
+  <!-- Global Hamburger -->
+  <div class="global-hamburger">
+    <button class="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-overlay">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Backdrop -->
+<div class="menu-backdrop"></div>
+
+<!-- Slide-in Menu Overlay -->
+<div id="menu-overlay" class="menu-overlay" aria-hidden="true">
+  <div class="menu-overlay__content">
+    <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
+    <ul class="menu-overlay__links">
+      {% include 'coresite/partials/global/nav_links.html' %}
+      <li>{% include 'coresite/partials/global/nav_cta.html' %}</li>
+    </ul>
+  </div>
+</div>
