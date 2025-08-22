@@ -1,6 +1,21 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}Contact – Technofatty{% endblock %}
+
+{% block meta_description %}Reach Technofatty for general inquiries.{% endblock %}<!-- [ref:pending-contact] -->
+
+{% block head_extras %}
+  <link rel="canonical" href="https://technofatty.com/contact/">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Contact – Technofatty">
+  <meta property="og:description" content="Reach Technofatty for general inquiries."><!-- [ref:pending-contact] -->
+  <meta property="og:url" content="https://technofatty.com/contact/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Contact – Technofatty">
+  <meta name="twitter:description" content="Reach Technofatty for general inquiries."><!-- [ref:pending-contact] -->
+  <meta name="twitter:url" content="https://technofatty.com/contact/">
+{% endblock %}
 
 {% block content %}
 <section id="contact-intro" aria-labelledby="contact-intro-heading">
@@ -42,5 +57,21 @@
 
 {% block footer %}
   {% include "coresite/partials/footer.html" %}
+{% endblock %}
+
+{% block body_scripts %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "url": "https://technofatty.com/contact/",
+      "name": "Contact – Technofatty",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      }
+    }
+  </script>
 {% endblock %}
 

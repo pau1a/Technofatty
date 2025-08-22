@@ -1,6 +1,21 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}About{% endblock %}
+{% block title %}About – Technofatty{% endblock %}
+
+{% block meta_description %}Discover Technofatty's mission and team values.{% endblock %}<!-- [ref:mission] [ref:team-values] -->
+
+{% block head_extras %}
+  <link rel="canonical" href="https://technofatty.com/about/">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="About – Technofatty">
+  <meta property="og:description" content="Discover Technofatty's mission and team values."><!-- [ref:mission] [ref:team-values] -->
+  <meta property="og:url" content="https://technofatty.com/about/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="About – Technofatty">
+  <meta name="twitter:description" content="Discover Technofatty's mission and team values."><!-- [ref:mission] [ref:team-values] -->
+  <meta name="twitter:url" content="https://technofatty.com/about/">
+{% endblock %}
 
 {% block content %}
 <section id="about-hero" class="section" role="region" aria-labelledby="about-hero-heading">
@@ -48,5 +63,21 @@
 
 {% block footer %}
   {% include "coresite/partials/footer.html" %}
+{% endblock %}
+
+{% block body_scripts %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "url": "https://technofatty.com/about/",
+      "name": "About – Technofatty",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      }
+    }
+  </script>
 {% endblock %}
 

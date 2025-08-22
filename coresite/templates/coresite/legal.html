@@ -1,6 +1,21 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}Legal{% endblock %}
+{% block title %}Legal – Technofatty{% endblock %}
+
+{% block meta_description %}Review our terms and privacy practices.{% endblock %}<!-- [ref:terms] [ref:privacy] -->
+
+{% block head_extras %}
+  <link rel="canonical" href="https://technofatty.com/legal/">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Legal – Technofatty">
+  <meta property="og:description" content="Review our terms and privacy practices."><!-- [ref:terms] [ref:privacy] -->
+  <meta property="og:url" content="https://technofatty.com/legal/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Legal – Technofatty">
+  <meta name="twitter:description" content="Review our terms and privacy practices."><!-- [ref:terms] [ref:privacy] -->
+  <meta name="twitter:url" content="https://technofatty.com/legal/">
+{% endblock %}
 
 {% block content %}
 <section id="legal-intro" class="section" role="region" aria-labelledby="legal-intro-heading">
@@ -54,4 +69,20 @@
 
 {% block footer %}
   {% include "coresite/partials/footer.html" %}
+{% endblock %}
+
+{% block body_scripts %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "url": "https://technofatty.com/legal/",
+      "name": "Legal – Technofatty",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      }
+    }
+  </script>
 {% endblock %}
