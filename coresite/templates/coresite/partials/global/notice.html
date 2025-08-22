@@ -1,0 +1,16 @@
+{# Global notice placeholder — intentionally renders nothing #}
+{% comment %}
+Purpose: allow site-wide banners (beta, cookie, downtime) without touching page templates.
+Usage: when needed, replace the empty state below with a .section/.wrap block that uses tokens only.
+Accessibility: prefer role="status" aria-live="polite" for non-urgent notices; role="alert" only for urgent cases.
+{% endcomment %}
+
+{# Empty by default — do not remove. This keeps the include harmless until content is approved. #}
+{% comment %}
+<section class="section" role="status" aria-live="polite" aria-label="Site notice">
+  <div class="wrap">
+    <h2 class="visually-hidden">Site notice</h2>
+    <p>Example banner copy using approved tokens only.</p>
+  </div>
+</section>
+{% endcomment %}
