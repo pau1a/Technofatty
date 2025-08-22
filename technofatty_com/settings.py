@@ -73,6 +73,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.settings",
             ],
         },
     },
@@ -160,3 +161,11 @@ NEWSLETTER_PROVIDER = os.environ.get("NEWSLETTER_PROVIDER", "stub")
 OPT_IN_MODE = os.environ.get("OPT_IN_MODE", "single")
 NEWSLETTER_TIMEOUT_SECONDS = int(os.environ.get("NEWSLETTER_TIMEOUT_SECONDS", "3"))
 NEWSLETTER_RATE_LIMITS = {"ip_per_hour": 10, "email_per_hour": 5}
+
+# -------------------------------------------------
+# Analytics
+# -------------------------------------------------
+ANALYTICS_ENABLED = os.environ.get("ANALYTICS_ENABLED", "false").lower() == "true"
+ANALYTICS_PROVIDER = os.environ.get("ANALYTICS_PROVIDER", "plausible")
+ANALYTICS_SITE_ID = os.environ.get("ANALYTICS_SITE_ID", "")
+CONSENT_REQUIRED = os.environ.get("CONSENT_REQUIRED", "true").lower() == "true"

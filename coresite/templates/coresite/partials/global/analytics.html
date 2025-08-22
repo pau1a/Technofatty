@@ -1,0 +1,7 @@
+{% if (not settings.CONSENT_REQUIRED) or request.COOKIES.analytics_consent == 'true' %}
+  {% if settings.ANALYTICS_PROVIDER == 'plausible' and settings.ANALYTICS_SITE_ID %}
+    <script defer data-domain="{{ settings.ANALYTICS_SITE_ID }}" src="https://plausible.io/js/script.js"></script>
+  {% elif settings.ANALYTICS_PROVIDER == 'ga4' and settings.ANALYTICS_SITE_ID %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ settings.ANALYTICS_SITE_ID }}"></script>
+  {% endif %}
+{% endif %}
