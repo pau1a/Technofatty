@@ -23,7 +23,7 @@
     {% block content %}{% endblock %}
   </main>
 
-  {% block footer %}{% endblock %}
+  {% include 'coresite/partials/global/footer.html' %}
 
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
   {% block body_scripts %}{% endblock %}

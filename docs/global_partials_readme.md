@@ -40,9 +40,9 @@ All styling values come from `_variables.scss`, the single source of truth for S
 * **Included in**: `header_nav.html`【F:coresite/templates/coresite/partials/global/header_nav.html†L10-L12】
 
 ### Footer
-* **Path**: `coresite/templates/coresite/partials/footer.html`
-* **Purpose**: Site-wide footer with link groups and meta information【F:coresite/templates/coresite/partials/footer.html†L1-L44】
-* **Included in**: Every page template via `{% include 'coresite/partials/footer.html' %}`
+* **Path**: `coresite/templates/coresite/partials/global/footer.html`
+* **Purpose**: Site-wide footer with link groups and meta information【F:coresite/templates/coresite/partials/global/footer.html†L1-L44】
+* **Included in**: `base.html` (thus every page)
 
 ### Featured grid
 * **Path**: `coresite/templates/coresite/partials/featured_grid.html`
@@ -83,13 +83,13 @@ All styling values come from `_variables.scss`, the single source of truth for S
 * **Status**: No global notice partial exists yet; site currently has no mechanism for site-wide alert banners.
 
 ## Inclusion map
-- `coresite/templates/coresite/homepage.html` → header_nav, hero, trust, featured_grid, newsletter_block, signals_block, support_block, community_block, footer
-- `coresite/templates/coresite/about.html` → header_nav, footer
-- `coresite/templates/coresite/community_join.html` → header_nav, footer
-- `coresite/templates/coresite/contact.html` → header_nav, footer
-- `coresite/templates/coresite/legal.html` → header_nav, footer
-- `coresite/templates/coresite/services.html` → header_nav, footer
-- `coresite/templates/coresite/signal_placeholder.html` → header_nav, footer
-- `coresite/templates/coresite/support.html` → header_nav, footer
+- `coresite/templates/coresite/homepage.html` → header_nav, hero, trust, featured_grid, newsletter_block, signals_block, support_block, community_block
+- `coresite/templates/coresite/about.html` → header_nav
+- `coresite/templates/coresite/community_join.html` → header_nav
+- `coresite/templates/coresite/contact.html` → header_nav
+- `coresite/templates/coresite/legal.html` → header_nav
+- `coresite/templates/coresite/services.html` → header_nav
+- `coresite/templates/coresite/signal_placeholder.html` → header_nav
+- `coresite/templates/coresite/support.html` → header_nav
 
-Pages without additional partials are intentionally minimal; they inherit the header and footer only.
+Pages without additional partials are intentionally minimal; they inherit the header and footer only via `base.html`.
