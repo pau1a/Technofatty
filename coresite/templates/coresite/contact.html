@@ -3,39 +3,39 @@
 {% block title %}Contact{% endblock %}
 
 {% block content %}
-<section id="contact-intro">
+<section id="contact-intro" aria-labelledby="contact-intro-heading">
   <div class="wrap">
-    <h2>Contact Intro</h2>
+    {% include "coresite/partials/contact/contact-intro.html" %}
   </div>
 </section>
 
-<section id="contact-form">
+<section id="contact-form" aria-labelledby="contact-form-heading">
   <div class="wrap">
-    <h2>Contact Form Placeholder</h2>
+    {% include "coresite/partials/contact/contact-form.html" %}
   </div>
 </section>
 
-<section id="contact-info">
+<section id="contact-info" aria-labelledby="contact-info-heading">
   <div class="wrap">
-    <h2>Direct Contact Info</h2>
+    {% include "coresite/partials/contact/contact-info.html" %}
   </div>
 </section>
 
-<section id="contact-social">
+<section id="contact-social" aria-labelledby="contact-social-heading">
   <div class="wrap">
-    <h2>Social Links</h2>
+    {% include "coresite/partials/contact/contact-social.html" %}
   </div>
 </section>
 
-<section id="contact-trust">
+<section id="contact-trust" aria-labelledby="contact-trust-heading">
   <div class="wrap">
-    <h2>Trust &amp; Privacy Note</h2>
+    {% include "coresite/partials/contact/contact-trust.html" %}
   </div>
 </section>
 
-<section id="contact-cta">
+<section id="contact-cta" aria-labelledby="contact-cta-heading">
   <div class="wrap">
-    <h2>Call to Action</h2>
+    {% include "coresite/partials/contact/contact-cta.html" %}
   </div>
 </section>
 {% endblock %}
