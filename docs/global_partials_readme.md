@@ -22,7 +22,15 @@ The `id` matches the heading’s `-heading` suffix. Example usage appears throug
 ### Design tokens
 All styling values come from `_variables.scss`, the single source of truth for SCSS/CSS tokens【F:coresite/static/coresite/scss/abstracts/_variables.scss†L1-L8】.
 
+### Consent-aware analytics
+Analytics is tied to the site's consent banner. Until a user grants tracking permission, the analytics partial outputs nothing and no tracking scripts run【F:coresite/templates/coresite/partials/global/analytics.html†L1-L7】.
+
 ## Partial reference
+
+### Analytics
+* **Path**: `coresite/templates/coresite/partials/global/analytics.html`
+* **Purpose**: Loads the privacy-first, consent-aware analytics script. Does nothing until the user grants tracking consent【F:coresite/templates/coresite/partials/global/analytics.html†L1-L7】
+* **Included in**: `base.html` (thus every page)【F:coresite/templates/coresite/base.html†L21-L23】
 
 ### Header and primary navigation
 * **Path**: `coresite/templates/coresite/partials/global/header_nav.html`
@@ -83,6 +91,7 @@ All styling values come from `_variables.scss`, the single source of truth for S
 * **Status**: No global notice partial exists yet; site currently has no mechanism for site-wide alert banners.
 
 ## Inclusion map
+- All templates → analytics
 - `coresite/templates/coresite/homepage.html` → header_nav, hero, trust, featured_grid, newsletter_block, signals_block, support_block, community_block
 - `coresite/templates/coresite/about.html` → header_nav
 - `coresite/templates/coresite/community_join.html` → header_nav
@@ -92,4 +101,4 @@ All styling values come from `_variables.scss`, the single source of truth for S
 - `coresite/templates/coresite/signal_placeholder.html` → header_nav
 - `coresite/templates/coresite/support.html` → header_nav
 
-Pages without additional partials are intentionally minimal; they inherit the header and footer only via `base.html`.
+Pages without additional partials are intentionally minimal; they inherit analytics, the header, and footer via `base.html`.
