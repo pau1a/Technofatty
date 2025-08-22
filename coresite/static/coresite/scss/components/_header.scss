@@ -9,7 +9,7 @@
 
   // Hero mode for homepage
   &.hero-mode {
-    background: rgba(map-get($colors, white), var(--header-bg-opacity, 0.5));
+    background: rgba(map-get($colors, white), var(--header-bg-opacity, map-get($opacities, mid)));
     transition: background-color $dur $easing-standard;
     position: absolute; // Initially absolute
   }

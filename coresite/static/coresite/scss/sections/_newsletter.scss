@@ -67,7 +67,7 @@
         // CTA inherits .btn--cta (gold base, blue hover)
       }
 
-      .form-message { min-height: 1em; }
+      .form-message { min-height: fs(base); }
     }
 
     &.is-error {

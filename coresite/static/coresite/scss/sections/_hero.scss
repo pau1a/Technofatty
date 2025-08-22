@@ -2,7 +2,7 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  min-height: calc(s(8) * 9.375);
   overflow: hidden; // keeps background contained
   isolation: isolate;
   background: transparent;
@@ -24,7 +24,7 @@
   inset: 0;
   z-index: 0;
   opacity: 0;
-  transition: opacity 0.8s ease; // Have transition ready
+  transition: opacity calc($dur * 4) $easing-standard; // Have transition ready
 
   &.is-loading {
     display: none; // Hide video initially to prevent it from being LCP
@@ -40,7 +40,7 @@
   inset: 0;
   z-index: 0;
   opacity: 1;
-  transition: opacity 0.8s ease;
+  transition: opacity calc($dur * 4) $easing-standard;
 }
 
 /* Hero text content */
@@ -50,26 +50,26 @@
   text-align: center;
   color: c(text);
   width: 100%;
-  max-width: calc(#{$container-max} - 2rem);
-  margin-inline: auto;
-  padding-block: 8rem;
+    max-width: calc(#{$container-max} - s(6));
+    margin-inline: auto;
+    padding-block: calc(s(8) * 2);
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  h1 {
-    color: c(blue);
-    @include fluid-type(1.8rem, 3rem);
-    line-height: 1.1;
-    margin: 0 0 0.6rem;
-  }
+    h1 {
+      color: c(blue);
+      @include fluid-type(calc(fs(xxl) - s(1) + map-get($border-widths, sm)), calc(fs(xxl) + s(4)));
+      line-height: 1.1;
+      margin: 0 0 calc(s(2) + map-get($border-widths, md));
+    }
 
-  .hero__sub {
-    @include fluid-type(1rem, 1.25rem);
-    margin: 0 0 1.25rem;
-  }
+    .hero__sub {
+      @include fluid-type(fs(base), fs(lg));
+      margin: 0 0 calc(s(4) + s(1));
+    }
 
   .hero__cta {
     display: flex;
@@ -78,9 +78,9 @@
     flex-wrap: wrap;
   }
 
-  .hero__widelogo {
-    width: 40%;
-    max-width: 900px;
-    margin-bottom: 3vh;
-  }
+    .hero__widelogo {
+      width: 40%;
+      max-width: calc(#{$container-max-width-wide} * 0.625);
+      margin-bottom: 3vh;
+    }
 }

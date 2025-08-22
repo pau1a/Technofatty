@@ -39,5 +39,5 @@
 }
 
 .card__title { color: map-get($colors, blue); margin: map-get($space, 1) 0; } // was .25rem
-.card__meta { color: rgba(map-get($colors, text), 0.6); font-size: fs(sm); }
+.card__meta { color: rgba(map-get($colors, text), map-get($opacities, mid)); font-size: fs(sm); }
 .card__link { color: map-get($colors, blue); text-decoration: none; &:hover, &:focus { text-decoration: underline; } }

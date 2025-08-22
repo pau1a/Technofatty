@@ -1,5 +1,5 @@
 /* Page-specific nudges for homepage (keep light) */
 
-.homepage .hero__content { padding-block: clamp(2.5rem, 8vh, 5rem); }
+.homepage .hero__content { padding-block: clamp(calc(s(6) + s(2)), 8vh, calc(s(8) + s(4))); }
 .homepage .section-title { text-align:center; }
-.homepage .cards .card__title { @include fluid-type(1rem,1.125rem); }
+.homepage .cards .card__title { @include fluid-type(fs(base), fs(md)); }

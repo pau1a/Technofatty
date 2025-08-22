@@ -9,8 +9,11 @@
 }
 
 // Focus ring (WCAG-friendly)
-@mixin focus-ring($c: rgba(0,0,0,.18)) {
-  &:focus-visible { outline: none; box-shadow: 0 0 0 3px $c; }
+@mixin focus-ring($c: rgba(c(black), .18)) {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(map-get($border-widths, lg) - map-get($border-widths, sm)) $c;
+  }
 }
 
 // Aspect-ratio placeholder block
@@ -30,8 +33,12 @@
 // Screen-reader-only utility
 @mixin sr-only {
   position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0 0 0 0);
-  white-space: nowrap; border: 0;
+  width: map-get($border-widths, sm);
+  height: map-get($border-widths, sm);
+  padding: 0;
+  margin: -map-get($border-widths, sm);
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

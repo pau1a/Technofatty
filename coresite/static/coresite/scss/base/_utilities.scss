@@ -5,7 +5,11 @@
 }
 .skip-link { @include sr-only; }
 .skip-link:focus {
-  position: fixed; left: 8px; top: 8px;
-  background: #000; color: #fff; padding: .5rem;
+  position: fixed;
+  left: s(2);
+  top: s(2);
+  background: c(black);
+  color: c(white);
+  padding: s(2);
   z-index: z(overlay);
 }

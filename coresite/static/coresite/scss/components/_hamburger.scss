@@ -4,12 +4,12 @@
 
 /* Variables */
 $hamburger-line-color: map-get($colors, blue);
-$hamburger-bg-color: rgba(map-get($colors, gold), 0.45);
-$hamburger-size: 2.75rem; // 44px - good touch target size
-$hamburger-line-height: 0.1875rem; // 3px
-$hamburger-line-radius: 0.125rem; // 2px
-$hamburger-padding: 0.625rem; // 10px
-$hamburger-focus-offset: 0.1875rem; // 3px
+$hamburger-bg-color: rgba(map-get($colors, gold), map-get($opacities, mid));
+$hamburger-size: calc(s(7) - s(1)); // 3rem - .25rem
+$hamburger-line-height: calc(s(1) - map-get($border-widths, sm));
+$hamburger-line-radius: calc(r(xs) / 2);
+$hamburger-padding: calc(s(2) + map-get($border-widths, md));
+$hamburger-focus-offset: calc(s(1) - map-get($border-widths, sm));
 $hamburger-bg-radius: map-get($radii, lg);
 
 /* Global Hamburger Wrapper */
@@ -34,7 +34,7 @@ $hamburger-bg-radius: map-get($radii, lg);
     box-shadow: map-get($shadows, md);
 
     &:hover {
-      background-color: rgba(map-get($colors, gold), 0.85);
+      background-color: rgba(map-get($colors, gold), map-get($opacities, high));
     }
 
     &:focus {
