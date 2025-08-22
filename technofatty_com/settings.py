@@ -73,7 +73,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "technofatty_com.context_processors.settings",
+                "coresite.context_processors.analytics_flags",
             ],
         },
     },
