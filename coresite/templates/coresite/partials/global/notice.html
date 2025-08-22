@@ -1,10 +1,9 @@
-{# 
-  Global notice placeholder
-  Purpose: allow site-wide banners (beta, cookie, downtime) without touching page templates.
-  Default: intentionally renders nothing.
-  Usage: when needed, replace the empty state below with a .section/.wrap block that uses tokens only.
-  Accessibility: prefer role="status" aria-live="polite" for non-urgent notices; role="alert" only for urgent cases.
-#}
+{# Global notice placeholder — intentionally renders nothing #}
+{% comment %}
+Purpose: allow site-wide banners (beta, cookie, downtime) without touching page templates.
+Usage: when needed, replace the empty state below with a .section/.wrap block that uses tokens only.
+Accessibility: prefer role="status" aria-live="polite" for non-urgent notices; role="alert" only for urgent cases.
+{% endcomment %}
 
 {# Empty by default — do not remove. This keeps the include harmless until content is approved. #}
 {% comment %}
