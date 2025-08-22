@@ -1,9 +1,10 @@
 {% extends "coresite/base.html" %}
 {% block title %}Signal: {{ slug|title }}{% endblock %}
 {% block content %}
-<section class="section">
+<section class="section" role="region" aria-labelledby="signal-placeholder-heading">
   <div class="wrap">
-    <h1>{{ slug|title }}</h1>
+    <h1 class="visually-hidden" id="signal-placeholder-heading">{{ slug|title }}</h1>
+    <h2>{{ slug|title }}</h2>
     <p>Full signal coming soon.</p>
   </div>
 </section>
