@@ -7,6 +7,7 @@
   <title>{% block title %}Technofatty{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}Tech resources and community.{% endblock %}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}
   <link rel="stylesheet" href="{% sass_src 'coresite/scss/main.scss' %}">
   {% block head_extras %}{% endblock %}
 </head>
