@@ -76,3 +76,7 @@ def services(request):
 def contact(request):
     footer = get_footer_content()
     return render(request, "coresite/contact.html", {"footer": footer})
+
+def legal(request):
+    footer = get_footer_content()
+    return render(request, "coresite/legal.html", {"footer": footer})
