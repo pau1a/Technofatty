@@ -1,8 +1,7 @@
 # Contact Page Content Sources
 
-- intro → source pending (Content team)
-- form → source pending (UX team)
-- info → source pending (Operations)
-- social → source pending (Marketing)
-- trust → source pending (Legal)
-- cta → source pending (Marketing)
+- [ref:general] → general_contact_handbook.md (Operations)
+- [ref:support] → support_process_v2.md (Support)
+- [ref:legal] → legal_contact_memo.pdf (Legal)
+- [ref:partners] → partner_channel_brief.pdf (BizDev)
+- [ref:cta] → engagement_playbook.md (Marketing)
