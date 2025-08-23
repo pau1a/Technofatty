@@ -71,6 +71,16 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
         color: map-get($colors, gold);
       }
     }
+
+    .sub-menu {
+      list-style: none;
+      margin: map-get($space, 2) 0 0;
+      padding-left: map-get($space, 4);
+    }
+
+    .sub-menu li {
+      margin-bottom: map-get($space, 2);
+    }
   }
 }
 

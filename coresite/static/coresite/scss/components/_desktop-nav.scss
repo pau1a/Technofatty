@@ -42,6 +42,37 @@
         border-bottom-color: map-get($colors, gold);
       }
     }
+
+    li {
+      position: relative;
+    }
+
+    .sub-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      list-style: none;
+      margin: 0;
+      padding: map-get($space, 3) map-get($space, 4);
+      background-color: map-get($colors, white);
+      box-shadow: map-get($shadows, sm);
+    }
+
+    li:focus-within > .sub-menu,
+    li:hover > .sub-menu {
+      display: block;
+    }
+
+    .sub-menu li {
+      margin: 0;
+    }
+
+    .sub-menu a {
+      display: block;
+      padding: map-get($space, 1) 0;
+      white-space: nowrap;
+    }
   }
 
   &__cta {
