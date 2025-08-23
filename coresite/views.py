@@ -70,6 +70,90 @@ def community_join(request):
     return render(request, "coresite/community_join.html", {"footer": footer})
 
 
+def knowledge(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/knowledge.html",
+        {
+            "footer": footer,
+            "page_id": "knowledge",
+            "page_title": "Knowledge",
+            "canonical_url": f"{BASE_CANONICAL}/knowledge/",
+        },
+    )
+
+
+def tools(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/tools.html",
+        {
+            "footer": footer,
+            "page_id": "tools",
+            "page_title": "Tools",
+            "canonical_url": f"{BASE_CANONICAL}/tools/",
+        },
+    )
+
+
+def community(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/community.html",
+        {
+            "footer": footer,
+            "page_id": "community",
+            "page_title": "Community",
+            "canonical_url": f"{BASE_CANONICAL}/community/",
+        },
+    )
+
+
+def blog(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/blog.html",
+        {
+            "footer": footer,
+            "page_id": "blog",
+            "page_title": "Blog",
+            "canonical_url": f"{BASE_CANONICAL}/blog/",
+        },
+    )
+
+
+def signup(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/signup.html",
+        {
+            "footer": footer,
+            "page_id": "signup",
+            "page_title": "Sign Up",
+            "canonical_url": f"{BASE_CANONICAL}/signup/",
+        },
+    )
+
+
+def account(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/account.html",
+        {
+            "footer": footer,
+            "page_id": "account",
+            "page_title": "Account",
+            "canonical_url": f"{BASE_CANONICAL}/account/",
+        },
+    )
+
+
 def about(request):
     footer = get_footer_content()
     return render(
