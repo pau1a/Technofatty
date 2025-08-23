@@ -4,6 +4,7 @@
 {% endif %}
 <li><a href="{% url 'knowledge' %}" data-analytics-event="nav_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
 <li><a href="{% url 'tools' %}" data-analytics-event="nav_link_click" data-analytics-label="Tools" data-analytics-url="{% url 'tools' %}">Tools</a></li>
+<li><a href="{% url 'case_studies_landing' %}" data-analytics-event="nav_link_click" data-analytics-label="Case Studies" data-analytics-url="{% url 'case_studies_landing' %}">Case Studies</a></li>
 <li>
   {% if user.is_authenticated %}
     <a href="{% url 'community' %}" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'community' %}">Community</a>

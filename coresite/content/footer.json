@@ -8,6 +8,7 @@
       "links": [
         {"label": "About", "url": "/about/"},
         {"label": "Resources", "url": "/resources/"},
+        {"label": "Case Studies", "url": "/case-studies/"},
         {"label": "Contact", "url": "/contact/"}
       ]
     },
