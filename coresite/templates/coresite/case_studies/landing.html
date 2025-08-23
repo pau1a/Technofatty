@@ -1,8 +1,14 @@
 {% extends "coresite/base.html" %}
 
 {% block content %}
-<h1>Case Studies</h1>
-{% include "coresite/partials/global/status_placeholder.html" %}
-
-<div class="container content"></div>
+<main id="main" role="main">
+  <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
+    <div class="wrap">
+      <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
+      <div class="scaffold__body">
+        {% include "coresite/partials/global/status_placeholder.html" %}
+      </div>
+    </div>
+  </section>
+</main>
 {% endblock %}
