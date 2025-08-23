@@ -22,6 +22,7 @@ THUMBNAIL_ALIASES = {
 # SECURITY
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "CHANGE_ME_DEV_ONLY")
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
+#DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
