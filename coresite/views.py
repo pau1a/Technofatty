@@ -107,6 +107,15 @@ BLOG_POSTS = [
     },
 ]
 
+TOP_LEVEL_URLS = [
+    {"loc": f"{BASE_CANONICAL}/", "priority": "1.0", "changefreq": "weekly"},
+    {"loc": f"{BASE_CANONICAL}/knowledge/", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": f"{BASE_CANONICAL}/blog/", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": f"{BASE_CANONICAL}/resources/", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": f"{BASE_CANONICAL}/case-studies/", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": f"{BASE_CANONICAL}/community/", "priority": "0.8", "changefreq": "weekly"},
+]
+
 
 def homepage(request):
     resources = [
@@ -449,6 +458,51 @@ def blog_rss(request):
     return HttpResponse(
         rss_content, content_type="application/rss+xml; charset=utf-8"
     )
+
+
+def sitemap_xml(request):
+    urls = list(TOP_LEVEL_URLS)
+    posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)[:10]
+    for post in posts:
+        urls.append(
+            {
+                "loc": f"{BASE_CANONICAL}/blog/{post['slug']}/",
+                "priority": "0.5",
+                "changefreq": "monthly",
+            }
+        )
+    xml_parts = [
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for url in urls:
+        xml_parts.append("  <url>")
+        xml_parts.append(f"    <loc>{url['loc']}</loc>")
+        xml_parts.append(f"    <changefreq>{url['changefreq']}</changefreq>")
+        xml_parts.append(f"    <priority>{url['priority']}</priority>")
+        xml_parts.append("  </url>")
+    xml_parts.append("</urlset>")
+    xml_content = "\n".join(xml_parts)
+    return HttpResponse(
+        xml_content, content_type="application/xml; charset=utf-8"
+    )
+
+
+def robots_txt(request):
+    host = request.get_host().split(":")[0].lower()
+    production_hosts = {"technofatty.com", "www.technofatty.com"}
+    if host in production_hosts:
+        lines = [
+            "User-agent: *",
+            "Allow: /",
+            "Sitemap: https://technofatty.com/sitemap.xml",
+        ]
+    else:
+        lines = [
+            "User-agent: *",
+            "Disallow: /",
+        ]
+    return HttpResponse("\n".join(lines), content_type="text/plain; charset=utf-8")
 
 
 def join(request):
