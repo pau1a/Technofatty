@@ -269,16 +269,30 @@ def knowledge_quick_wins(request):
     return render(request, "coresite/knowledge/quick_wins.html", context)
 
 
-def case_studies(request):
+def case_studies_landing(request):
     footer = get_footer_content()
     return render(
         request,
-        "coresite/case_studies.html",
+        "coresite/case_studies/landing.html",
         {
             "footer": footer,
             "page_id": "case-studies",
             "page_title": "Case Studies",
             "canonical_url": f"{BASE_CANONICAL}/case-studies/",
+        },
+    )
+
+
+def case_study_detail(request, slug: str):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/case_studies/detail.html",
+        {
+            "footer": footer,
+            "page_id": "case-study-detail",
+            "page_title": "Case Study Title",
+            "canonical_url": f"{BASE_CANONICAL}/case-studies/{slug}/",
         },
     )
 

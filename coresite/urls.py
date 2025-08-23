@@ -18,7 +18,12 @@ urlpatterns = [
         views.knowledge_category,
         name="knowledge_category",
     ),
-    path("case-studies/", views.case_studies, name="case_studies"),
+    path("case-studies/", views.case_studies_landing, name="case_studies_landing"),
+    path(
+        "case-studies/<slug:slug>/",
+        views.case_study_detail,
+        name="case_study_detail",
+    ),
     path("resources/", views.resources, name="resources"),
     path("tools/", views.tools, name="tools"),
     path("community/", views.community, name="community"),
