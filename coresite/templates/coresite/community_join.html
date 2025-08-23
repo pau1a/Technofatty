@@ -4,29 +4,32 @@
 {% block meta_description %}Join the Technofatty community for updates, tools, and early access while we’re building.{% endblock %}
 
 {% block content %}
-<section class="section" role="region" aria-labelledby="community-join-heading" data-section="community-join">
+<section class="section section--scaffold" role="region" aria-labelledby="community-join-heading" data-section="community-join">
   <div class="wrap">
     <h1 id="community-join-heading">Join the Community</h1>
-    <p>We’re building in stealth. Here are the best ways to plug in right now.</p>
+    <div class="scaffold__body">
+      {% include "coresite/partials/global/status_placeholder.html" %}
+      <p>We’re building in stealth. Here are the best ways to plug in right now.</p>
 
-    <div class="cards" style="margin-top: var(--space-3);">
-      <article class="card">
-        <h2 class="card__title">Newsletter</h2>
-        <p class="card__blurb">Short, useful AI tips every Friday. No fluff.</p>
-        <a class="card__link" href="/#signup">Subscribe</a>
-      </article>
+      <div class="cards" style="margin-top: var(--space-3);">
+        <article class="card">
+          <h2 class="card__title">Newsletter</h2>
+          <p class="card__blurb">Short, useful AI tips every Friday. No fluff.</p>
+          <a class="card__link" href="/#signup">Subscribe</a>
+        </article>
 
-      <article class="card">
-        <h2 class="card__title">Product updates</h2>
-        <p class="card__blurb">What’s new, fixed, and improved as we ship.</p>
-        <a class="card__link" href="/support/updates/">View updates</a>
-      </article>
+        <article class="card">
+          <h2 class="card__title">Product updates</h2>
+          <p class="card__blurb">What’s new, fixed, and improved as we ship.</p>
+          <a class="card__link" href="/support/updates/">View updates</a>
+        </article>
 
-      <article class="card">
-        <h2 class="card__title">Say hello</h2>
-        <p class="card__blurb">Got feedback or want to collaborate? We’re listening.</p>
-        <a class="card__link" href="/contact/">Contact us</a>
-      </article>
+        <article class="card">
+          <h2 class="card__title">Say hello</h2>
+          <p class="card__blurb">Got feedback or want to collaborate? We’re listening.</p>
+          <a class="card__link" href="/contact/">Contact us</a>
+        </article>
+      </div>
     </div>
   </div>
 </section>
