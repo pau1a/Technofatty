@@ -12,7 +12,8 @@
   {% block head_extras %}{% endblock %}
 </head>
 
-<body data-analytics-enabled="{{ ANALYTICS_ENABLED|yesno:'true,false' }}"
+<body {% block body_class %}{% endblock %}
+      data-analytics-enabled="{{ ANALYTICS_ENABLED|yesno:'true,false' }}"
       data-analytics-provider="{{ ANALYTICS_PROVIDER }}"
       data-analytics-site-id="{{ ANALYTICS_SITE_ID }}"
       data-consent-required="{{ CONSENT_REQUIRED|yesno:'true,false' }}">
@@ -24,7 +25,7 @@
 
   {% include 'coresite/partials/global/header_nav.html' %}
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     {# Site-wide notice placeholder — renders nothing by default #}
     {% include 'coresite/partials/global/notice.html' %}
     {% block content %}{% endblock %}

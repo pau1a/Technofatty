@@ -1,3 +1,7 @@
+html { scroll-padding-top: var(--header-h); }
+h1, h2, h3, [id] { scroll-margin-top: var(--header-h); }
+body:not(.is-home) main { padding-top: var(--header-h); }
+
 .container { @include container; }
 .container-wide {
   @include container;
