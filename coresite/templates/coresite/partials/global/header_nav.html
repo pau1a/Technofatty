@@ -5,7 +5,7 @@
       <a href="/">Technofatty</a>
     </div>
     <ul class="desktop-nav__links">
-      {% include 'coresite/partials/global/nav_links.html' %}
+      {% include 'coresite/partials/global/nav_links.html' with id_prefix='desktop' %}
     </ul>
     <div class="desktop-nav__cta">
       {% include 'coresite/partials/global/nav_cta.html' %}
@@ -28,10 +28,13 @@
 <!-- Slide-in Menu Overlay -->
 <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
   <div class="menu-overlay__content">
-    <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
+    <div class="menu-overlay__top">
+      <a class="menu-overlay__brand" href="/">Technofatty</a>
+      {% include 'coresite/partials/global/nav_cta.html' %}
+      <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
+    </div>
     <ul class="menu-overlay__links">
-      {% include 'coresite/partials/global/nav_links.html' %}
-      <li>{% include 'coresite/partials/global/nav_cta.html' %}</li>
+      {% include 'coresite/partials/global/nav_links.html' with id_prefix='mobile' %}
     </ul>
   </div>
 </div>

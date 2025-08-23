@@ -3,12 +3,41 @@ document.addEventListener('DOMContentLoaded', function () {
   const hamburgerBtn = document.querySelector('.hamburger-btn');
   const closeBtn = document.querySelector('.menu-overlay__close');
   const backdrop = document.querySelector('.menu-backdrop');
+  const focusableSelectors = 'a, button';
+  let firstFocusable = null;
+  let lastFocusable = null;
+
+  function trapFocus(e) {
+    if (e.key === 'Tab') {
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    } else if (e.key === 'Escape') {
+      closeMenu();
+      hamburgerBtn.focus();
+    }
+  }
 
   function openMenu() {
     menuOverlay.classList.add('is-open');
     backdrop.classList.add('is-active');
     menuOverlay.setAttribute('aria-hidden', 'false');
     hamburgerBtn.setAttribute('aria-expanded', 'true');
+    const focusables = menuOverlay.querySelectorAll(focusableSelectors);
+    if (focusables.length) {
+      [firstFocusable] = focusables;
+      lastFocusable = focusables[focusables.length - 1];
+      firstFocusable.focus();
+    }
+    menuOverlay.addEventListener('keydown', trapFocus);
   }
 
   function closeMenu() {
@@ -16,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
     backdrop.classList.remove('is-active');
     menuOverlay.setAttribute('aria-hidden', 'true');
     hamburgerBtn.setAttribute('aria-expanded', 'false');
+    menuOverlay.removeEventListener('keydown', trapFocus);
+    hamburgerBtn.focus();
   }
 
   if (hamburgerBtn && menuOverlay) {
