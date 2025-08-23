@@ -2,6 +2,25 @@
    Blog page layout
    =============================== */
 
+.scaffold__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: s(3);
+}
+
+.rss-link {
+  font-size: fs(sm);
+  color: c(text-muted);
+  text-decoration: none;
+  margin-left: s(2);
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
 .blog-layout {
   display: flex;
   flex-direction: column;
