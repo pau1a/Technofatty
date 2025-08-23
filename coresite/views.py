@@ -39,6 +39,65 @@ KNOWLEDGE_ARTICLES = {
 }
 
 
+BLOG_POSTS = [
+    {
+        "title": "Getting Started with Our Blog",
+        "slug": "getting-started",
+        "date": datetime(2024, 1, 1),
+        "category": {"title": "News", "slug": "news"},
+        "tags": [
+            {"title": "intro", "slug": "intro"},
+            {"title": "welcome", "slug": "welcome"},
+        ],
+        "excerpt": "A brief welcome to the Technofatty blog.",
+    },
+    {
+        "title": "AI Trends in 2024",
+        "slug": "ai-trends-2024",
+        "date": datetime(2024, 2, 15),
+        "category": {"title": "Insights", "slug": "insights"},
+        "tags": [
+            {"title": "ai", "slug": "ai"},
+            {"title": "trends", "slug": "trends"},
+        ],
+        "excerpt": "A snapshot of the AI developments we're watching this year.",
+    },
+    {
+        "title": "Behind the Scenes: Data Tips",
+        "slug": "data-tips",
+        "date": datetime(2024, 3, 10),
+        "category": {"title": "Guides", "slug": "guides"},
+        "tags": [
+            {"title": "data", "slug": "data"},
+            {"title": "tips", "slug": "tips"},
+        ],
+        "excerpt": "Practical data pointers from our team.",
+    },
+    {
+        "title": "Automation Stories",
+        "slug": "automation-stories",
+        "date": datetime(2024, 4, 5),
+        "category": {"title": "Stories", "slug": "stories"},
+        "tags": [
+            {"title": "automation", "slug": "automation"},
+            {"title": "cases", "slug": "cases"},
+        ],
+        "excerpt": "How small automations make a big impact.",
+    },
+    {
+        "title": "Community Highlights",
+        "slug": "community-highlights",
+        "date": datetime(2024, 5, 20),
+        "category": {"title": "Community", "slug": "community"},
+        "tags": [
+            {"title": "community", "slug": "community"},
+            {"title": "update", "slug": "update"},
+        ],
+        "excerpt": "Recent happenings around the Technofatty community.",
+    },
+]
+
+
 def homepage(request):
     resources = [
         {
@@ -215,16 +274,77 @@ def community(request):
 
 def blog(request):
     footer = get_footer_content()
-    return render(
-        request,
-        "coresite/blog.html",
-        {
-            "footer": footer,
-            "page_id": "blog",
-            "page_title": "Blog",
-            "canonical_url": f"{BASE_CANONICAL}/blog/",
-        },
+    context = {
+        "footer": footer,
+        "page_id": "blog",
+        "page_title": "Blog",
+        "posts": BLOG_POSTS,
+        "next_page_url": "#",
+        "prev_page_url": "#",
+        "canonical_url": f"{BASE_CANONICAL}/blog/",
+    }
+    return render(request, "coresite/blog.html", context)
+
+
+def blog_post(request, post_slug: str):
+    footer = get_footer_content()
+    post = next((p for p in BLOG_POSTS if p["slug"] == post_slug), None)
+    if not post:
+        raise Http404
+    context = {
+        "footer": footer,
+        "page_id": "post",
+        "page_title": post["title"],
+        "post": post,
+        "canonical_url": f"{BASE_CANONICAL}/blog/{post_slug}/",
+    }
+    return render(request, "coresite/blog_detail.html", context)
+
+
+def blog_category(request, category_slug: str):
+    footer = get_footer_content()
+    posts = [p for p in BLOG_POSTS if p["category"]["slug"] == category_slug]
+    category_title = next(
+        (p["category"]["title"] for p in BLOG_POSTS if p["category"]["slug"] == category_slug),
+        category_slug.replace("-", " ").title(),
     )
+    context = {
+        "footer": footer,
+        "page_id": "blog-category",
+        "page_title": category_title,
+        "posts": posts,
+        "next_page_url": "#",
+        "prev_page_url": "#",
+        "canonical_url": f"{BASE_CANONICAL}/blog/category/{category_slug}/",
+    }
+    return render(request, "coresite/blog_category.html", context)
+
+
+def blog_tag(request, tag_slug: str):
+    footer = get_footer_content()
+    posts = [p for p in BLOG_POSTS if any(t["slug"] == tag_slug for t in p["tags"])]
+    tag_title = tag_slug.replace("-", " ").title()
+    context = {
+        "footer": footer,
+        "page_id": "blog-tag",
+        "page_title": tag_title,
+        "posts": posts,
+        "next_page_url": "#",
+        "prev_page_url": "#",
+        "canonical_url": f"{BASE_CANONICAL}/blog/tag/{tag_slug}/",
+    }
+    return render(request, "coresite/blog_tag.html", context)
+
+
+def blog_rss(request):
+    footer = get_footer_content()
+    context = {
+        "footer": footer,
+        "page_id": "blog-rss",
+        "page_title": "Blog RSS",
+        "canonical_url": f"{BASE_CANONICAL}/blog/rss/",
+    }
+    return render(request, "coresite/blog_rss.html", context)
 
 
 def join(request):
