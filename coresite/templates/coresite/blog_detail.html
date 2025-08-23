@@ -1,5 +1,22 @@
 {% extends "coresite/base.html" %}
 
+{% block meta %}
+  <title>{{ post.title }} | Technofatty</title>
+  <meta name="description" content="{{ post.excerpt|default:'A blog post on Technofatty.' }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta property="og:title" content="{{ post.title }} | Technofatty">
+  <meta property="og:description" content="{{ post.excerpt|default:'A blog post on Technofatty.' }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Technofatty">
+  {% if post.date %}<meta property="article:published_time" content="{{ post.date|date:'c' }}">{% endif %}
+  {% if post.updated %}<meta property="article:modified_time" content="{{ post.updated|date:'c' }}">{% endif %}
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ post.title }} | Technofatty">
+  <meta name="twitter:description" content="{{ post.excerpt|default:'A blog post on Technofatty.' }}">
+  <meta name="twitter:url" content="{{ canonical_url }}">
+{% endblock %}
+
 {% block structured_data %}
 <script type="application/ld+json">
 {

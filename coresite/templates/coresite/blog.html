@@ -1,5 +1,20 @@
 {% extends "coresite/base.html" %}
 
+{% block meta %}
+  <title>{{ page_title }} | Technofatty</title>
+  <meta name="description" content="Latest news and insights from Technofatty.">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta property="og:title" content="{{ page_title }} | Technofatty">
+  <meta property="og:description" content="Latest news and insights from Technofatty.">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Technofatty">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ page_title }} | Technofatty">
+  <meta name="twitter:description" content="Latest news and insights from Technofatty.">
+  <meta name="twitter:url" content="{{ canonical_url }}">
+{% endblock %}
+
 {% block structured_data %}
 <script type="application/ld+json">
 {
