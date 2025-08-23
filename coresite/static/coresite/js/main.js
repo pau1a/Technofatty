@@ -3,6 +3,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const hamburgerBtn = document.querySelector('.hamburger-btn');
   const closeBtn = document.querySelector('.menu-overlay__close');
   const backdrop = document.querySelector('.menu-backdrop');
+  const siteStatus = document.getElementById('site-status');
+
+  window.setStatusMessage = (message, state) => {
+    if (!siteStatus) return;
+    siteStatus.textContent = message || '';
+    siteStatus.className = 'status-placeholder';
+    if (state) siteStatus.classList.add(`status-placeholder--${state}`);
+  };
+
   const focusableSelectors = 'a, button';
   let firstFocusable = null;
   let lastFocusable = null;

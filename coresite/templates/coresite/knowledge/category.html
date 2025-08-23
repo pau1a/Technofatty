@@ -4,6 +4,8 @@
 <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
   <div class="wrap">
     <h1 id="{{ page_id }}-heading">{{ category.title }}</h1>
+    {% include "coresite/partials/global/status_placeholder.html" %}
+    
     <div class="knowledge__articles">
       {% for article in articles %}
       <article class="knowledge__teaser">
