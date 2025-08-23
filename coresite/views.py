@@ -84,6 +84,34 @@ def knowledge(request):
     )
 
 
+def case_studies(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/case_studies.html",
+        {
+            "footer": footer,
+            "page_id": "case-studies",
+            "page_title": "Case Studies",
+            "canonical_url": f"{BASE_CANONICAL}/case-studies/",
+        },
+    )
+
+
+def resources(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/resources.html",
+        {
+            "footer": footer,
+            "page_id": "resources",
+            "page_title": "Resources",
+            "canonical_url": f"{BASE_CANONICAL}/resources/",
+        },
+    )
+
+
 def tools(request):
     footer = get_footer_content()
     return render(

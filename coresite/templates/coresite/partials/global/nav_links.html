@@ -1,5 +1,5 @@
 {% with prefix=id_prefix|default:'nav' %}
-<li><a href="/">Home</a></li>
+{% if show_home|default:True %}<li><a href="/">Home</a></li>{% endif %}
 <li><a href="{% url 'knowledge' %}">Knowledge</a></li>
 <li><a href="{% url 'tools' %}">Tools</a></li>
 <li>
