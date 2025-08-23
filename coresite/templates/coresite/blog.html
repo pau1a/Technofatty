@@ -1,5 +1,33 @@
 {% extends "coresite/base.html" %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Blog",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'home' %}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}"
+      }
+    ]
+  }
+}
+</script>
+{% endblock %}
+
 {% block content %}
   <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
