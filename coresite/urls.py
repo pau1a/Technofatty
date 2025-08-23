@@ -4,6 +4,10 @@ from . import views
 urlpatterns = [
     path("", views.homepage, name="home"),
     path("knowledge/", views.knowledge, name="knowledge"),
+    path("knowledge/guides/", views.knowledge_guides, name="knowledge_guides"),
+    path("knowledge/signals/", views.knowledge_signals, name="knowledge_signals"),
+    path("knowledge/glossary/", views.knowledge_glossary, name="knowledge_glossary"),
+    path("knowledge/quick-wins/", views.knowledge_quick_wins, name="knowledge_quick_wins"),
     path(
         "knowledge/<slug:category_slug>/<slug:article_slug>/",
         views.knowledge_article,

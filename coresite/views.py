@@ -39,6 +39,14 @@ KNOWLEDGE_ARTICLES = {
 }
 
 
+KNOWLEDGE_SUB_SECTIONS = [
+    {"title": "Guides", "url_name": "knowledge_guides"},
+    {"title": "Signals", "url_name": "knowledge_signals"},
+    {"title": "Glossary", "url_name": "knowledge_glossary"},
+    {"title": "Quick Wins", "url_name": "knowledge_quick_wins"},
+]
+
+
 BLOG_POSTS = [
     {
         "title": "Getting Started with Our Blog",
@@ -164,6 +172,7 @@ def knowledge(request):
         "page_id": "knowledge",
         "page_title": "Knowledge",
         "categories": KNOWLEDGE_CATEGORIES,
+        "sub_sections": KNOWLEDGE_SUB_SECTIONS,
         "canonical_url": f"{BASE_CANONICAL}/knowledge/",
     }
     return render(request, "coresite/knowledge/hub.html", context)
@@ -214,6 +223,50 @@ def knowledge_article(request, category_slug: str, article_slug: str):
         "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/{article_slug}/",
     }
     return render(request, "coresite/knowledge/article.html", context)
+
+
+def knowledge_guides(request):
+    footer = get_footer_content()
+    context = {
+        "footer": footer,
+        "page_id": "knowledge-guides",
+        "page_title": "Guides",
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/guides/",
+    }
+    return render(request, "coresite/knowledge/guides.html", context)
+
+
+def knowledge_signals(request):
+    footer = get_footer_content()
+    context = {
+        "footer": footer,
+        "page_id": "knowledge-signals",
+        "page_title": "Signals",
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/signals/",
+    }
+    return render(request, "coresite/knowledge/signals.html", context)
+
+
+def knowledge_glossary(request):
+    footer = get_footer_content()
+    context = {
+        "footer": footer,
+        "page_id": "knowledge-glossary",
+        "page_title": "Glossary",
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/glossary/",
+    }
+    return render(request, "coresite/knowledge/glossary.html", context)
+
+
+def knowledge_quick_wins(request):
+    footer = get_footer_content()
+    context = {
+        "footer": footer,
+        "page_id": "knowledge-quick-wins",
+        "page_title": "Quick Wins",
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/quick-wins/",
+    }
+    return render(request, "coresite/knowledge/quick_wins.html", context)
 
 
 def case_studies(request):
