@@ -26,6 +26,10 @@ $colors: (
 $container-max: 68rem; // ≈1088px target content width
 $container-max-width-wide: 90rem; // ≈1440px wide container
 
+/* Header height */
+$header-h-mobile: 4rem; // 64px
+$header-h-desktop: 5rem; // 80px
+
 /* Featured card dimensions */
 $featured-card-min-width: 17.5rem; // 280px
 $featured-card-img-height: 10rem; // 160px
@@ -153,4 +157,9 @@ $dur: 200ms;
   --easing-standard: #{$easing-standard};
   --dur-fast: #{$dur-fast};
   --dur: #{$dur};
+  --header-h: calc(#{$header-h-mobile} + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: map-get($bp, md)) {
+  :root { --header-h: calc(#{$header-h-desktop} + env(safe-area-inset-top, 0px)); }
 }
