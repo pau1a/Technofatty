@@ -2,27 +2,12 @@
 
 {% block content %}
 <main id="main" role="main">
-  <section class="section section--community" role="region" aria-labelledby="{{ page_id }}-heading" data-section="community">
+  <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
       <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
-      <p class="community__intro">Get updates, tools, and early access while we’re building.</p>
-
-      <div class="community__actions">
-        <a class="btn btn--cta community__cta" href="/community/join/" data-analytics-event="cta.community.primary">Join Us</a>
+      <div class="scaffold__body">
+        <!-- Empty placeholder container. Content to be built in later passes. -->
       </div>
-
-      <div class="community__grid">
-        <a id="community-newsletter" class="community__card" href="#signup" aria-describedby="community-desc-newsletter">
-          <span class="community__label">Newsletter</span>
-          <p id="community-desc-newsletter" class="community__description">Placeholder description</p>
-        </a>
-        <a id="community-updates" class="community__card" href="/support/updates/" aria-describedby="community-desc-updates">
-          <span class="community__label">Product Updates</span>
-          <p id="community-desc-updates" class="community__description">Placeholder description</p>
-        </a>
-      </div>
-
-      <div class="community__status" aria-live="polite"></div>
     </div>
   </section>
 </main>
