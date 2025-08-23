@@ -1,17 +1,28 @@
 {% extends "coresite/base.html" %}
 
 {% block meta %}
-  <title>{{ page_title }} | Technofatty</title>
-  <meta name="description" content="Latest news and insights from Technofatty.">
+  {% if page_number > 1 %}
+    <title>{{ page_title }} — Page {{ page_number }} | Technofatty</title>
+    <meta name="description" content="Latest news and insights from Technofatty. Page {{ page_number }}.">
+    <meta property="og:title" content="{{ page_title }} — Page {{ page_number }} | Technofatty">
+    <meta property="og:description" content="Latest news and insights from Technofatty. Page {{ page_number }}.">
+    <meta name="twitter:title" content="{{ page_title }} — Page {{ page_number }} | Technofatty">
+    <meta name="twitter:description" content="Latest news and insights from Technofatty. Page {{ page_number }}.">
+  {% else %}
+    <title>{{ page_title }} | Technofatty</title>
+    <meta name="description" content="Latest news and insights from Technofatty.">
+    <meta property="og:title" content="{{ page_title }} | Technofatty">
+    <meta property="og:description" content="Latest news and insights from Technofatty.">
+    <meta name="twitter:title" content="{{ page_title }} | Technofatty">
+    <meta name="twitter:description" content="Latest news and insights from Technofatty.">
+  {% endif %}
   <link rel="canonical" href="{{ canonical_url }}">
-  <meta property="og:title" content="{{ page_title }} | Technofatty">
-  <meta property="og:description" content="Latest news and insights from Technofatty.">
+  {% if prev_page_link %}<link rel="prev" href="{{ prev_page_link }}">{% endif %}
+  {% if next_page_link %}<link rel="next" href="{{ next_page_link }}">{% endif %}
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Technofatty">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="{{ page_title }} | Technofatty">
-  <meta name="twitter:description" content="Latest news and insights from Technofatty.">
   <meta name="twitter:url" content="{{ canonical_url }}">
 {% endblock %}
 
