@@ -1,13 +1,11 @@
 {% extends "coresite/base.html" %}
-
 {% block content %}
 <main id="main" role="main">
   <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
-      <h1 id="{{ page_id }}-heading"><a href="{% url 'blog' %}">{{ page_title }}</a></h1>
-      <a href="{% url 'blog_rss' %}">RSS</a>
+      <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
       <div class="scaffold__body">
-        <p>Latest news and insights from Technofatty.</p>
+        <p><a href="{% url 'blog' %}">Back to Blog</a></p>
         <ul class="post-list">
           {% for post in posts %}
           <li class="post-list__item">
@@ -22,7 +20,6 @@
           </li>
           {% endfor %}
         </ul>
-        <p>Looking for more? Visit <a href="{% url 'knowledge' %}">Knowledge</a> or <a href="{% url 'resources' %}">Resources</a>.</p>
         <nav class="pager" aria-label="Pagination">
           <a href="{{ prev_page_url }}">Newer posts</a>
           <a href="{{ next_page_url }}">Older posts</a>
@@ -32,4 +29,3 @@
   </section>
 </main>
 {% endblock %}
-
