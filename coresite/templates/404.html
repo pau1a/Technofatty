@@ -3,12 +3,14 @@
 {% block title %}Page not found{% endblock %}
 
 {% block content %}
-<section id="error-section" class="section error" role="region" aria-labelledby="error-heading">
-  <div class="wrap">
-    <h1 id="error-heading">Sorry, we can't find that page.</h1>
-    <p>The page you're looking for doesn't exist. It may have been moved or deleted.</p>
-    <p><a href="/">Return home</a></p>
-  </div>
-</section>
+  <section class="section section--scaffold" role="region" aria-labelledby="error-404-heading">
+    <div class="wrap">
+      <h1 id="error-404-heading">Page not found</h1>
+      {% include "coresite/partials/global/status_placeholder.html" %}
+      <div class="scaffold__body"></div>
+      <p><a href="/">Home</a></p>
+      <p><a href="/support/faq/">Support FAQ</a></p>
+    </div>
+  </section>
 {% endblock %}
 
