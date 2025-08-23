@@ -1,5 +1,6 @@
 {% with prefix=id_prefix|default:'nav' %}
-{% if show_home|default:True %}
+{% if show_home|default:None != None %}
+{% if show_home %}
 <li><a href="/" data-analytics-event="nav_link_click" data-analytics-label="Home" data-analytics-url="/">Home</a></li>
 {% endif %}
 <li><a href="{% url 'knowledge' %}" data-analytics-event="nav_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
@@ -14,4 +15,37 @@
   {% endif %}
 </li>
 <li><a href="{% url 'blog' %}" data-analytics-event="nav_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
+{% elif request.resolver_match.url_name == 'home' %}
+<li><a href="{% url 'knowledge' %}" data-analytics-event="nav_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
+<li><a href="{% url 'tools' %}" data-analytics-event="nav_link_click" data-analytics-label="Tools" data-analytics-url="{% url 'tools' %}">Tools</a></li>
+<li><a href="{% url 'case_studies_landing' %}" data-analytics-event="nav_link_click" data-analytics-label="Case Studies" data-analytics-url="{% url 'case_studies_landing' %}">Case Studies</a></li>
+<li>
+  {% if user.is_authenticated %}
+    <a href="{% url 'community' %}" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'community' %}">Community</a>
+  {% else %}
+    <a href="{% url 'join' %}" aria-describedby="{{ prefix }}-community-locked" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'join' %}">Community</a>
+    <span id="{{ prefix }}-community-locked" class="sr-only">Available after you join.</span>
+  {% endif %}
+</li>
+<li><a href="{% url 'blog' %}" data-analytics-event="nav_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
+{% else %}
+<li><a href="/" data-analytics-event="nav_link_click" data-analytics-label="Home" data-analytics-url="/">Home</a></li>
+<li><a href="{% url 'knowledge' %}" data-analytics-event="nav_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
+<li class="has-submenu">
+  <a href="{% url 'resources' %}" data-analytics-event="nav_link_click" data-analytics-label="Resources" data-analytics-url="{% url 'resources' %}" aria-haspopup="true">Resources</a>
+  <ul class="sub-menu">
+    <li><a href="{% url 'tools' %}" data-analytics-event="nav_link_click" data-analytics-label="Tools" data-analytics-url="{% url 'tools' %}">Tools</a></li>
+    <li><a href="{% url 'case_studies_landing' %}" data-analytics-event="nav_link_click" data-analytics-label="Case Studies" data-analytics-url="{% url 'case_studies_landing' %}">Case Studies</a></li>
+  </ul>
+</li>
+<li>
+  {% if user.is_authenticated %}
+    <a href="{% url 'community' %}" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'community' %}">Community</a>
+  {% else %}
+    <a href="{% url 'join' %}" aria-describedby="{{ prefix }}-community-locked" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'join' %}">Community</a>
+    <span id="{{ prefix }}-community-locked" class="sr-only">Available after you join.</span>
+  {% endif %}
+</li>
+<li><a href="{% url 'blog' %}" data-analytics-event="nav_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
+{% endif %}
 {% endwith %}
