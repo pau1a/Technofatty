@@ -6,17 +6,19 @@
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "{{ post.title|escapejs }}",
-  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog_post' post.slug %}",
-  "datePublished": "{{ post.date|date:'Y-m-d' }}",
-  "dateModified": "{{ post.date|date:'Y-m-d' }}",
+  "url": "{{ canonical_url }}",
+  "mainEntityOfPage": "{{ canonical_url }}",
+  "datePublished": "{{ post.date|date:'c' }}",
+  "dateModified": "{{ post.date|date:'c' }}",
   "author": {
-    "@type": "Person",
+    "@type": "Organization",
     "name": "Technofatty"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Technofatty"
   },
+  "description": "{{ post.excerpt|default:'A blog post on Technofatty.'|escapejs }}",
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -36,7 +38,7 @@
         "@type": "ListItem",
         "position": 3,
         "name": "{{ post.title|escapejs }}",
-        "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog_post' post.slug %}"
+        "item": "{{ canonical_url }}"
       }
     ]
   }

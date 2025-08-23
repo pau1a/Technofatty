@@ -6,7 +6,7 @@
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   "name": "Blog",
-  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}",
+  "url": "{{ canonical_url }}",
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -20,7 +20,7 @@
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}"
+        "item": "{{ canonical_url }}"
       }
     ]
   }
