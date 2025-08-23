@@ -341,11 +341,27 @@ def community(request):
 
 def blog(request):
     footer = get_footer_content()
+    posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)
+    featured_post = posts[0] if posts else None
+    remaining_posts = posts[1:] if posts else []
+    categories = {
+        (p["category"]["slug"], p["category"]["title"]) for p in posts
+    }
+    tags = {
+        (t["slug"], t["title"]) for p in posts for t in p["tags"]
+    }
     context = {
         "footer": footer,
         "page_id": "blog",
         "page_title": "Blog",
-        "posts": BLOG_POSTS,
+        "featured_post": featured_post,
+        "posts": remaining_posts,
+        "categories": [
+            {"slug": slug, "title": title} for slug, title in sorted(categories)
+        ],
+        "tags": [
+            {"slug": slug, "title": title} for slug, title in sorted(tags)
+        ],
         "next_page_url": "#",
         "prev_page_url": "#",
         "canonical_url": f"{BASE_CANONICAL}/blog/",
