@@ -1,5 +1,7 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
+from django.utils import timezone
+from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
 from .models import SiteImage
 from datetime import datetime
@@ -420,14 +422,33 @@ def blog_tag(request, tag_slug: str):
 
 
 def blog_rss(request):
-    footer = get_footer_content()
-    context = {
-        "footer": footer,
-        "page_id": "blog-rss",
-        "page_title": "Blog RSS",
-        "canonical_url": f"{BASE_CANONICAL}/blog/rss/",
-    }
-    return render(request, "coresite/blog_rss.html", context)
+    """Return an RSS 2.0 feed of recent blog posts."""
+    feed = Rss201rev2Feed(
+        title="Technofatty Blog",
+        link=f"{BASE_CANONICAL}/blog/",
+        description="Latest news and insights from Technofatty.",
+    )
+
+    posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)[:10]
+    for post in posts:
+        pubdate = post["date"]
+        if timezone.is_naive(pubdate):
+            pubdate = timezone.make_aware(pubdate, timezone.utc)
+        feed.add_item(
+            title=post["title"],
+            link=f"{BASE_CANONICAL}/blog/{post['slug']}/",
+            description=post["excerpt"],
+            unique_id=f"{BASE_CANONICAL}/blog/{post['slug']}/",
+            pubdate=pubdate,
+        )
+
+    if feed.latest_post_date is None:
+        feed.latest_post_date = timezone.now()
+
+    rss_content = feed.writeString("utf-8")
+    return HttpResponse(
+        rss_content, content_type="application/rss+xml; charset=utf-8"
+    )
 
 
 def join(request):

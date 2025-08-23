@@ -4,9 +4,11 @@
 <main id="main" role="main">
   <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
-      <h1 id="{{ page_id }}-heading"><a href="{% url 'blog' %}">{{ page_title }}</a></h1>
-        <a href="{% url 'blog_rss' %}">RSS</a>
-        <div class="scaffold__body">
+      <div class="scaffold__header">
+        <h1 id="{{ page_id }}-heading"><a href="{% url 'blog' %}">{{ page_title }}</a></h1>
+        <a class="rss-link" href="{% url 'blog_rss' %}">RSS</a>
+      </div>
+      <div class="scaffold__body">
           {% include "coresite/partials/global/status_placeholder.html" %}
           <p>Latest news and insights from Technofatty.</p>
           <div class="blog-layout">
