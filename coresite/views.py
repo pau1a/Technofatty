@@ -353,14 +353,34 @@ def community(request):
 def blog(request):
     footer = get_footer_content()
     posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)
-    featured_post = posts[0] if posts else None
-    remaining_posts = posts[1:] if posts else []
+
+    # Basic pagination over in-memory posts to enable proper SEO signals.
+    from django.core.paginator import Paginator, EmptyPage
+
+    page_number = int(request.GET.get("page", 1))
+    paginator = Paginator(posts, 4)
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        raise Http404
+
+    page_posts = list(page_obj.object_list)
+    featured_post = page_posts[0] if page_number == 1 and page_posts else None
+    remaining_posts = page_posts[1:] if page_number == 1 else page_posts
+
     categories = {
         (p["category"]["slug"], p["category"]["title"]) for p in posts
     }
     tags = {
         (t["slug"], t["title"]) for p in posts for t in p["tags"]
     }
+
+    def absolute_page_url(num: int) -> str:
+        return f"{BASE_CANONICAL}/blog/" if num == 1 else f"{BASE_CANONICAL}/blog/?page={num}"
+
+    prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
+    next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
+
     context = {
         "footer": footer,
         "page_id": "blog",
@@ -373,9 +393,13 @@ def blog(request):
         "tags": [
             {"slug": slug, "title": title} for slug, title in sorted(tags)
         ],
-        "next_page_url": "#",
-        "prev_page_url": "#",
-        "canonical_url": f"{BASE_CANONICAL}/blog/",
+        "next_page_url": next_page or "#",
+        "prev_page_url": prev_page or "#",
+        "canonical_url": absolute_page_url(page_number),
+        "page_number": page_number,
+        "total_pages": paginator.num_pages,
+        "prev_page_link": prev_page,
+        "next_page_link": next_page,
     }
     return render(request, "coresite/blog.html", context)
 
