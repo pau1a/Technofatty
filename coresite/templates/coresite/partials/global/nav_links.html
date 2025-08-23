@@ -1,14 +1,16 @@
 {% with prefix=id_prefix|default:'nav' %}
-{% if show_home|default:True %}<li><a href="/">Home</a></li>{% endif %}
-<li><a href="{% url 'knowledge' %}">Knowledge</a></li>
-<li><a href="{% url 'tools' %}">Tools</a></li>
+{% if show_home|default:True %}
+<li><a href="/" data-analytics-event="nav_link_click" data-analytics-label="Home" data-analytics-url="/">Home</a></li>
+{% endif %}
+<li><a href="{% url 'knowledge' %}" data-analytics-event="nav_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
+<li><a href="{% url 'tools' %}" data-analytics-event="nav_link_click" data-analytics-label="Tools" data-analytics-url="{% url 'tools' %}">Tools</a></li>
 <li>
   {% if user.is_authenticated %}
-    <a href="{% url 'community' %}">Community</a>
+    <a href="{% url 'community' %}" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'community' %}">Community</a>
   {% else %}
-    <a href="{% url 'join' %}" aria-describedby="{{ prefix }}-community-locked">Community</a>
+    <a href="{% url 'join' %}" aria-describedby="{{ prefix }}-community-locked" data-analytics-event="nav_link_click" data-analytics-label="Community" data-analytics-url="{% url 'join' %}">Community</a>
     <span id="{{ prefix }}-community-locked" class="sr-only">Available after you join.</span>
   {% endif %}
 </li>
-<li><a href="{% url 'blog' %}">Blog</a></li>
+<li><a href="{% url 'blog' %}" data-analytics-event="nav_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
 {% endwith %}

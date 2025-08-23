@@ -1,0 +1,17 @@
+{% extends "coresite/base.html" %}
+
+{% block content %}
+<section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
+  <div class="wrap">
+    <h1 id="{{ page_id }}-heading">{{ article.title }}</h1>
+    <div class="knowledge__article-body">
+      <!-- Future article content goes here -->
+    </div>
+    <p><a href="{% url 'knowledge_category' category.slug %}"
+          data-analytics-event="knowledge_back_click"
+          data-analytics-label="{{ category.title }}"
+          data-analytics-url="{% url 'knowledge_category' category.slug %}">Back to {{ category.title }}</a></p>
+  </div>
+</section>
+{% endblock %}
+

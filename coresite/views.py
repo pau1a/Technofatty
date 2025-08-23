@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 from newsletter.utils import log_newsletter_event
 from .models import SiteImage
@@ -9,6 +10,33 @@ from .footer import get_footer_content
 
 
 BASE_CANONICAL = "https://technofatty.com"
+
+
+KNOWLEDGE_CATEGORIES = [
+    {"title": "AI Basics", "slug": "ai-basics"},
+    {"title": "Data Strategy", "slug": "data-strategy"},
+    {"title": "Automation", "slug": "automation"},
+]
+
+KNOWLEDGE_ARTICLES = {
+    "ai-basics": [
+        {
+            "title": "What Is AI?",
+            "slug": "what-is-ai",
+            "blurb": "A quick introduction to artificial intelligence.",
+        },
+        {
+            "title": "History of AI",
+            "slug": "history-of-ai",
+            "blurb": "From early concepts to modern breakthroughs.",
+        },
+        {
+            "title": "Future of AI",
+            "slug": "future-of-ai",
+            "blurb": "Where the technology may be heading next.",
+        },
+    ]
+}
 
 
 def homepage(request):
@@ -72,16 +100,61 @@ def community_join(request):
 
 def knowledge(request):
     footer = get_footer_content()
-    return render(
-        request,
-        "coresite/knowledge.html",
-        {
-            "footer": footer,
-            "page_id": "knowledge",
-            "page_title": "Knowledge",
-            "canonical_url": f"{BASE_CANONICAL}/knowledge/",
-        },
+    context = {
+        "footer": footer,
+        "page_id": "knowledge",
+        "page_title": "Knowledge",
+        "categories": KNOWLEDGE_CATEGORIES,
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/",
+    }
+    return render(request, "coresite/knowledge/hub.html", context)
+
+
+def knowledge_category(request, category_slug: str):
+    footer = get_footer_content()
+    category = next(
+        (c for c in KNOWLEDGE_CATEGORIES if c["slug"] == category_slug), None
     )
+    if not category:
+        raise Http404
+    articles = KNOWLEDGE_ARTICLES.get(category_slug, [])
+    context = {
+        "footer": footer,
+        "page_id": f"knowledge-{category_slug}",
+        "page_title": category["title"],
+        "category": category,
+        "articles": articles,
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/",
+    }
+    return render(request, "coresite/knowledge/category.html", context)
+
+
+def knowledge_article(request, category_slug: str, article_slug: str):
+    footer = get_footer_content()
+    category = next(
+        (c for c in KNOWLEDGE_CATEGORIES if c["slug"] == category_slug), None
+    )
+    if not category:
+        raise Http404
+    article = next(
+        (
+            a
+            for a in KNOWLEDGE_ARTICLES.get(category_slug, [])
+            if a["slug"] == article_slug
+        ),
+        None,
+    )
+    if not article:
+        raise Http404
+    context = {
+        "footer": footer,
+        "page_id": f"knowledge-{article_slug}",
+        "page_title": article["title"],
+        "category": category,
+        "article": article,
+        "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/{article_slug}/",
+    }
+    return render(request, "coresite/knowledge/article.html", context)
 
 
 def case_studies(request):

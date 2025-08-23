@@ -1,0 +1,23 @@
+{% extends "coresite/base.html" %}
+
+{% block content %}
+<section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
+  <div class="wrap">
+    <h1 id="{{ page_id }}-heading">{{ category.title }}</h1>
+    <div class="knowledge__articles">
+      {% for article in articles %}
+      <article class="knowledge__teaser">
+        <h2>
+          <a href="{% url 'knowledge_article' category.slug article.slug %}"
+             data-analytics-event="knowledge_article_click"
+             data-analytics-label="{{ article.title }}"
+             data-analytics-url="{% url 'knowledge_article' category.slug article.slug %}">{{ article.title }}</a>
+        </h2>
+        <p>{{ article.blurb }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
