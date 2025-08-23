@@ -10,6 +10,7 @@
   {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}
   <link rel="stylesheet" href="{% sass_src 'coresite/scss/main.scss' %}">
   {% block head_extras %}{% endblock %}
+  {% block structured_data %}{% endblock %}
 </head>
 
 <body {% block body_class %}{% endblock %}
