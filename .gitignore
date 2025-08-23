@@ -41,3 +41,6 @@ htmlcov/
 .tox/
 .coverage
 .pytest_cache/
+
+# Generated CSS
+coresite/static/coresite/scss/*.css
