@@ -126,6 +126,20 @@ def blog(request):
     )
 
 
+def join(request):
+    footer = get_footer_content()
+    return render(
+        request,
+        "coresite/join.html",
+        {
+            "footer": footer,
+            "page_id": "join",
+            "page_title": "Join Free",
+            "canonical_url": f"{BASE_CANONICAL}/join/",
+        },
+    )
+
+
 def signup(request):
     footer = get_footer_content()
     return render(
