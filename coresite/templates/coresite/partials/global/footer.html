@@ -10,27 +10,31 @@
       {% if footer.intro %}
         <p class="footer__intro">{{ footer.intro }}</p>
       {% endif %}
-      <ul class="footer__links">
-        <li><a href="{% url 'knowledge' %}" data-analytics-event="footer_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
-        <li><a href="{% url 'tools' %}" data-analytics-event="footer_link_click" data-analytics-label="Tools" data-analytics-url="{% url 'tools' %}">Tools</a></li>
-        <li>
+      {% if use_shared_footer_links %}
+        {% include "coresite/includes/footer_links.html" %}
+      {% else %}
+        <ul class="footer__links">
+          <li><a href="{% url 'knowledge' %}" data-analytics-event="footer_link_click" data-analytics-label="Knowledge" data-analytics-url="{% url 'knowledge' %}">Knowledge</a></li>
+          <li><a href="{% url 'tools' %}" data-analytics-event="footer_link_click" data-analytics-label="Tools" data-analytics-url="{% url 'tools' %}">Tools</a></li>
+          <li>
+            {% if user.is_authenticated %}
+              <a href="{% url 'community' %}" data-analytics-event="footer_link_click" data-analytics-label="Community" data-analytics-url="{% url 'community' %}">Community</a>
+            {% else %}
+              <a href="{% url 'join' %}" aria-describedby="footer-community-locked" data-analytics-event="footer_link_click" data-analytics-label="Community" data-analytics-url="{% url 'join' %}">Community</a>
+              <span id="footer-community-locked" class="sr-only">Available after you join.</span>
+            {% endif %}
+          </li>
+          <li><a href="{% url 'blog' %}" data-analytics-event="footer_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
           {% if user.is_authenticated %}
-            <a href="{% url 'community' %}" data-analytics-event="footer_link_click" data-analytics-label="Community" data-analytics-url="{% url 'community' %}">Community</a>
+            <li><a href="{% url 'account' %}" data-analytics-event="footer_link_click" data-analytics-label="Account" data-analytics-url="{% url 'account' %}">Account</a></li>
           {% else %}
-            <a href="{% url 'join' %}" aria-describedby="footer-community-locked" data-analytics-event="footer_link_click" data-analytics-label="Community" data-analytics-url="{% url 'join' %}">Community</a>
-            <span id="footer-community-locked" class="sr-only">Available after you join.</span>
+            <li><a href="{% url 'join' %}" data-analytics-event="footer_link_click" data-analytics-label="Join Free" data-analytics-url="{% url 'join' %}">Join Free</a></li>
           {% endif %}
-        </li>
-        <li><a href="{% url 'blog' %}" data-analytics-event="footer_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
-        {% if user.is_authenticated %}
-          <li><a href="{% url 'account' %}" data-analytics-event="footer_link_click" data-analytics-label="Account" data-analytics-url="{% url 'account' %}">Account</a></li>
-        {% else %}
-          <li><a href="{% url 'join' %}" data-analytics-event="footer_link_click" data-analytics-label="Join Free" data-analytics-url="{% url 'join' %}">Join Free</a></li>
-        {% endif %}
-        <li><a href="{% url 'about' %}" data-analytics-event="footer_link_click" data-analytics-label="About" data-analytics-url="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'contact' %}" data-analytics-event="footer_link_click" data-analytics-label="Contact" data-analytics-url="{% url 'contact' %}">Contact</a></li>
-        <li><a href="{% url 'legal' %}" data-analytics-event="footer_link_click" data-analytics-label="Legal" data-analytics-url="{% url 'legal' %}">Legal</a></li>
-      </ul>
+          <li><a href="{% url 'about' %}" data-analytics-event="footer_link_click" data-analytics-label="About" data-analytics-url="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'contact' %}" data-analytics-event="footer_link_click" data-analytics-label="Contact" data-analytics-url="{% url 'contact' %}">Contact</a></li>
+          <li><a href="{% url 'legal' %}" data-analytics-event="footer_link_click" data-analytics-label="Legal" data-analytics-url="{% url 'legal' %}">Legal</a></li>
+        </ul>
+      {% endif %}
     </div>
   </nav>
   {% if footer.meta %}
