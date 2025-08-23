@@ -1,1 +1,5 @@
-<a class="btn btn--cta" href="/community/join/" data-analytics-event="cta.nav.join">Join Us</a>
+{% if user.is_authenticated %}
+<a class="btn btn--cta" href="{% url 'account' %}">Account</a>
+{% else %}
+<a class="btn btn--cta" href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
