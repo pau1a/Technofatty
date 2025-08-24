@@ -31,8 +31,7 @@ ENV = os.environ.get("ENV", "development")
 BUILD_BRANCH = os.environ.get("TF_BUILD_BRANCH", "")
 BUILD_COMMIT = os.environ.get("TF_BUILD_COMMIT", "")
 BUILD_DATETIME = os.environ.get("TF_BUILD_DATETIME", "")
-SHOW_BUILD_BANNER = os.environ.get("TF_SHOW_BUILD_BANNER", "false").lower() == "true"
-# Banner visibility is controlled solely via TF_SHOW_BUILD_BANNER
+SHOW_BUILD_BANNER = True  # temporarily display on all environments
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",

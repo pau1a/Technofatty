@@ -15,5 +15,4 @@ def build_metadata(request):
         'build_branch': getattr(settings, 'BUILD_BRANCH', ''),
         'build_commit': getattr(settings, 'BUILD_COMMIT', ''),
         'build_datetime': getattr(settings, 'BUILD_DATETIME', ''),
-        'show_build_banner': getattr(settings, 'SHOW_BUILD_BANNER', False),
     }
