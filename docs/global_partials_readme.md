@@ -94,11 +94,8 @@ Analytics is tied to the site's consent banner. Until a user grants tracking per
 - All templates → analytics
 - `coresite/templates/coresite/homepage.html` → header_nav, hero, trust, featured_grid, newsletter_block, signals_block, support_block, community_block
 - `coresite/templates/coresite/about.html` → header_nav
-- `coresite/templates/coresite/community_join.html` → header_nav
 - `coresite/templates/coresite/contact.html` → header_nav
 - `coresite/templates/coresite/legal.html` → header_nav
-- `coresite/templates/coresite/services.html` → header_nav
-- `coresite/templates/coresite/signal_placeholder.html` → header_nav
 - `coresite/templates/coresite/support.html` → header_nav
 
 Pages without additional partials are intentionally minimal; they inherit analytics, the header, and footer via `base.html`.
