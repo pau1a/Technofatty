@@ -6,3 +6,4 @@
 - Added logging filter to skip static requests and optional Sentry wiring.
 - Updated robots.txt view to rely on environment flag.
 - Documented default environment values in `.env.example` for deterministic deploys.
+- Handled empty `DJANGO_ALLOWED_HOSTS` values by falling back to defaults.

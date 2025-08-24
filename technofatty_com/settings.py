@@ -37,13 +37,15 @@ if not SECRET_KEY:
 # DEBUG automatically off in production
 DEBUG = not IS_PRODUCTION
 
-# Allowed hosts derive from environment
+# Allowed hosts derive from environment; empty env var falls back to defaults
 _default_hosts = (
     "technofatty.com,www.technofatty.com"
     if IS_PRODUCTION
     else "localhost,127.0.0.1,testserver"
 )
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", _default_hosts).split(",")
+_host_env = os.environ.get("DJANGO_ALLOWED_HOSTS")
+host_source = _host_env if _host_env else _default_hosts
+ALLOWED_HOSTS = [h.strip() for h in host_source.split(",") if h.strip()]
 # -------------------------------------------------
 # Applications
 # -------------------------------------------------

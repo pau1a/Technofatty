@@ -1,5 +1,6 @@
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
+from django.conf import settings
 
 
 class BlogRssTests(TestCase):
@@ -105,3 +106,9 @@ class RobotsTxtTests(SimpleTestCase):
     def test_production_allows(self):
         response = self.client.get(reverse("robots_txt"))
         self.assertContains(response, "Allow: /")
+
+
+class SettingsSanityTests(SimpleTestCase):
+    def test_no_empty_allowed_hosts(self):
+        self.assertTrue(settings.ALLOWED_HOSTS)
+        self.assertNotIn("", settings.ALLOWED_HOSTS)
