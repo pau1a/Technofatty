@@ -4,6 +4,7 @@ Cleaned up for SCSS + Bootstrap, env-based secrets, and sane static handling.
 """
 from pathlib import Path
 import os
+import subprocess
 from datetime import datetime, timezone
 
 # -------------------------------------------------
@@ -49,6 +50,23 @@ BUILD_DATETIME = (
     or os.environ.get("BUILD_DATETIME")
     or ""
 )
+
+
+def _git_output(args):
+    try:
+        return subprocess.check_output(args, cwd=BASE_DIR, text=True).strip()
+    except Exception:
+        return ""
+
+
+if not _raw_branch:
+    _raw_branch = _git_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+if not _raw_commit:
+    _raw_commit = _git_output(["git", "rev-parse", "HEAD"])
+if not BUILD_DATETIME:
+    BUILD_DATETIME = _git_output(["git", "show", "-s", "--format=%cI"])
+    if not BUILD_DATETIME:
+        BUILD_DATETIME = datetime.now(timezone.utc).isoformat()
 
 _raw_branch = _raw_branch.strip()
 _raw_commit = _raw_commit.strip()
