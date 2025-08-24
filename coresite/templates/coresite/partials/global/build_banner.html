@@ -1,3 +1,5 @@
+{% if show_build_banner %}
 <div class="build-banner" role="status" aria-live="polite" aria-label="Build information">
   Branch: {{ build_branch|default:"n/a" }} — {{ build_commit|default:"n/a" }} — {{ build_datetime|default:"n/a" }}
 </div>
+{% endif %}
