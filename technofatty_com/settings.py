@@ -32,9 +32,31 @@ ENV = os.environ.get("ENV", "development")
 # Build metadata injected at deploy time
 # Falls back to local git values when running in DEBUG
 
-_raw_branch = os.environ.get("TF_BUILD_BRANCH") or os.environ.get("BUILD_BRANCH", "")
-_raw_commit = os.environ.get("TF_BUILD_COMMIT") or os.environ.get("BUILD_COMMIT", "")
-BUILD_DATETIME = os.environ.get("TF_BUILD_DATETIME") or os.environ.get("BUILD_DATETIME", "")
+_raw_branch = (
+    os.environ.get("TF_BUILD_BRANCH")
+    or os.environ.get("TF_BRANCH")
+    or os.environ.get("BUILD_BRANCH")
+    or os.environ.get("GIT_BRANCH")
+    or os.environ.get("CI_COMMIT_REF_NAME")
+    or ""
+)
+_raw_commit = (
+    os.environ.get("TF_BUILD_COMMIT")
+    or os.environ.get("TF_COMMIT")
+    or os.environ.get("BUILD_COMMIT")
+    or os.environ.get("GIT_COMMIT")
+    or os.environ.get("CI_COMMIT_SHA")
+    or ""
+)
+BUILD_DATETIME = (
+    os.environ.get("TF_BUILD_DATETIME")
+    or os.environ.get("BUILD_DATETIME")
+    or ""
+)
+
+_raw_branch = _raw_branch.strip()
+_raw_commit = _raw_commit.strip()
+BUILD_DATETIME = BUILD_DATETIME.strip()
 
 if DEBUG and not _raw_branch:
     try:
