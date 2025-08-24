@@ -1,18 +1,9 @@
 {% extends "coresite/base.html" %}
 
 {% block meta %}
-  <title>{{ page_title }} | Technofatty</title>
-  <meta name="description" content="Guides and insights from Technofatty.">
-  <link rel="canonical" href="{{ canonical_url }}">
-  <meta property="og:title" content="{{ page_title }} | Technofatty">
-  <meta property="og:description" content="Guides and insights from Technofatty.">
-  <meta property="og:url" content="{{ canonical_url }}">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Technofatty">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="{{ page_title }} | Technofatty">
-  <meta name="twitter:description" content="Guides and insights from Technofatty.">
-  <meta name="twitter:url" content="{{ canonical_url }}">
+  {% with meta_description="Guides and insights from Technofatty." %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
 {% endblock %}
 
 {% block structured_data %}

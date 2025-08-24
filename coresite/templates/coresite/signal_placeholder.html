@@ -1,6 +1,14 @@
 {% extends "coresite/base.html" %}
 {% block structured_data %}{% endblock %}
-{% block title %}Signal: {{ slug|title }}{% endblock %}
+
+{% block meta %}
+  {% with formatted_slug=slug|title %}
+    {% with page_title='Signal: '|add:formatted_slug meta_description='Full signal coming soon.' %}
+      {% include "coresite/partials/seo/meta_head.html" %}
+    {% endwith %}
+  {% endwith %}
+{% endblock %}
+
 {% block content %}
 <section class="section" role="region" aria-labelledby="signal-placeholder-heading">
   <div class="wrap">

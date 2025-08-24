@@ -2,8 +2,11 @@
 {% load static %}
 {% block structured_data %}{% endblock %}
 {% block body_class %}class="is-home"{% endblock %}
-{% block title %}Technofatty Front Page{% endblock %}
-{% block meta_description %}Modern tech resources—fast, accessible, and community-driven.{% endblock %}
+{% block meta %}
+  {% with page_title="Technofatty Front Page" meta_description="Modern tech resources—fast, accessible, and community-driven." %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 
 {% block content %}
   {% include "coresite/partials/hero.html" %}

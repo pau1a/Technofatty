@@ -1,0 +1,30 @@
+{% load seo_tags %}
+{% canonical_url canonical_url as resolved_canonical %}
+{% if page_title %}{% with full_title=page_title|add:' | Technofatty' %}
+<title>{{ full_title }}</title>
+<meta property="og:title" content="{{ full_title }}">
+<meta name="twitter:title" content="{{ full_title }}">
+{% endwith %}
+{% else %}
+<title>Technofatty</title>
+<meta property="og:title" content="Technofatty">
+<meta name="twitter:title" content="Technofatty">
+{% endif %}
+{% with desc=meta_description|default:"Tech resources and community." %}
+<meta name="description" content="{{ desc }}">
+<meta property="og:description" content="{{ desc }}">
+<meta name="twitter:description" content="{{ desc }}">
+{% endwith %}
+<link rel="canonical" href="{{ resolved_canonical }}">
+<meta property="og:url" content="{{ resolved_canonical }}">
+<meta property="og:type" content="{{ og_type|default:'website' }}">
+<meta property="og:site_name" content="Technofatty">
+{% if og_image_url %}
+<meta property="og:image" content="{{ og_image_url }}">
+{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ resolved_canonical }}">
+{% if og_image_url %}
+<meta name="twitter:image" content="{{ og_image_url }}">
+{% endif %}
+

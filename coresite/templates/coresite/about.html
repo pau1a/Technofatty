@@ -1,19 +1,13 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}About – Technofatty{% endblock %}
-
-{% block meta_description %}Discover Technofatty's mission and team values.{% endblock %}<!-- [ref:mission] [ref:team-values] -->
+{% block meta %}
+  {% with page_title="About" meta_description="Discover Technofatty's mission and team values." canonical_url="https://technofatty.com/about/" %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 
 {% block head_extras %}
   <meta name="robots" content="index,follow">
-  <meta property="og:title" content="About – Technofatty">
-  <meta property="og:description" content="Discover Technofatty's mission and team values."><!-- [ref:mission] [ref:team-values] -->
-  <meta property="og:url" content="https://technofatty.com/about/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="About – Technofatty">
-  <meta name="twitter:description" content="Discover Technofatty's mission and team values."><!-- [ref:mission] [ref:team-values] -->
-  <meta name="twitter:url" content="https://technofatty.com/about/">
 {% endblock %}
 
 {% block structured_data %}

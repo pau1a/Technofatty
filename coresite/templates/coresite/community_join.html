@@ -1,8 +1,11 @@
 {% extends "coresite/base.html" %}
 {% load static %}
 {% block structured_data %}{% endblock %}
-{% block title %}Join the Technofatty Community{% endblock %}
-{% block meta_description %}Join the Technofatty community for updates, tools, and early access while we’re building.{% endblock %}
+{% block meta %}
+  {% with page_title="Join the Technofatty Community" meta_description="Join the Technofatty community for updates, tools, and early access while we’re building." %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 
 {% block content %}
 <section class="section section--scaffold" role="region" aria-labelledby="community-join-heading" data-section="community-join">
