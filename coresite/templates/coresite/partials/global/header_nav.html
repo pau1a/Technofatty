@@ -33,8 +33,10 @@
       {% include 'coresite/partials/global/nav_cta.html' %}
       <button class="menu-overlay__close" aria-label="Close menu">&times;</button>
     </div>
-    <ul class="menu-overlay__links">
-      {% include 'coresite/partials/global/nav_links.html' with id_prefix='mobile' %}
-    </ul>
+    <nav aria-label="Mobile">
+      <ul class="menu-overlay__links">
+        {% include 'coresite/partials/global/nav_links.html' with id_prefix='mobile' %}
+      </ul>
+    </nav>
   </div>
 </div>
