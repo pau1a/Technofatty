@@ -24,6 +24,17 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "CHANGE_ME_DEV_ONLY")
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 #DEBUG = False
 
+# Application environment (development, production, etc.)
+ENV = os.environ.get("ENV", "development")
+
+# Build metadata injected at deploy time
+BUILD_BRANCH = os.environ.get("TF_BUILD_BRANCH", "")
+BUILD_COMMIT = os.environ.get("TF_BUILD_COMMIT", "")
+BUILD_DATETIME = os.environ.get("TF_BUILD_DATETIME", "")
+SHOW_BUILD_BANNER = os.environ.get("TF_SHOW_BUILD_BANNER", "false").lower() == "true"
+if ENV == "production" or not DEBUG:
+    SHOW_BUILD_BANNER = False
+
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
     "technofatty.com,www.technofatty.com,localhost,127.0.0.1"
@@ -75,6 +86,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "coresite.context_processors.analytics_flags",
+                "coresite.context_processors.build_metadata",
             ],
         },
     },
