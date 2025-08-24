@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase, TestCase
+from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 
@@ -94,3 +94,14 @@ class UrlResolutionTests(SimpleTestCase):
         for name in names:
             with self.subTest(name=name):
                 self.assertIsInstance(reverse(name), str)
+
+
+class RobotsTxtTests(SimpleTestCase):
+    def test_non_production_disallows(self):
+        response = self.client.get(reverse("robots_txt"))
+        self.assertContains(response, "Disallow: /")
+
+    @override_settings(IS_PRODUCTION=True)
+    def test_production_allows(self):
+        response = self.client.get(reverse("robots_txt"))
+        self.assertContains(response, "Allow: /")

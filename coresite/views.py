@@ -1,6 +1,7 @@
 from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.conf import settings
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
@@ -507,19 +508,14 @@ def sitemap_xml(request):
 
 
 def robots_txt(request):
-    host = request.get_host().split(":")[0].lower()
-    production_hosts = {"technofatty.com", "www.technofatty.com"}
-    if host in production_hosts:
+    if settings.IS_PRODUCTION:
         lines = [
             "User-agent: *",
             "Allow: /",
             "Sitemap: https://technofatty.com/sitemap.xml",
         ]
     else:
-        lines = [
-            "User-agent: *",
-            "Disallow: /",
-        ]
+        lines = ["User-agent: *", "Disallow: /"]
     return HttpResponse("\n".join(lines), content_type="text/plain; charset=utf-8")
 
 
