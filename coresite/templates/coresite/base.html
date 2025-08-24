@@ -32,9 +32,6 @@
 
   {% include 'coresite/partials/global/footer.html' %}
 
-  {% if ANALYTICS_ENABLED %}
-    <script src="{% static 'coresite/js/analytics.js' %}?v={{ now|date:'U' }}" defer></script>
-  {% endif %}
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
   {% block body_scripts %}{% endblock %}
 </body>
