@@ -2,7 +2,7 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  min-height: var(--hero-min-h, #{map-get($dimensions, hero-min-h)});
   overflow: hidden; // keeps background contained
   isolation: isolate;
   background: transparent;
@@ -50,9 +50,9 @@
   text-align: center;
   color: c(text);
   width: 100%;
-  max-width: calc(#{$container-max} - 2rem);
+  max-width: calc(var(--container-max, #{$container-max}) - var(--space-6, #{map-get($space, 6)}));
   margin-inline: auto;
-  padding-block: 8rem;
+  padding-block: var(--hero-pad-block, #{map-get($dimensions, hero-pad-block)});
 
   display: flex;
   flex-direction: column;
@@ -61,14 +61,14 @@
 
   h1 {
     color: c(blue);
-    @include fluid-type(1.8rem, 3rem);
+    @include fluid-type(fs(display-sm), fs(display-lg));
     line-height: 1.1;
-    margin: 0 0 0.6rem;
+    margin: 0 0 s(2);
   }
 
   .hero__sub {
-    @include fluid-type(1rem, 1.25rem);
-    margin: 0 0 1.25rem;
+    @include fluid-type(fs(base), fs(lg));
+    margin: 0 0 s(5);
   }
 
   .hero__cta {
@@ -80,7 +80,7 @@
 
   .hero__widelogo {
     width: 40%;
-    max-width: 900px;
+    max-width: var(--hero-logo-max-w, #{map-get($dimensions, hero-logo-max-w)});
     margin-bottom: 3vh;
   }
 }

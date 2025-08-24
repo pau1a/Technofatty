@@ -1,16 +1,22 @@
 // Map readers (fail loudly if a key is missing)
 @function c($name) {
-  @if map-has-key($colors, $name) { @return map-get($colors, $name); }
+  @if map-has-key($colors, $name) {
+    @return var(--color-#{$name}, #{map-get($colors, $name)});
+  }
   @error "colors[#{$name}] not found in $colors map.";
 }
 
 @function s($step) {
-  @if map-has-key($space, $step) { @return map-get($space, $step); }
+  @if map-has-key($space, $step) {
+    @return var(--space-#{$step}, #{map-get($space, $step)});
+  }
   @error "space[#{$step}] not found in $space map.";
 }
 
 @function r($key) {
-  @if map-has-key($radii, $key) { @return map-get($radii, $key); }
+  @if map-has-key($radii, $key) {
+    @return var(--radius-#{$key}, #{map-get($radii, $key)});
+  }
   @error "radii[#{$key}] not found in $radii map.";
 }
 
@@ -20,11 +26,43 @@
 }
 
 @function fs($key) {
-  @if map-has-key($font-sizes, $key) { @return map-get($font-sizes, $key); }
+  @if map-has-key($font-sizes, $key) {
+    @return var(--font-size-#{$key}, #{map-get($font-sizes, $key)});
+  }
   @error "font-sizes[#{$key}] not found in $font-sizes map.";
 }
 
 @function z($key) {
-  @if map-has-key($z, $key) { @return map-get($z, $key); }
+  @if map-has-key($z, $key) {
+    @return var(--z-#{$key}, #{map-get($z, $key)});
+  }
   @error "z[#{$key}] not found in $z map.";
+}
+
+@function dim($key) {
+  @if map-has-key($dimensions, $key) {
+    @return var(--#{$key}, #{map-get($dimensions, $key)});
+  }
+  @error "dimensions[#{$key}] not found in $dimensions map.";
+}
+
+@function bw($key) {
+  @if map-has-key($border-widths, $key) {
+    @return var(--border-width-#{$key}, #{map-get($border-widths, $key)});
+  }
+  @error "border-widths[#{$key}] not found in $border-widths map.";
+}
+
+@function sh($key) {
+  @if map-has-key($shadows, $key) {
+    @return var(--shadow-#{$key}, #{map-get($shadows, $key)});
+  }
+  @error "shadows[#{$key}] not found in $shadows map.";
+}
+
+@function bl($key) {
+  @if map-has-key($blurs, $key) {
+    @return var(--blur-#{$key}, #{map-get($blurs, $key)});
+  }
+  @error "blurs[#{$key}] not found in $blurs map.";
 }

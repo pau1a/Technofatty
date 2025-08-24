@@ -5,7 +5,7 @@
 .cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: map-get($space, 6);
+  gap: s(6);
 
   @include mq(md) {
     grid-template-columns: repeat(2, 1fr);
@@ -17,15 +17,15 @@
 }
 
 .card {
-  background: map-get($colors, white);
-  border: map-get($border-widths, sm) solid map-get($colors, border);
-  border-radius: map-get($radii, md);
-  padding: map-get($space, 3); // was .75rem
+  background: c(white);
+  border: bw(sm) solid c(border);
+  border-radius: r(md);
+  padding: s(3); // was .75rem
   transition: background $dur $easing-standard;
 
   &:hover,
   &:focus-within {
-    background: map-get($colors, mid);
+    background: c(mid);
   }
 }
 
@@ -33,11 +33,11 @@
   /* When adding real image, ensure descriptive alt text or empty alt if decorative */
   width: 100%;
   @include ratio(3, 2);
-  border-radius: map-get($radii, sm);
-  margin-bottom: map-get($space, 2); // was .5rem
+  border-radius: r(sm);
+  margin-bottom: s(2); // was .5rem
   /* If/when real images arrive, replace placeholder div with <img> and keep ratio */
 }
 
-.card__title { color: map-get($colors, blue); margin: map-get($space, 1) 0; } // was .25rem
+.card__title { color: c(blue); margin: s(1) 0; } // was .25rem
 .card__meta { color: rgba(map-get($colors, text), 0.6); font-size: fs(sm); }
-.card__link { color: map-get($colors, blue); text-decoration: none; &:hover, &:focus { text-decoration: underline; } }
+.card__link { color: c(blue); text-decoration: none; &:hover, &:focus { text-decoration: underline; } }

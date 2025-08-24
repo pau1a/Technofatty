@@ -8,22 +8,22 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
   position: fixed;
   top: 0;
   right: 0;
-  width: clamp(16rem, 50vw, 24rem); // Flexible width with min/max
+  width: clamp(var(--menu-overlay-min-w, #{map-get($dimensions, menu-overlay-min-w)}), 50vw, var(--menu-overlay-max-w, #{map-get($dimensions, menu-overlay-max-w)})); // Flexible width with min/max
   max-width: 90vw;
-  padding: map-get($space, 4);
+  padding: s(4);
   height: 100%;
   background-color: $overlay-bg;
-  color: map-get($colors, white);
+  color: c(white);
 
   transform: translateX(100%);
   opacity: 0;
   pointer-events: none;
   transition: transform $dur $easing-standard, opacity $dur $easing-standard;
 
-  z-index: map-get($z, menu);
+  z-index: z(menu);
   display: flex;
   flex-direction: column;
-  box-shadow: map-get($shadows, lg);
+  box-shadow: var(--shadow-lg, #{map-get($shadows, lg)});
 
   &.is-open {
     transform: translateX(0);
@@ -32,55 +32,55 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
   }
 
   &__content {
-    padding: map-get($space, 5);
+    padding: s(5);
     flex: 1;
     display: flex;
     flex-direction: column;
   }
 
-  &__close {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: fs(xxl);
-    color: map-get($colors, white);
-    cursor: pointer;
+    &__close {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      font-size: fs(xxl);
+      color: c(white);
+      cursor: pointer;
 
-    &:hover,
-    &:focus {
-      color: map-get($colors, gold);
+      &:hover,
+      &:focus {
+        color: c(gold);
+      }
     }
-  }
 
   &__links {
     list-style: none;
     padding: 0;
-    margin: map-get($space, 5) 0 0;
+    margin: s(5) 0 0;
 
     li {
-      margin-bottom: map-get($space, 4);
+      margin-bottom: s(4);
     }
 
     a:not(.btn) {
-      color: map-get($colors, white);
+      color: c(white);
       text-decoration: none;
       font-size: fs(lg);
 
       &:hover,
       &:focus {
-        color: map-get($colors, gold);
+        color: c(gold);
       }
     }
 
     .sub-menu {
       list-style: none;
-      margin: map-get($space, 2) 0 0;
-      padding-left: map-get($space, 4);
+      margin: s(2) 0 0;
+      padding-left: s(4);
     }
 
-    .sub-menu li {
-      margin-bottom: map-get($space, 2);
-    }
+      .sub-menu li {
+        margin-bottom: s(2);
+      }
   }
 }
 
