@@ -61,8 +61,10 @@ BUILD_COMMIT = _raw_commit[:7] if _raw_commit else ""
 def _truthy(env_value: str) -> bool:
     return env_value.lower() in {"true", "1", "yes"}
 
-# Allow deployments to toggle the banner regardless of environment
+# Allow deployments to toggle the banner but disable on production or when DEBUG is off
 SHOW_BUILD_BANNER = _truthy(os.environ.get("TF_SHOW_BUILD_BANNER", ""))
+if not DEBUG or ENV == "production":
+    SHOW_BUILD_BANNER = False
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
