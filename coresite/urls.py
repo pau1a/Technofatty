@@ -1,4 +1,6 @@
-from django.urls import path
+import re
+
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -33,13 +35,29 @@ urlpatterns = [
     path("blog/tag/<slug:tag_slug>/", views.blog_tag, name="blog_tag"),
     path("blog/<slug:post_slug>/", views.blog_post, name="blog_post"),
     path("join/", views.join, name="join"),
-    path("signup/", views.signup, name="signup"),
+    re_path(
+        re.compile(r"^signup/?$", re.IGNORECASE),
+        views.legacy_signup,
+        name="legacy_signup",
+    ),
     path("account/", views.account, name="account"),
     path("about/", views.about, name="about"),
-    path("services/", views.services, name="services"),
+    re_path(
+        re.compile(r"^services/?$", re.IGNORECASE),
+        views.legacy_services,
+        name="legacy_services",
+    ),
     path("contact/", views.contact, name="contact"),
     path("support/", views.support, name="support"),
     path("legal/", views.legal, name="legal"),
-    path("signals/<slug:slug>/", views.signal_detail, name="signal_detail"),
-    path("community/join/", views.community_join, name="community_join"),
+    re_path(
+        re.compile(r"^signals/(?P<slug>[^/]+)/?$", re.IGNORECASE),
+        views.legacy_signal,
+        name="legacy_signal",
+    ),
+    re_path(
+        re.compile(r"^community/join/?$", re.IGNORECASE),
+        views.legacy_community_join,
+        name="legacy_community_join",
+    ),
 ]

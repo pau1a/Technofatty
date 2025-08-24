@@ -108,6 +108,8 @@ BLOG_POSTS = [
     },
 ]
 
+# Legacy endpoints like /services/, /signup/, /community/join/, and /signals/<slug>/
+# are intentionally omitted to keep retired paths out of the sitemap.
 TOP_LEVEL_URLS = [
     {"loc": f"{BASE_CANONICAL}/", "priority": "1.0", "changefreq": "weekly"},
     {"loc": f"{BASE_CANONICAL}/knowledge/", "priority": "0.8", "changefreq": "weekly"},
@@ -166,17 +168,6 @@ def signal_detail(request, slug: str):
         "coresite/signal_placeholder.html",
         {"slug": slug, "footer": footer},
     )
-
-
-def community_join(request):
-    """
-    Lightweight landing stub for the Community primary CTA.
-    Keeps everything server-rendered and accessible. No JS dependence.
-    """
-    footer = get_footer_content()
-    return render(request, "coresite/community_join.html", {"footer": footer})
-
-
 def knowledge(request):
     footer = get_footer_content()
     context = {
@@ -546,21 +537,16 @@ def join(request):
     )
 
 
-def signup(request):
-    footer = get_footer_content()
-    return render(
-        request,
-        "coresite/signup.html",
-        {
-            "footer": footer,
-            "page_id": "signup",
-            "page_title": "Sign Up",
-            "canonical_url": f"{BASE_CANONICAL}/signup/",
-        },
-    )
+def legacy_signup(request):
+    """Legacy /signup/ route. 301 to homepage signup anchor."""
+    base = f"{BASE_CANONICAL}/"
+    qs = request.META.get("QUERY_STRING")
+    url = f"{base}?{qs}#signup" if qs else f"{base}#signup"
+    return HttpResponsePermanentRedirect(url)
 
 
 def account(request):
+    """Archived account scaffold. Returns 200 with noindex meta."""
     footer = get_footer_content()
     return render(
         request,
@@ -583,9 +569,12 @@ def about(request):
     )
 
 
-def services(request):
-    footer = get_footer_content()
-    return render(request, "coresite/services.html", {"footer": footer})
+def legacy_services(request):
+    """Legacy /services/ route. 301 to About page."""
+    base = f"{BASE_CANONICAL}/about/"
+    qs = request.META.get("QUERY_STRING")
+    url = f"{base}?{qs}" if qs else base
+    return HttpResponsePermanentRedirect(url)
 
 
 def contact(request):
@@ -611,3 +600,20 @@ def legal(request):
         "coresite/legal.html",
         {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/legal/"},
     )
+
+
+def legacy_signal(request, slug: str):
+    """Legacy /signals/<slug>/ route. 301 to knowledge signals pillar."""
+    base = f"{BASE_CANONICAL}/knowledge/signals/"
+    qs = request.META.get("QUERY_STRING")
+    fragment = f"#signal-{slug}"
+    url = f"{base}?{qs}{fragment}" if qs else f"{base}{fragment}"
+    return HttpResponsePermanentRedirect(url)
+
+
+def legacy_community_join(request):
+    """Legacy /community/join/ route. 301 to community hub."""
+    base = f"{BASE_CANONICAL}/community/"
+    qs = request.META.get("QUERY_STRING")
+    url = f"{base}?{qs}" if qs else base
+    return HttpResponsePermanentRedirect(url)
