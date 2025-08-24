@@ -4,3 +4,4 @@
 - updated token helper functions to return `var()` references with fallbacks
 - replaced hard-coded values across components (`hero`, `trust`, `hamburger`, `menu-overlay`, `cards`, `grid`, `home`, base styles) with design tokens
 - added utility tokens for focus rings and screen-reader helpers
+- corrected font family map syntax to restore SCSS compilation
