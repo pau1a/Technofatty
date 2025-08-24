@@ -1,19 +1,13 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}Contact – Technofatty{% endblock %}
-
-{% block meta_description %}Reach Technofatty for general inquiries.{% endblock %}<!-- [ref:pending-contact] -->
+{% block meta %}
+  {% with page_title="Contact" meta_description="Reach Technofatty for general inquiries." canonical_url="https://technofatty.com/contact/" %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 
 {% block head_extras %}
   <meta name="robots" content="index,follow">
-  <meta property="og:title" content="Contact – Technofatty">
-  <meta property="og:description" content="Reach Technofatty for general inquiries."><!-- [ref:pending-contact] -->
-  <meta property="og:url" content="https://technofatty.com/contact/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Contact – Technofatty">
-  <meta name="twitter:description" content="Reach Technofatty for general inquiries."><!-- [ref:pending-contact] -->
-  <meta name="twitter:url" content="https://technofatty.com/contact/">
 {% endblock %}
 
 {% block structured_data %}

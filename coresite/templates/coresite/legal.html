@@ -1,19 +1,13 @@
 {% extends "coresite/base.html" %}
 
-{% block title %}Legal – Technofatty{% endblock %}
-
-{% block meta_description %}Review our terms and privacy practices.{% endblock %}<!-- [ref:terms] [ref:privacy] -->
+{% block meta %}
+  {% with page_title="Legal" meta_description="Review our terms and privacy practices." canonical_url="https://technofatty.com/legal/" %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 
 {% block head_extras %}
   <meta name="robots" content="index,follow">
-  <meta property="og:title" content="Legal – Technofatty">
-  <meta property="og:description" content="Review our terms and privacy practices."><!-- [ref:terms] [ref:privacy] -->
-  <meta property="og:url" content="https://technofatty.com/legal/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Legal – Technofatty">
-  <meta name="twitter:description" content="Review our terms and privacy practices."><!-- [ref:terms] [ref:privacy] -->
-  <meta name="twitter:url" content="https://technofatty.com/legal/">
 {% endblock %}
 
 {% block structured_data %}

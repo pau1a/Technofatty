@@ -6,12 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{% sass_src 'coresite/scss/main.scss' %}">
+  {% block meta %}{% include 'coresite/partials/seo/meta_head.html' %}{% endblock %}
   {% block head_extras %}{% endblock %}
-  {% block meta %}
-    <title>Technofatty</title>
-    <meta name="description" content="Tech resources and community.">
-    {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}
-  {% endblock %}
   {% block structured_data %}{% endblock %}
 </head>
 

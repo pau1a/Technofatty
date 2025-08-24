@@ -2,7 +2,11 @@
 
 {% block structured_data %}{% endblock %}
 
-{% block title %}Services{% endblock %}
+{% block meta %}
+  {% with page_title="Services" meta_description="Explore our available services." canonical_url="https://technofatty.com/services/" %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 
 {% block content %}
 <section class="section" role="region" aria-labelledby="services-heading">
