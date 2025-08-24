@@ -10,4 +10,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: map-get($z, header) + 1;
+}
+.build-banner + .site-header {
+  top: 2rem;
 }
