@@ -38,6 +38,7 @@ _raw_branch = (
     or os.environ.get("BUILD_BRANCH")
     or os.environ.get("GIT_BRANCH")
     or os.environ.get("CI_COMMIT_REF_NAME")
+    or os.environ.get("GITHUB_REF_NAME")
     or ""
 )
 _raw_commit = (
@@ -46,6 +47,7 @@ _raw_commit = (
     or os.environ.get("BUILD_COMMIT")
     or os.environ.get("GIT_COMMIT")
     or os.environ.get("CI_COMMIT_SHA")
+    or os.environ.get("GITHUB_SHA")
     or ""
 )
 BUILD_DATETIME = (
@@ -75,7 +77,12 @@ if not _raw_commit:
         _raw_commit = ""
 
 if not BUILD_DATETIME:
-    BUILD_DATETIME = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    try:
+        BUILD_DATETIME = subprocess.check_output(
+            ["git", "show", "-s", "--format=%cI", "HEAD"], stderr=subprocess.DEVNULL
+        ).decode().strip()
+    except Exception:
+        BUILD_DATETIME = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
 BUILD_COMMIT = _raw_commit[:7] if _raw_commit else ""
