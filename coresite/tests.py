@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 
 
@@ -47,7 +47,7 @@ class BlogPaginationTests(TestCase):
 
 class LegacyRoutesTests(TestCase):
     def test_services_redirects(self):
-        response = self.client.get("/services/?utm=test")
+        response = self.client.get("/SERVICES/?utm=test")
         self.assertEqual(response.status_code, 301)
         self.assertEqual(
             response["Location"], "https://technofatty.com/about/?utm=test"
@@ -61,14 +61,14 @@ class LegacyRoutesTests(TestCase):
         )
 
     def test_community_join_redirects(self):
-        response = self.client.get("/community/join")
+        response = self.client.get("/Community/Join")
         self.assertEqual(response.status_code, 301)
         self.assertEqual(
             response["Location"], "https://technofatty.com/community/"
         )
 
     def test_signal_redirects(self):
-        response = self.client.get("/signals/model-tuning/?ref=1")
+        response = self.client.get("/Signals/MODEL-Tuning/?ref=1")
         self.assertEqual(response.status_code, 301)
         self.assertEqual(
             response["Location"],
@@ -79,3 +79,18 @@ class LegacyRoutesTests(TestCase):
         response = self.client.get("/account/")
         self.assertEqual(response.status_code, 200)
         self.assertIn("noindex,nofollow,noarchive", response.content.decode())
+
+
+class UrlResolutionTests(SimpleTestCase):
+    def test_core_urls_reverse(self):
+        names = [
+            "home",
+            "knowledge",
+            "tools",
+            "case_studies_landing",
+            "community",
+            "blog",
+        ]
+        for name in names:
+            with self.subTest(name=name):
+                self.assertIsInstance(reverse(name), str)
