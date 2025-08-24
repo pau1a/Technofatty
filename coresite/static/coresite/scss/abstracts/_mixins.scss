@@ -10,7 +10,7 @@
 
 // Focus ring (WCAG-friendly)
 @mixin focus-ring($c: rgba(0,0,0,.18)) {
-  &:focus-visible { outline: none; box-shadow: 0 0 0 3px $c; }
+  &:focus-visible { outline: none; box-shadow: 0 0 0 dim(focus-ring-width) $c; }
 }
 
 // Aspect-ratio placeholder block
@@ -30,8 +30,8 @@
 // Screen-reader-only utility
 @mixin sr-only {
   position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
+  width: dim(sr-only-size); height: dim(sr-only-size);
+  padding: 0; margin: calc(dim(sr-only-size) * -1);
   overflow: hidden; clip: rect(0 0 0 0);
   white-space: nowrap; border: 0;
 }

@@ -34,6 +34,25 @@ $header-h-desktop: 5rem; // 80px
 $featured-card-min-width: 17.5rem; // 280px
 $featured-card-img-height: 10rem; // 160px
 
+/* Component dimensions */
+$dimensions: (
+  hero-min-h: 37.5rem,     // 600px
+  hero-pad-block: 8rem,    // 128px
+  hero-logo-max-w: 56.25rem, // 900px
+  home-hero-pad-min: 2.5rem,
+  home-hero-pad-max: 5rem,
+  hamburger-size: 2.75rem,
+  hamburger-line-height: 0.1875rem,
+  hamburger-line-radius: 0.125rem,
+  hamburger-padding: 0.625rem,
+  hamburger-focus-offset: 0.1875rem,
+  menu-overlay-min-w: 16rem,
+  menu-overlay-max-w: 24rem,
+  grid-min: 16rem,
+  sr-only-size: 1px,
+  focus-ring-width: 3px
+);
+
 /* Spacing scale (t-shirt friendly) */
 $space: (
   0: 0,
@@ -63,7 +82,19 @@ $font-sizes: (
   md: 1.125rem,   // 18px
   lg: 1.25rem,    // 20px
   xl: 1.5rem,     // 24px
-  xxl: 2rem       // 32px
+  xxl: 2rem,      // 32px
+  display-sm: 1.8rem,
+  display-lg: 3rem
+);
+
+/* Font families */
+$font-families: (
+  base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
+);
+
+/* Line heights */
+$line-heights: (
+  base: 1.5
 );
 
 /* Corner radii */
@@ -144,6 +175,9 @@ $dur: 200ms;
   --container-max: #{$container-max};
   --container-max-width-wide: #{$container-max-width-wide};
 
+  --header-h-mobile: #{$header-h-mobile};
+  --header-h-desktop: #{$header-h-desktop};
+
   // Radii
   @each $name, $value in $radii {
     --radius-#{$name}: #{$value};
@@ -154,13 +188,63 @@ $dur: 200ms;
     --space-#{$name}: #{$value};
   }
 
+  // Font sizes
+  @each $name, $value in $font-sizes {
+    --font-size-#{$name}: #{$value};
+  }
+
+  // Font families
+  @each $name, $value in $font-families {
+    --font-family-#{$name}: #{$value};
+  }
+
+  // Line heights
+  @each $name, $value in $line-heights {
+    --line-height-#{$name}: #{$value};
+  }
+
+  // Border widths
+  @each $name, $value in $border-widths {
+    --border-width-#{$name}: #{$value};
+  }
+
+  // Blurs
+  @each $name, $value in $blurs {
+    --blur-#{$name}: #{$value};
+  }
+
+  // Opacities
+  @each $name, $value in $opacities {
+    --opacity-#{$name}: #{$value};
+  }
+
+  // Shadows
+  @each $name, $value in $shadows {
+    --shadow-#{$name}: #{$value};
+  }
+
+  // Z-index layers
+  @each $name, $value in $z {
+    --z-#{$name}: #{$value};
+  }
+
+  // Breakpoints
+  @each $name, $value in $bp {
+    --bp-#{$name}: #{$value};
+  }
+
+  // Component dimensions
+  @each $name, $value in $dimensions {
+    --#{$name}: #{$value};
+  }
+
   --easing-standard: #{$easing-standard};
   --dur-fast: #{$dur-fast};
   --dur: #{$dur};
-  --header-h: calc(#{$header-h-mobile} + env(safe-area-inset-top, 0px));
+  --header-h: calc(var(--header-h-mobile) + env(safe-area-inset-top, 0px));
   --scroll-offset: var(--header-h);
 }
 
 @media (min-width: map-get($bp, md)) {
-  :root { --header-h: calc(#{$header-h-desktop} + env(safe-area-inset-top, 0px)); }
+  :root { --header-h: calc(var(--header-h-desktop) + env(safe-area-inset-top, 0px)); }
 }

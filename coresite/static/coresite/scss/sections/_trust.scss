@@ -32,9 +32,9 @@
 }
 
 .trust__icon {
-  width: 64px;
-  height: 64px;
-  margin-bottom: .5rem;
+  width: s(8);
+  height: s(8);
+  margin-bottom: s(2);
 
   svg {
     width: 100%;
@@ -46,7 +46,7 @@
 
 .trust__title {
   color: c(blue);
-  margin: .25rem 0 .5rem;
+  margin: s(1) 0 s(2);
   font-weight: bold;
 }
 
@@ -79,11 +79,11 @@
 
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(calc(var(--space-2, #{map-get($space, 2)}) * -1)); }
 }
 
 .trust__item:hover {
-  transform: translateY(-5px);
+  transform: translateY(calc(var(--space-1, #{map-get($space, 1)}) * -1));
 
   .trust__icon-svg--clock .clock-hand {
     // Set the rotation point to the center of the clock face

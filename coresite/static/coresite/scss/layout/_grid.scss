@@ -5,7 +5,7 @@
 
 /* Auto-fit grid for flexible card galleries */
 .grid-auto{
-  --min: 16rem; /* tweak per section */
+  --min: var(--grid-min, #{map-get($dimensions, grid-min)}); /* tweak per section */
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
   gap:s(6);
