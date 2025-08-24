@@ -6,6 +6,7 @@ from pathlib import Path
 import os
 import subprocess
 from datetime import datetime, timezone
+from typing import List
 
 # -------------------------------------------------
 # Core
@@ -35,7 +36,7 @@ ENV = os.environ.get("ENV", "development")
 REPO_DIR = Path(os.environ.get("TF_REPO_DIR", BASE_DIR)).resolve()
 
 
-def _git_out(args: list[str]) -> str:
+def _git_out(args: List[str]) -> str:
     """Return git command output, or an empty string on failure."""
     try:
         return subprocess.check_output(["git", "-C", str(REPO_DIR), *args], text=True).strip()
