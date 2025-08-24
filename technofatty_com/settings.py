@@ -4,6 +4,8 @@ Cleaned up for SCSS + Bootstrap, env-based secrets, and sane static handling.
 """
 from pathlib import Path
 import os
+import subprocess
+from datetime import datetime, timezone
 
 # -------------------------------------------------
 # Core
@@ -28,14 +30,37 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 ENV = os.environ.get("ENV", "development")
 
 # Build metadata injected at deploy time
+# Falls back to local git values when running in DEBUG
+
 _raw_branch = os.environ.get("TF_BUILD_BRANCH") or os.environ.get("BUILD_BRANCH", "")
-BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
-
 _raw_commit = os.environ.get("TF_BUILD_COMMIT") or os.environ.get("BUILD_COMMIT", "")
-BUILD_COMMIT = _raw_commit[:7]
-
 BUILD_DATETIME = os.environ.get("TF_BUILD_DATETIME") or os.environ.get("BUILD_DATETIME", "")
-SHOW_BUILD_BANNER = True  # temporarily display on all environments
+
+if DEBUG and not _raw_branch:
+    try:
+        _raw_branch = subprocess.check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], stderr=subprocess.DEVNULL
+        ).decode().strip()
+    except Exception:
+        _raw_branch = ""
+
+if DEBUG and not _raw_commit:
+    try:
+        _raw_commit = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], stderr=subprocess.DEVNULL
+        ).decode().strip()
+    except Exception:
+        _raw_commit = ""
+
+if DEBUG and not BUILD_DATETIME:
+    BUILD_DATETIME = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
+BUILD_COMMIT = _raw_commit[:7] if _raw_commit else ""
+
+SHOW_BUILD_BANNER = os.environ.get("TF_SHOW_BUILD_BANNER", "false").lower() == "true"
+if not DEBUG or ENV == "production":
+    SHOW_BUILD_BANNER = False
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
