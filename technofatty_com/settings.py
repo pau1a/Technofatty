@@ -30,7 +30,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 ENV = os.environ.get("ENV", "development")
 
 # Build metadata injected at deploy time
-# Falls back to local git values when running in non-production
+# Falls back to local git values when environment variables are missing
 
 _raw_branch = (
     os.environ.get("TF_BUILD_BRANCH")
@@ -58,13 +58,7 @@ _raw_branch = _raw_branch.strip()
 _raw_commit = _raw_commit.strip()
 BUILD_DATETIME = BUILD_DATETIME.strip()
 
-SHOW_BUILD_BANNER = (
-    os.environ.get("TF_SHOW_BUILD_BANNER", "").lower() in ("1", "true", "yes")
-)
-if not DEBUG or ENV == "production":
-    SHOW_BUILD_BANNER = False
-
-if SHOW_BUILD_BANNER and not _raw_branch:
+if not _raw_branch:
     try:
         _raw_branch = subprocess.check_output(
             ["git", "rev-parse", "--abbrev-ref", "HEAD"], stderr=subprocess.DEVNULL
@@ -72,7 +66,7 @@ if SHOW_BUILD_BANNER and not _raw_branch:
     except Exception:
         _raw_branch = ""
 
-if SHOW_BUILD_BANNER and not _raw_commit:
+if not _raw_commit:
     try:
         _raw_commit = subprocess.check_output(
             ["git", "rev-parse", "--short", "HEAD"], stderr=subprocess.DEVNULL
@@ -80,7 +74,7 @@ if SHOW_BUILD_BANNER and not _raw_commit:
     except Exception:
         _raw_commit = ""
 
-if SHOW_BUILD_BANNER and not BUILD_DATETIME:
+if not BUILD_DATETIME:
     BUILD_DATETIME = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
