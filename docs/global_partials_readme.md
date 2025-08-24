@@ -23,13 +23,13 @@ The `id` matches the heading’s `-heading` suffix. Example usage appears throug
 All styling values come from `_variables.scss`, the single source of truth for SCSS/CSS tokens【F:coresite/static/coresite/scss/abstracts/_variables.scss†L1-L8】.
 
 ### Consent-aware analytics
-Analytics is tied to the site's consent banner. Until a user grants tracking permission, the analytics partial outputs nothing and no tracking scripts run【F:coresite/templates/coresite/partials/global/analytics.html†L1-L7】.
+Analytics is tied to the site's consent banner. Until a user grants tracking permission, the analytics partial outputs nothing and no tracking scripts run【F:coresite/templates/coresite/partials/global/analytics.html†L1-L30】.
 
 ## Partial reference
 
 ### Analytics
 * **Path**: `coresite/templates/coresite/partials/global/analytics.html`
-* **Purpose**: Loads the privacy-first, consent-aware analytics script. Does nothing until the user grants tracking consent【F:coresite/templates/coresite/partials/global/analytics.html†L1-L7】
+* **Purpose**: Loads the provider snippet and tiny event dispatcher only after tracking consent is granted【F:coresite/templates/coresite/partials/global/analytics.html†L1-L30】
 * **Included in**: `base.html` (thus every page)【F:coresite/templates/coresite/base.html†L21-L23】
 
 ### Header and primary navigation
