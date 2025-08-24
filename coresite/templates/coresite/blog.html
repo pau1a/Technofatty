@@ -12,8 +12,8 @@
       {% include "coresite/partials/seo/meta_head.html" %}
     {% endwith %}
   {% endif %}
-  {% if prev_page_link %}<link rel="prev" href="{{ prev_page_link }}">{% endif %}
-  {% if next_page_link %}<link rel="next" href="{{ next_page_link }}">{% endif %}
+  {% if prev_page_url %}<link rel="prev" href="{{ prev_page_url }}">{% endif %}
+  {% if next_page_url %}<link rel="next" href="{{ next_page_url }}">{% endif %}
 {% endblock %}
 
 {% block structured_data %}
@@ -90,8 +90,9 @@
           </div>
           <p>Looking for more? Visit <a href="{% url 'knowledge' %}">Knowledge</a> or <a href="{% url 'resources' %}">Resources</a>.</p>
           <nav class="pager" aria-label="Pagination">
-            <a href="{{ prev_page_url }}">Newer posts</a>
-            <a href="{{ next_page_url }}">Older posts</a>
+            {% if prev_page_url %}<a class="pager__prev" href="{{ prev_page_url }}">Newer posts</a>{% endif %}
+            <span class="pager__current">Page {{ page_number }} of {{ total_pages }}</span>
+            {% if next_page_url %}<a class="pager__next" href="{{ next_page_url }}">Older posts</a>{% endif %}
           </nav>
         </div>
       </div>

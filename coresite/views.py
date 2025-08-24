@@ -1,5 +1,6 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
@@ -351,13 +352,17 @@ def community(request):
 
 
 def blog(request):
+    page_str = request.GET.get("page")
+    if page_str == "1":
+        return HttpResponsePermanentRedirect(reverse("blog"))
+
     footer = get_footer_content()
     posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)
 
     # Basic pagination over in-memory posts to enable proper SEO signals.
     from django.core.paginator import Paginator, EmptyPage
 
-    page_number = int(request.GET.get("page", 1))
+    page_number = int(page_str or 1)
     paginator = Paginator(posts, 4)
     try:
         page_obj = paginator.page(page_number)
@@ -393,13 +398,11 @@ def blog(request):
         "tags": [
             {"slug": slug, "title": title} for slug, title in sorted(tags)
         ],
-        "next_page_url": next_page or "#",
-        "prev_page_url": prev_page or "#",
+        "next_page_url": next_page,
+        "prev_page_url": prev_page,
         "canonical_url": absolute_page_url(page_number),
         "page_number": page_number,
         "total_pages": paginator.num_pages,
-        "prev_page_link": prev_page,
-        "next_page_link": next_page,
     }
     return render(request, "coresite/blog.html", context)
 
