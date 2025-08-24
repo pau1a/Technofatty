@@ -28,9 +28,13 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 ENV = os.environ.get("ENV", "development")
 
 # Build metadata injected at deploy time
-BUILD_BRANCH = os.environ.get("TF_BUILD_BRANCH", "")
-BUILD_COMMIT = os.environ.get("TF_BUILD_COMMIT", "")
-BUILD_DATETIME = os.environ.get("TF_BUILD_DATETIME", "")
+_raw_branch = os.environ.get("TF_BUILD_BRANCH") or os.environ.get("BUILD_BRANCH", "")
+BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
+
+_raw_commit = os.environ.get("TF_BUILD_COMMIT") or os.environ.get("BUILD_COMMIT", "")
+BUILD_COMMIT = _raw_commit[:7]
+
+BUILD_DATETIME = os.environ.get("TF_BUILD_DATETIME") or os.environ.get("BUILD_DATETIME", "")
 SHOW_BUILD_BANNER = True  # temporarily display on all environments
 
 ALLOWED_HOSTS = os.environ.get(

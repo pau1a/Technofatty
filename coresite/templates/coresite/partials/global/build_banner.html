@@ -1,3 +1,3 @@
 <div class="build-banner" role="status" aria-live="polite" aria-label="Build information">
-  Branch: {{ build_branch }} — {{ build_commit }} — {{ build_datetime }}
+  Branch: {{ build_branch|default:"unknown" }} — {{ build_commit|default:"unknown" }} — {{ build_datetime|default:"unknown" }}
 </div>
