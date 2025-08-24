@@ -1,0 +1,13 @@
+.build-banner {
+  background-color: c(bg-alt);
+  color: c(text-strong);
+  padding: s(2);
+  font-size: fs(sm-md);
+  text-align: center;
+  box-shadow: sh(sm);
+  border-bottom-left-radius: r(sm);
+  border-bottom-right-radius: r(sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

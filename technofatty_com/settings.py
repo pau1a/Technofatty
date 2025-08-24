@@ -4,6 +4,7 @@ Cleaned up for SCSS + Bootstrap, env-based secrets, and sane static handling.
 """
 from pathlib import Path
 import os
+from datetime import datetime, timezone
 
 # -------------------------------------------------
 # Core
@@ -23,6 +24,38 @@ THUMBNAIL_ALIASES = {
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "CHANGE_ME_DEV_ONLY")
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 #DEBUG = False
+
+# Application environment (development, production, etc.)
+ENV = os.environ.get("ENV", "development")
+
+_raw_branch = (
+    os.environ.get("TF_BUILD_BRANCH")
+    or os.environ.get("BUILD_BRANCH")
+    or os.environ.get("GIT_BRANCH")
+    or os.environ.get("CI_COMMIT_REF_NAME")
+    or os.environ.get("GITHUB_REF_NAME")
+    or ""
+)
+_raw_commit = (
+    os.environ.get("TF_BUILD_COMMIT")
+    or os.environ.get("BUILD_COMMIT")
+    or os.environ.get("GIT_COMMIT")
+    or os.environ.get("CI_COMMIT_SHA")
+    or os.environ.get("GITHUB_SHA")
+    or ""
+)
+BUILD_DATETIME = (
+    os.environ.get("TF_BUILD_DATETIME")
+    or os.environ.get("BUILD_DATETIME")
+    or ""
+)
+
+_raw_branch = _raw_branch.strip()
+_raw_commit = _raw_commit.strip()
+BUILD_DATETIME = BUILD_DATETIME.strip()
+
+BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
+BUILD_COMMIT = _raw_commit[:7] if _raw_commit else ""
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
@@ -75,6 +108,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "coresite.context_processors.analytics_flags",
+                "coresite.context_processors.build_metadata",
             ],
         },
     },

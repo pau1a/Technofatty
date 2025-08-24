@@ -8,3 +8,11 @@ def analytics_flags(request):
         'ANALYTICS_SITE_ID': getattr(settings, 'ANALYTICS_SITE_ID', ''),
         'CONSENT_REQUIRED': getattr(settings, 'CONSENT_REQUIRED', True),
     }
+
+
+def build_metadata(request):
+    return {
+        'build_branch': getattr(settings, 'BUILD_BRANCH', ''),
+        'build_commit': getattr(settings, 'BUILD_COMMIT', ''),
+        'build_datetime': getattr(settings, 'BUILD_DATETIME', ''),
+    }
