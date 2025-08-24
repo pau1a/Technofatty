@@ -29,51 +29,32 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
 # Application environment (development, production, etc.)
 ENV = os.environ.get("ENV", "development")
 
-_raw_branch = (
-    os.environ.get("TF_BUILD_BRANCH")
-    or os.environ.get("BUILD_BRANCH")
-    or os.environ.get("GIT_BRANCH")
-    or os.environ.get("CI_COMMIT_REF_NAME")
-    or os.environ.get("GITHUB_REF_NAME")
-    or ""
-)
-_raw_commit = (
-    os.environ.get("TF_BUILD_COMMIT")
-    or os.environ.get("BUILD_COMMIT")
-    or os.environ.get("GIT_COMMIT")
-    or os.environ.get("CI_COMMIT_SHA")
-    or os.environ.get("GITHUB_SHA")
-    or ""
-)
-BUILD_DATETIME = (
-    os.environ.get("TF_BUILD_DATETIME")
-    or os.environ.get("BUILD_DATETIME")
-    or ""
-)
+# ------------------------------------------------------------------
+# Build metadata sourced from git or CI-provided environment vars
+# ------------------------------------------------------------------
+REPO_DIR = Path(os.environ.get("TF_REPO_DIR", BASE_DIR)).resolve()
 
 
-def _git_output(args):
+def _git_out(args: list[str]) -> str:
+    """Return git command output, or an empty string on failure."""
     try:
-        return subprocess.check_output(args, cwd=BASE_DIR, text=True).strip()
+        return subprocess.check_output(["git", "-C", str(REPO_DIR), *args], text=True).strip()
     except Exception:
         return ""
 
 
-if not _raw_branch:
-    _raw_branch = _git_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
-if not _raw_commit:
-    _raw_commit = _git_output(["git", "rev-parse", "HEAD"])
-if not BUILD_DATETIME:
-    BUILD_DATETIME = _git_output(["git", "show", "-s", "--format=%cI"])
-    if not BUILD_DATETIME:
-        BUILD_DATETIME = datetime.now(timezone.utc).isoformat()
+_raw_branch = os.environ.get("TF_BUILD_BRANCH") or _git_out(["rev-parse", "--abbrev-ref", "HEAD"])
+_raw_commit = os.environ.get("TF_BUILD_COMMIT") or _git_out(["rev-parse", "HEAD"])
+_build_dt = (
+    os.environ.get("TF_BUILD_DATETIME")
+    or _git_out(["show", "-s", "--format=%cI"])
+    or datetime.now(timezone.utc).isoformat()
+)
 
-_raw_branch = _raw_branch.strip()
-_raw_commit = _raw_commit.strip()
-BUILD_DATETIME = BUILD_DATETIME.strip()
-
-BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
-BUILD_COMMIT = _raw_commit[:7] if _raw_commit else ""
+BUILD_BRANCH = (_raw_branch or "").rsplit("/", 1)[-1]
+BUILD_COMMIT = (_raw_commit or "")[:7]
+BUILD_DATETIME = _build_dt
+SHOW_BUILD_BANNER = True
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
