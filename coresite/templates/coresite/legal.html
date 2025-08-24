@@ -16,6 +16,22 @@
   <meta name="twitter:url" content="https://technofatty.com/legal/">
 {% endblock %}
 
+{% block structured_data %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "url": "https://technofatty.com/legal/",
+      "name": "Legal – Technofatty",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      }
+    }
+  </script>
+{% endblock %}
+
 {% block content %}
 <section id="legal-intro" class="section section--scaffold" role="region" aria-labelledby="legal-intro-heading">
   <div class="wrap">
@@ -64,20 +80,4 @@
     {% include "coresite/partials/legal/legal-contact.html" %}
   </div>
 </section>
-{% endblock %}
-
-{% block body_scripts %}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "url": "https://technofatty.com/legal/",
-      "name": "Legal – Technofatty",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Technofatty",
-        "url": "https://technofatty.com/"
-      }
-    }
-  </script>
 {% endblock %}
