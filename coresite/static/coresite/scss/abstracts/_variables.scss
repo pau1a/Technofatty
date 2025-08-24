@@ -242,7 +242,7 @@ $dur: 200ms;
   --dur-fast: #{$dur-fast};
   --dur: #{$dur};
   --header-h: calc(var(--header-h-mobile) + env(safe-area-inset-top, 0px));
-  --scroll-offset: var(--header-h);
+  --scroll-offset: calc(var(--header-h) + 2rem);
 }
 
 @media (min-width: map-get($bp, md)) {
