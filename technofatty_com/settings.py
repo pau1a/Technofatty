@@ -59,8 +59,6 @@ BUILD_BRANCH = _raw_branch.rsplit("/", 1)[-1] if _raw_branch else ""
 BUILD_COMMIT = _raw_commit[:7] if _raw_commit else ""
 
 SHOW_BUILD_BANNER = os.environ.get("TF_SHOW_BUILD_BANNER", "false").lower() == "true"
-if not DEBUG or ENV == "production":
-    SHOW_BUILD_BANNER = False
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
