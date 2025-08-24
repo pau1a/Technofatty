@@ -383,6 +383,7 @@ def blog(request):
         "page_title": "Blog",
         "featured_post": featured_post,
         "posts": remaining_posts,
+        "page_posts": page_posts,
         "categories": [
             {"slug": slug, "title": title} for slug, title in sorted(categories)
         ],
