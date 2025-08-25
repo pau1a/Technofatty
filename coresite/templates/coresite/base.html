@@ -46,6 +46,7 @@
 
   {% include 'coresite/partials/global/footer.html' %}
 
+  <script src="{% static 'coresite/js/consent.js' %}?v={{ now|date:'U' }}" defer></script>
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
   {% block body_scripts %}{% endblock %}
 </body>

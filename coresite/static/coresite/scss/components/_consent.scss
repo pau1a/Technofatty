@@ -1,0 +1,23 @@
+.consent-banner {
+  background-color: c(bg-alt);
+  color: c(text-strong);
+  padding: s(3);
+  font-size: fs(sm-md);
+  box-shadow: sh(md);
+  border-top-left-radius: r(sm);
+  border-top-right-radius: r(sm);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: z(toast);
+  display: flex;
+  flex-direction: column;
+  gap: s(2);
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: s(2);
+  }
+}
