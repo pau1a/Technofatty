@@ -1,7 +1,10 @@
 import re
 
 from django.urls import path, re_path
+from django.views.generic import RedirectView
+
 from . import views
+from .views import BASE_CANONICAL
 from .feeds import (
     BlogAtomFeed,
     BlogRSSFeed,
@@ -50,28 +53,42 @@ urlpatterns = [
     path("blog/tag/<slug:tag_slug>/", views.blog_tag, name="blog_tag"),
     path("blog/<slug:post_slug>/", views.blog_post, name="blog_post"),
     path("join/", views.join, name="join"),
-    re_path(
-        re.compile(r"^signup/?$", re.IGNORECASE),
-        views.legacy_signup,
-        name="legacy_signup",
-    ),
     path("about/", views.about, name="about"),
-    re_path(
-        re.compile(r"^services/?$", re.IGNORECASE),
-        views.legacy_services,
-        name="legacy_services",
-    ),
     path("contact/", views.contact, name="contact"),
     path("support/", views.support, name="support"),
     path("legal/", views.legal, name="legal"),
-    re_path(
-        re.compile(r"^signals/(?P<slug>[^/]+)/?$", re.IGNORECASE),
-        views.legacy_signal,
-        name="legacy_signal",
+]
+
+
+legacy_redirects = [
+    (
+        re.compile(r"^signup/?$", re.IGNORECASE),
+        f"{BASE_CANONICAL}/#signup",
+        "legacy_signup",
     ),
-    re_path(
+    (
+        re.compile(r"^services/?$", re.IGNORECASE),
+        f"{BASE_CANONICAL}/about/",
+        "legacy_services",
+    ),
+    (
+        re.compile(r"^signals/(?P<slug>[^/]+)/?$", re.IGNORECASE),
+        f"{BASE_CANONICAL}/knowledge/signals/#signal-%(slug)s",
+        "legacy_signal",
+    ),
+    (
         re.compile(r"^community/join/?$", re.IGNORECASE),
-        views.legacy_community_join,
-        name="legacy_community_join",
+        f"{BASE_CANONICAL}/community/",
+        "legacy_community_join",
     ),
 ]
+
+
+for pattern, target, name in legacy_redirects:
+    urlpatterns.append(
+        re_path(
+            pattern,
+            RedirectView.as_view(url=target, permanent=True, query_string=True),
+            name=name,
+        )
+    )

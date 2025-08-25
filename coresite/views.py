@@ -486,14 +486,6 @@ def join(request):
     )
 
 
-def legacy_signup(request):
-    """Legacy /signup/ route. 301 to homepage signup anchor."""
-    base = f"{BASE_CANONICAL}/"
-    qs = request.META.get("QUERY_STRING")
-    url = f"{base}?{qs}#signup" if qs else f"{base}#signup"
-    return HttpResponsePermanentRedirect(url)
-
-
 def about(request):
     footer = get_footer_content()
     return render(
@@ -501,14 +493,6 @@ def about(request):
         "coresite/about.html",
         {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/about/"},
     )
-
-
-def legacy_services(request):
-    """Legacy /services/ route. 301 to About page."""
-    base = f"{BASE_CANONICAL}/about/"
-    qs = request.META.get("QUERY_STRING")
-    url = f"{base}?{qs}" if qs else base
-    return HttpResponsePermanentRedirect(url)
 
 
 def contact(request):
@@ -558,20 +542,3 @@ def legal(request):
         "coresite/legal.html",
         {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/legal/"},
     )
-
-
-def legacy_signal(request, slug: str):
-    """Legacy /signals/<slug>/ route. 301 to knowledge signals pillar."""
-    base = f"{BASE_CANONICAL}/knowledge/signals/"
-    qs = request.META.get("QUERY_STRING")
-    fragment = f"#signal-{slug}"
-    url = f"{base}?{qs}{fragment}" if qs else f"{base}{fragment}"
-    return HttpResponsePermanentRedirect(url)
-
-
-def legacy_community_join(request):
-    """Legacy /community/join/ route. 301 to community hub."""
-    base = f"{BASE_CANONICAL}/community/"
-    qs = request.META.get("QUERY_STRING")
-    url = f"{base}?{qs}" if qs else base
-    return HttpResponsePermanentRedirect(url)
