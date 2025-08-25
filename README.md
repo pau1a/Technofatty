@@ -5,7 +5,6 @@
 The application reads configuration from environment variables.
 
 - **Local development**: copy `.env.example` to `.env` and fill in your values. `make dev` loads this file automatically.
-- **CI**: the workflow in `.github/workflows/ci.yml` injects the required environment variables.
 - **Production**: variables are provided by a systemd `EnvironmentFile` outside this repository.
 
 Required variables:

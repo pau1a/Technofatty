@@ -1,2 +1,1 @@
 - [ ] No secrets added to code or history.
-- [ ] CI secret scan passed (no findings).
