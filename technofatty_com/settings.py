@@ -119,6 +119,14 @@ TEMPLATES = [
     },
 ]
 
+# -------------------------------------------------
+# Authentication redirects
+# -------------------------------------------------
+LOGIN_URL = "account_login"
+LOGIN_REDIRECT_URL = "account"
+LOGOUT_REDIRECT_URL = "home"
+
+
 WSGI_APPLICATION = "technofatty_com.wsgi.application"
 
 # -------------------------------------------------
