@@ -18,7 +18,12 @@
       data-analytics-provider="{{ ANALYTICS_PROVIDER }}"
       data-analytics-site-id="{{ ANALYTICS_SITE_ID }}"
       data-consent-required="{{ CONSENT_REQUIRED|yesno:'true,false' }}"
-      data-consent-granted="{{ CONSENT_GRANTED|yesno:'true,false' }}">
+      data-consent-granted="{{ CONSENT_GRANTED|yesno:'true,false' }}"
+      data-consent-cookie-name="{{ CONSENT_COOKIE_NAME }}"
+      data-consent-cookie-max-age="{{ CONSENT_COOKIE_MAX_AGE }}"
+      data-consent-cookie-samesite="{{ CONSENT_COOKIE_SAMESITE }}"
+      data-consent-cookie-secure="{{ CONSENT_COOKIE_SECURE|yesno:'true,false' }}"
+      data-consent-cookie-httponly="{{ CONSENT_COOKIE_HTTPONLY|yesno:'true,false' }}">
   <a class="skip-link" href="#main">Skip to content</a>
 
   {% if ANALYTICS_ENABLED %}

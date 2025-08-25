@@ -16,7 +16,7 @@ def test_consent_not_granted_without_cookie():
 def test_consent_granted_with_valid_cookie(settings):
     rf = RequestFactory()
     request = rf.get('/')
-    request.COOKIES['tf_consent'] = signing.dumps('true')
+    request.COOKIES[settings.CONSENT_COOKIE_NAME] = signing.dumps('true')
     context = analytics_flags(request)
     assert context['CONSENT_GRANTED'] is True
 
@@ -24,20 +24,41 @@ def test_consent_granted_with_valid_cookie(settings):
 def test_consent_not_granted_with_invalid_cookie(settings):
     rf = RequestFactory()
     request = rf.get('/')
-    request.COOKIES['tf_consent'] = 'true'  # unsigned value
+    request.COOKIES[settings.CONSENT_COOKIE_NAME] = 'true'  # unsigned value
     context = analytics_flags(request)
     assert context['CONSENT_GRANTED'] is False
 
 
-def test_accept_sets_signed_cookie(client):
+def test_accept_sets_signed_cookie(client, settings):
     response = client.get(reverse('consent_accept'), HTTP_REFERER='/prev/')
     assert response.status_code == 302
     assert response['Location'] == '/prev/'
-    assert signing.loads(response.cookies['tf_consent'].value) == 'true'
+    assert (
+        signing.loads(
+            response.cookies[settings.CONSENT_COOKIE_NAME].value
+        )
+        == 'true'
+    )
 
 
-def test_decline_sets_signed_cookie(client):
+def test_decline_sets_signed_cookie(client, settings):
     response = client.get(reverse('consent_decline'), HTTP_REFERER='/prev/')
     assert response.status_code == 302
     assert response['Location'] == '/prev/'
-    assert signing.loads(response.cookies['tf_consent'].value) == 'false'
+    assert (
+        signing.loads(
+            response.cookies[settings.CONSENT_COOKIE_NAME].value
+        )
+        == 'false'
+    )
+
+
+def test_cookie_settings_exposed(settings):
+    rf = RequestFactory()
+    request = rf.get('/')
+    context = analytics_flags(request)
+    assert context['CONSENT_COOKIE_NAME'] == settings.CONSENT_COOKIE_NAME
+    assert context['CONSENT_COOKIE_MAX_AGE'] == settings.CONSENT_COOKIE_MAX_AGE
+    assert context['CONSENT_COOKIE_SAMESITE'] == settings.CONSENT_COOKIE_SAMESITE
+    assert context['CONSENT_COOKIE_SECURE'] == settings.CONSENT_COOKIE_SECURE
+    assert context['CONSENT_COOKIE_HTTPONLY'] == settings.CONSENT_COOKIE_HTTPONLY
