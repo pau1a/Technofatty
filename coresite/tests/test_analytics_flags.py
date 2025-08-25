@@ -75,3 +75,11 @@ def test_cookie_settings_exposed(settings):
     assert context['CONSENT_COOKIE_SAMESITE'] == settings.CONSENT_COOKIE_SAMESITE
     assert context['CONSENT_COOKIE_SECURE'] == settings.CONSENT_COOKIE_SECURE
     assert context['CONSENT_COOKIE_HTTPONLY'] == settings.CONSENT_COOKIE_HTTPONLY
+
+
+def test_consent_tokens_exposed(settings):
+    rf = RequestFactory()
+    request = rf.get('/')
+    context = analytics_flags(request)
+    assert signing.loads(context['CONSENT_ACCEPT_TOKEN']) == 'true'
+    assert signing.loads(context['CONSENT_DECLINE_TOKEN']) == 'false'

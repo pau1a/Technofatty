@@ -1,10 +1,13 @@
 from django.conf import settings
+from django.core import signing
 
 
 def analytics_flags(request):
     """Expose analytics configuration and consent flags."""
 
     consent_granted = getattr(request, "CONSENT_GRANTED", False)
+
+    signer = signing.get_cookie_signer()
 
     return {
         "ANALYTICS_ENABLED": getattr(settings, "ANALYTICS_ENABLED", False),
@@ -27,6 +30,8 @@ def analytics_flags(request):
         "CONSENT_COOKIE_HTTPONLY": getattr(
             settings, "CONSENT_COOKIE_HTTPONLY", True
         ),
+        "CONSENT_ACCEPT_TOKEN": signer.sign("true"),
+        "CONSENT_DECLINE_TOKEN": signer.sign("false"),
     }
 
 

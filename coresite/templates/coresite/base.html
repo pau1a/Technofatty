@@ -23,13 +23,15 @@
       data-consent-cookie-max-age="{{ CONSENT_COOKIE_MAX_AGE }}"
       data-consent-cookie-samesite="{{ CONSENT_COOKIE_SAMESITE }}"
       data-consent-cookie-secure="{{ CONSENT_COOKIE_SECURE|yesno:'true,false' }}"
-      data-consent-cookie-httponly="{{ CONSENT_COOKIE_HTTPONLY|yesno:'true,false' }}">
+      data-consent-cookie-httponly="{{ CONSENT_COOKIE_HTTPONLY|yesno:'true,false' }}"
+      data-consent-token-accept="{{ CONSENT_ACCEPT_TOKEN }}"
+      data-consent-token-decline="{{ CONSENT_DECLINE_TOKEN }}">
   <a class="skip-link" href="#main">Skip to content</a>
 
+  {% include 'coresite/partials/consent_banner.html' %}
+
   {% if ANALYTICS_ENABLED %}
-    {% if not CONSENT_REQUIRED or CONSENT_GRANTED %}
-      {% include 'coresite/partials/global/analytics.html' %}
-    {% endif %}
+    {% include 'coresite/partials/global/analytics.html' %}
   {% endif %}
 
   {% include 'coresite/partials/global/build_banner.html' %}

@@ -1,30 +1,28 @@
-{% if not CONSENT_REQUIRED or CONSENT_GRANTED %}
-  {% if ANALYTICS_PROVIDER == 'plausible' and ANALYTICS_SITE_ID %}
-    <script defer data-domain="{{ ANALYTICS_SITE_ID }}" src="https://plausible.io/js/script.js"></script>
-  {% elif ANALYTICS_PROVIDER == 'ga4' and ANALYTICS_SITE_ID %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ ANALYTICS_SITE_ID }}"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '{{ ANALYTICS_SITE_ID }}');
-    </script>
-  {% endif %}
-  {% if ANALYTICS_PROVIDER == 'plausible' or ANALYTICS_PROVIDER == 'ga4' %}
-    <script>
-      (function(){
-        var p=document.body.dataset.analyticsProvider;
-        function send(n,m){m=m||{};if(p==='plausible'&&window.plausible){window.plausible(n,{props:m});}
-          else if(p==='ga4'&&window.gtag){window.gtag('event',n,m);}}
-        var fired={};
-        function meta(el){try{return JSON.parse(el.dataset.analyticsMeta||'{}')}catch(e){return {};}}
-        document.addEventListener('click',function(e){var el=e.target;
-          while(el){var n=el.dataset&&el.dataset.analyticsEvent;if(n){send(n,meta(el));break;}el=el.parentElement;}});
-        document.addEventListener('submit',function(e){var el=e.target,n=el.dataset.analyticsEvent;
-          if(n){if(el.checkValidity&&!el.checkValidity())return;send(n,meta(el));}});
-        document.addEventListener('focusin',function(e){var el=e.target,n=el.dataset.analyticsEvent;
-          if(n&&!fired[n]){fired[n]=1;send(n,meta(el));}});
-      })();
-    </script>
-  {% endif %}
+{% if ANALYTICS_PROVIDER == 'plausible' and ANALYTICS_SITE_ID %}
+  <script defer data-domain="{{ ANALYTICS_SITE_ID }}" src="https://plausible.io/js/script.js"></script>
+{% elif ANALYTICS_PROVIDER == 'ga4' and ANALYTICS_SITE_ID %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ ANALYTICS_SITE_ID }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ ANALYTICS_SITE_ID }}');
+  </script>
+{% endif %}
+{% if ANALYTICS_PROVIDER == 'plausible' or ANALYTICS_PROVIDER == 'ga4' %}
+  <script>
+    (function(){
+      var p=document.body.dataset.analyticsProvider;
+      function send(n,m){m=m||{};if(p==='plausible'&&window.plausible){window.plausible(n,{props:m});}
+        else if(p==='ga4'&&window.gtag){window.gtag('event',n,m);}}
+      var fired={};
+      function meta(el){try{return JSON.parse(el.dataset.analyticsMeta||'{}')}catch(e){return {};}}
+      document.addEventListener('click',function(e){var el=e.target;
+        while(el){var n=el.dataset&&el.dataset.analyticsEvent;if(n){send(n,meta(el));break;}el=el.parentElement;}});
+      document.addEventListener('submit',function(e){var el=e.target,n=el.dataset.analyticsEvent;
+        if(n){if(el.checkValidity&&!el.checkValidity())return;send(n,meta(el));}});
+      document.addEventListener('focusin',function(e){var el=e.target,n=el.dataset.analyticsEvent;
+        if(n&&!fired[n]){fired[n]=1;send(n,meta(el));}});
+    })();
+  </script>
 {% endif %}
