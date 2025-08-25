@@ -40,7 +40,7 @@ Analytics is tied to the site's consent banner. Until a user grants tracking per
 ### Navigation links
 * **Path**: `coresite/templates/coresite/partials/global/nav_links.html`
 * **Purpose**: Canonical list of primary site links reused across header, mobile menu, and footer navigation.
-* **Included in**: `header_nav.html`, `includes/footer_links.html`
+* **Included in**: `header_nav.html`, `footer.html`
 
 ### Navigation CTA
 * **Path**: `coresite/templates/coresite/partials/global/nav_cta.html`

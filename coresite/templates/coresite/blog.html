@@ -56,7 +56,7 @@
   <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
       <div class="scaffold__header">
-        <h1 id="{{ page_id }}-heading"><a href="{% url 'blog' %}">{{ page_title }}</a></h1>
+        <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
         <a class="rss-link" href="{% url 'blog_rss' %}">RSS</a>
       </div>
       <div class="scaffold__body">
@@ -101,7 +101,7 @@
               </ul>
             </aside>
           </div>
-          <p>Looking for more? Visit <a href="{% url 'knowledge' %}">Knowledge</a> or <a href="{% url 'resources' %}">Resources</a>.</p>
+          <p>Looking for more? Explore our Knowledge and Resources sections.</p>
           <nav class="pager" aria-label="Pagination">
             {% if prev_page_url %}<a class="pager__prev" href="{{ prev_page_url }}">Newer posts</a>{% endif %}
             <span class="pager__current">Page {{ page_number }} of {{ total_pages }}</span>

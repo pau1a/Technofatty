@@ -7,7 +7,7 @@
       <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
       <div class="scaffold__body">
           {% include "coresite/partials/global/status_placeholder.html" %}
-        <p><a href="{% url 'blog' %}">Back to Blog</a></p>
+        <p>Back to Blog</p>
         <ul class="post-list">
           {% for post in posts %}
           <li class="post-list__item">
