@@ -25,10 +25,12 @@
   <div class="form-field">
     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
     {% if field.errors %}
-      {{ field.as_widget(attrs={"aria-describedby": field.id_for_label|add:"-error", "aria-invalid": "true"}) }}
-      <div class="error-message" id="{{ field.id_for_label }}-error">
-        {{ field.errors|striptags }}
-      </div>
+      {% with error_id=field.id_for_label|add:"-error" %}
+        {{ field.as_widget(attrs={"aria-describedby": error_id, "aria-invalid": "true"}) }}
+        <div class="error-message" id="{{ error_id }}">
+          {{ field.errors|striptags }}
+        </div>
+      {% endwith %}
     {% else %}
       {{ field }}
     {% endif %}
