@@ -1,0 +1,36 @@
+/* Auth-specific form styles */
+.auth-form {
+  max-width: 30rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: s(5);
+
+  label {
+    font-weight: 600;
+    margin-bottom: s(2);
+    display: block;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    padding: s(3);
+    border: bw(sm) solid c(border);
+    border-radius: r(sm);
+    @include focus-ring(c(blue));
+  }
+
+  .error-message {
+    color: c(magenta);
+    font-size: fs(sm);
+    margin-top: s(1);
+  }
+
+  .error-summary {
+    border: bw(sm) solid c(magenta);
+    background: c(mid);
+    padding: s(4);
+    margin-bottom: s(5);
+  }
+}
