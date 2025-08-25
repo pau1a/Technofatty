@@ -10,7 +10,9 @@
       {% if footer.intro %}
         <p class="footer__intro">{{ footer.intro }}</p>
       {% endif %}
-      {% include "coresite/includes/footer_links.html" %}
+      <ul class="footer__links">
+        {% include 'coresite/partials/global/nav_links.html' with id_prefix='footer-nav' show_home=False footer=True %}
+      </ul>
     </div>
   </nav>
   {% if footer.meta %}

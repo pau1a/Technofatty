@@ -26,4 +26,14 @@
     {% endif %}
   </li>
   <li><a href="{% url 'blog' %}" data-analytics-event="nav_link_click" data-analytics-label="Blog" data-analytics-url="{% url 'blog' %}">Blog</a></li>
+  {% if footer %}
+    {% if user.is_authenticated %}
+      <li><a href="{% url 'account' %}" data-analytics-event="nav_link_click" data-analytics-label="Account" data-analytics-url="{% url 'account' %}">Account</a></li>
+    {% else %}
+      <li><a href="{% url 'join' %}" data-analytics-event="nav_link_click" data-analytics-label="Join Free" data-analytics-url="{% url 'join' %}">Join Free</a></li>
+    {% endif %}
+    <li><a href="{% url 'about' %}" data-analytics-event="nav_link_click" data-analytics-label="About" data-analytics-url="{% url 'about' %}">About</a></li>
+    <li><a href="{% url 'contact' %}" data-analytics-event="nav_link_click" data-analytics-label="Contact" data-analytics-url="{% url 'contact' %}">Contact</a></li>
+    <li><a href="{% url 'legal' %}" data-analytics-event="nav_link_click" data-analytics-label="Legal" data-analytics-url="{% url 'legal' %}">Legal</a></li>
+  {% endif %}
 {% endwith %}
