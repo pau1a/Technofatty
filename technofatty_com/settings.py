@@ -114,6 +114,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "coresite.context_processors.analytics_flags",
                 "coresite.context_processors.build_metadata",
+                "coresite.context_processors.nav_links",
             ],
         },
     },
