@@ -1,6 +1,6 @@
 {% extends "coresite/base.html" %}
 
-{% block structured_data %}{% endblock %}
+{% block structured_data %}{{ block.super }}{% endblock %}
 
 {% block content %}
 <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">

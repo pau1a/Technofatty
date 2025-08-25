@@ -11,7 +11,8 @@
 {% endblock %}
 
 {% block structured_data %}
-  <script type="application/ld+json">
+  {{ block.super }}
+<script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebPage",

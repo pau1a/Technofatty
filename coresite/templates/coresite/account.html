@@ -1,7 +1,7 @@
 {% extends "coresite/base.html" %}
 
 {% block head_extras %}<meta name="robots" content="noindex,nofollow,noarchive">{% endblock %}
-{% block structured_data %}{% endblock %}
+{% block structured_data %}{{ block.super }}{% endblock %}
 
 {% block content %}
   <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
