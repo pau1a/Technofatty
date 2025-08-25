@@ -494,21 +494,6 @@ def legacy_signup(request):
     return HttpResponsePermanentRedirect(url)
 
 
-def account(request):
-    """Archived account scaffold. Returns 200 with noindex meta."""
-    footer = get_footer_content()
-    return render(
-        request,
-        "coresite/account.html",
-        {
-            "footer": footer,
-            "page_id": "account",
-            "page_title": "Account",
-            "canonical_url": f"{BASE_CANONICAL}/account/",
-        },
-    )
-
-
 def about(request):
     footer = get_footer_content()
     return render(

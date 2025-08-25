@@ -55,7 +55,6 @@ urlpatterns = [
         views.legacy_signup,
         name="legacy_signup",
     ),
-    path("account/", views.account, name="account"),
     path("about/", views.about, name="about"),
     re_path(
         re.compile(r"^services/?$", re.IGNORECASE),

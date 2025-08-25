@@ -64,11 +64,6 @@ class LegacyRoutesTests(TestCase):
             "https://technofatty.com/knowledge/signals/?ref=1#signal-model-tuning",
         )
 
-    def test_account_archived(self):
-        response = self.client.get("/account/")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("noindex,nofollow,noarchive", response.content.decode())
-
 
 class UrlResolutionTests(SimpleTestCase):
     def test_core_urls_reverse(self):

@@ -63,6 +63,9 @@ ALLOWED_HOSTS = os.environ.get(
     "technofatty.com,www.technofatty.com,localhost,127.0.0.1"
 ).split(",")
 
+SITE_CANONICAL_HOST = os.environ.get("SITE_CANONICAL_HOST", "technofatty.com")
+SITE_BASE_URL = os.environ.get("SITE_BASE_URL", f"https://{SITE_CANONICAL_HOST}")
+
 # -------------------------------------------------
 # Applications
 # -------------------------------------------------
