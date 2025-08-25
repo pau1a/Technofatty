@@ -1,26 +1,31 @@
+{% load nav_tags %}
 {% with prefix=id_prefix|default:'nav' %}
   {% with loc=location|default:'header' %}
     {% for link in nav_links|dictsort:"order" %}
       {% if loc in link.locations %}
         {% if link.requires_auth and not user.is_authenticated %}
           {% if link.alt_url %}
+            {% url link.alt_url as link_url %}
             <li>
-              <a href="{% url link.alt_url %}"
+              <a href="{{ link_url }}"
                  aria-describedby="{{ prefix }}-{{ link.sr_id }}"
                  data-analytics-event="nav_link_click"
                  data-analytics-label="{{ link.label }}"
-                 data-analytics-url="{% url link.alt_url %}">{{ link.label }}</a>
+                 data-analytics-url="{{ link_url }}"
+                 {% if request.path|nav_active:link_url %}aria-current="page"{% endif %}>{{ link.label }}</a>
               {% if link.sr_text %}<span id="{{ prefix }}-{{ link.sr_id }}" class="sr-only">{{ link.sr_text }}</span>{% endif %}
             </li>
           {% endif %}
         {% elif link.requires_anon and user.is_authenticated %}
           {# Skip links meant only for anonymous users #}
         {% else %}
+          {% url link.url as link_url %}
           <li>
-            <a href="{% url link.url %}"
+            <a href="{{ link_url }}"
                data-analytics-event="nav_link_click"
                data-analytics-label="{{ link.label }}"
-               data-analytics-url="{% url link.url %}">{{ link.label }}</a>
+               data-analytics-url="{{ link_url }}"
+               {% if request.path|nav_active:link_url %}aria-current="page"{% endif %}>{{ link.label }}</a>
           </li>
         {% endif %}
       {% endif %}
