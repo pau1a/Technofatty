@@ -2,6 +2,8 @@
 
 This page outlines the shared partial templates used across Technofatty. Each entry explains the partial’s purpose, where it lives, and which templates include it.
 
+See [structured-data](structured-data.md) for required context keys.
+
 ## Conventions
 
 ### Single page-level H1
