@@ -151,7 +151,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = []
 
 # Where collectstatic will gather files for production serving (Nginx, etc.)
-STATIC_ROOT = Path("/var/www/technofatty_com/static")
+# Allow override via STATIC_ROOT env var so CI and local runs don't need root permissions
+STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", "/var/www/technofatty_com/static"))
 
 # Hash filenames for cache-busting in prod (works fine with Nginx or any static server)
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"

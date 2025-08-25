@@ -19,6 +19,8 @@ jobs:
           pip install django pytest pytest-django beautifulsoup4 django-sass-processor \
             django-compressor easy-thumbnails psycopg2-binary
       - name: Collect static
+        env:
+          STATIC_ROOT: staticfiles
         run: |
           python manage.py collectstatic --noinput
       - name: Run tests
