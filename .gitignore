@@ -44,3 +44,6 @@ htmlcov/
 
 # Generated CSS
 coresite/static/coresite/scss/*.css
+
+# Ignore var outbox
+var/outbox/
