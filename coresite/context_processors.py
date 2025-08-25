@@ -1,81 +1,88 @@
 from django.conf import settings
 from django.core import signing
+from functools import lru_cache
 
 
-NAV_LINKS = [
-    {
-        "label": "Knowledge",
-        "url": "knowledge",
-        "locations": ["header", "footer"],
-        "order": 1,
-    },
-    {
-        "label": "Tools",
-        "url": "tools",
-        "locations": ["header", "footer"],
-        "order": 2,
-    },
-    {
-        "label": "Case Studies",
-        "url": "case_studies_landing",
-        "locations": ["header", "footer"],
-        "order": 3,
-    },
-    {
-        "label": "Community",
-        "url": "community",
-        "locations": ["header", "footer"],
-        "order": 4,
-        "requires_auth": True,
-        "alt_url": "join",
-        "sr_id": "community-locked",
-        "sr_text": "Available after you join.",
-    },
-    {
-        "label": "Blog",
-        "url": "blog",
-        "locations": ["header", "footer"],
-        "order": 5,
-    },
-    {
-        "label": "Account",
-        "url": "account",
-        "locations": ["footer"],
-        "order": 6,
-        "requires_auth": True,
-    },
-    {
-        "label": "Join Free",
-        "url": "join",
-        "locations": ["footer"],
-        "order": 7,
-        "requires_anon": True,
-    },
-    {
-        "label": "About",
-        "url": "about",
-        "locations": ["footer"],
-        "order": 8,
-    },
-    {
-        "label": "Contact",
-        "url": "contact",
-        "locations": ["footer"],
-        "order": 9,
-    },
-    {
-        "label": "Support",
-        "url": "support",
-        "locations": ["footer"],
-        "order": 10,
-    },
-    {
-        "label": "Legal",
-        "url": "legal",
-        "locations": ["footer"],
-        "order": 11,
-    },
-]
+@lru_cache()
+def _build_nav_links():
+    return [
+        {
+            "label": "Knowledge",
+            "url": "knowledge",
+            "locations": ["header", "footer"],
+            "order": 1,
+        },
+        {
+            "label": "Tools",
+            "url": "tools",
+            "locations": ["header", "footer"],
+            "order": 2,
+        },
+        {
+            "label": "Case Studies",
+            "url": "case_studies_landing",
+            "locations": ["header", "footer"],
+            "order": 3,
+        },
+        {
+            "label": "Community",
+            "url": "community",
+            "locations": ["header", "footer"],
+            "order": 4,
+            "requires_auth": True,
+            "alt_url": "join",
+            "sr_id": "community-locked",
+            "sr_text": "Available after you join.",
+        },
+        {
+            "label": "Blog",
+            "url": "blog",
+            "locations": ["header", "footer"],
+            "order": 5,
+        },
+        {
+            "label": "Account",
+            "url": "account",
+            "locations": ["footer"],
+            "order": 6,
+            "requires_auth": True,
+        },
+        {
+            "label": "Join Free",
+            "url": "join",
+            "locations": ["footer"],
+            "order": 7,
+            "requires_anon": True,
+        },
+        {
+            "label": "About",
+            "url": "about",
+            "locations": ["footer"],
+            "order": 8,
+        },
+        {
+            "label": "Contact",
+            "url": "contact",
+            "locations": ["footer"],
+            "order": 9,
+        },
+        {
+            "label": "Support",
+            "url": "support",
+            "locations": ["footer"],
+            "order": 10,
+        },
+        {
+            "label": "Legal",
+            "url": "legal",
+            "locations": ["footer"],
+            "order": 11,
+        },
+    ]
+
+
+# Expose the cached structure for import in tests and other modules
+NAV_LINKS = _build_nav_links()
 
 
 def analytics_flags(request):
