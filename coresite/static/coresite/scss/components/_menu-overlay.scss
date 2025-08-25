@@ -62,13 +62,13 @@ $overlay-bg: rgba(map-get($colors, blue), 0.9);
     }
 
     a:not(.btn) {
-      color: c(white);
+      color: c(gold);
       text-decoration: none;
       font-size: fs(lg);
 
       &:hover,
       &:focus {
-        color: c(gold);
+        color: c(white);
       }
     }
 
