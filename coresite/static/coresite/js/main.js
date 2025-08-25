@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const menuOverlay = document.querySelector('.menu-overlay');
+  const primaryNav = document.getElementById('primary-nav');
   const hamburgerBtn = document.querySelector('.hamburger-btn');
   const closeBtn = document.querySelector('.menu-overlay__close');
   const backdrop = document.querySelector('.menu-backdrop');
@@ -36,33 +36,33 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function openMenu() {
-    menuOverlay.classList.add('is-open');
+    primaryNav.classList.add('is-open');
     backdrop.classList.add('is-active');
-    menuOverlay.setAttribute('aria-hidden', 'false');
+    primaryNav.setAttribute('aria-hidden', 'false');
     hamburgerBtn.setAttribute('aria-expanded', 'true');
-    const focusables = menuOverlay.querySelectorAll(focusableSelectors);
+    const focusables = primaryNav.querySelectorAll(focusableSelectors);
     if (focusables.length) {
       [firstFocusable] = focusables;
       lastFocusable = focusables[focusables.length - 1];
       firstFocusable.focus();
     }
-    menuOverlay.addEventListener('keydown', trapFocus);
+    primaryNav.addEventListener('keydown', trapFocus);
   }
 
   function closeMenu() {
-    menuOverlay.classList.remove('is-open');
+    primaryNav.classList.remove('is-open');
     backdrop.classList.remove('is-active');
-    menuOverlay.setAttribute('aria-hidden', 'true');
+    primaryNav.setAttribute('aria-hidden', 'true');
     hamburgerBtn.setAttribute('aria-expanded', 'false');
-    menuOverlay.removeEventListener('keydown', trapFocus);
+    primaryNav.removeEventListener('keydown', trapFocus);
     hamburgerBtn.focus();
   }
 
-  if (hamburgerBtn && menuOverlay) {
+  if (hamburgerBtn && primaryNav) {
     hamburgerBtn.addEventListener('click', openMenu);
   }
 
-  if (closeBtn && menuOverlay) {
+  if (closeBtn && primaryNav) {
     closeBtn.addEventListener('click', closeMenu);
   }
 
