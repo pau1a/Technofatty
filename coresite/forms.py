@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 
 class ContactForm(forms.Form):
@@ -11,5 +12,5 @@ class ContactForm(forms.Form):
     def clean_website(self):
         website = self.cleaned_data.get("website")
         if website:
-            raise forms.ValidationError("Leave empty")
+            raise ValidationError("Leave empty")
         return website
