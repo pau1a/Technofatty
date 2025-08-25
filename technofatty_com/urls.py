@@ -12,7 +12,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from coresite import views as core_views
-from .views import SignupView
+from coresite.auth_views import SignupView, ActivateView
 
 
 class AccountHomeView(LoginRequiredMixin, TemplateView):
@@ -54,6 +54,7 @@ urlpatterns = [
     path('robots.txt', core_views.robots_txt, name="robots_txt"),
     path('sitemap.xml', core_views.sitemap_xml, name="sitemap_xml"),
     path('signup/', SignupView.as_view(), name='signup'),
+    path('activate/<uidb64>/<token>/', ActivateView.as_view(), name='activate'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('account/', include(account_patterns)),
 ]
