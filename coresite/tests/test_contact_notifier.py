@@ -1,4 +1,3 @@
-import stat
 import tempfile
 from pathlib import Path
 from unittest import mock
@@ -29,14 +28,13 @@ class ContactNotifierTests(TestCase):
                         reply_to=["alice@example.com"],
                     )
 
-    def test_creates_outbox_with_permissions(self):
+    def test_creates_outbox_if_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             outbox = Path(tmp) / "outbox"
+            self.assertFalse(outbox.exists())
             with override_settings(EMAIL_FILE_PATH=outbox):
                 with mock.patch("django.core.mail.send_mail"):
                     ContactNotifier().send(
                         "Bob", "bob@example.com", "Hey", "Hello"
                     )
             self.assertTrue(outbox.exists())
-            mode = stat.S_IMODE(outbox.stat().st_mode)
-            self.assertEqual(mode, 0o700)

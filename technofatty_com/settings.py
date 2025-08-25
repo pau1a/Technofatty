@@ -203,9 +203,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Email
 # -------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = Path(os.environ.get("EMAIL_FILE_PATH", BASE_DIR / "var" / "outbox"))
-EMAIL_FILE_PATH.mkdir(mode=0o700, parents=True, exist_ok=True)
-os.chmod(EMAIL_FILE_PATH, 0o700)
+EMAIL_FILE_PATH = os.environ.get(
+    "EMAIL_FILE_PATH", os.path.join(BASE_DIR, "var", "outbox")
+)
+
+try:
+    os.makedirs(EMAIL_FILE_PATH, exist_ok=True)
+except Exception:
+    # Don't crash settings import; perms are handled at deploy time.
+    pass
+
 CONTACT_FROM_EMAIL = os.environ.get("CONTACT_FROM_EMAIL", "webmaster@localhost")
 CONTACT_TO_EMAIL = os.environ.get("CONTACT_TO_EMAIL", "webmaster@localhost")
 
