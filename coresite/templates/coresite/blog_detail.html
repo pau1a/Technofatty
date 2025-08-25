@@ -58,7 +58,7 @@
     <div class="wrap">
         <div class="scaffold__body">
           {% include "coresite/partials/global/status_placeholder.html" %}
-          <p class="back-link"><a href="{% url 'blog' %}">← Back to Blog</a></p>
+          <p class="back-link">← Back to Blog</p>
           <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
           <p class="post-meta">
             <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:'d M Y' }}</time> ·
