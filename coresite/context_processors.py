@@ -1,17 +1,10 @@
 from django.conf import settings
-from django.core.signing import BadSignature
 
 
 def analytics_flags(request):
     """Expose analytics configuration and consent flags."""
 
-    consent_granted = False
-    try:
-        consent_granted = (
-            request.get_signed_cookie(settings.CONSENT_COOKIE_NAME) == "true"
-        )
-    except (KeyError, BadSignature):
-        consent_granted = False
+    consent_granted = getattr(request, "CONSENT_GRANTED", False)
 
     return {
         "ANALYTICS_ENABLED": getattr(settings, "ANALYTICS_ENABLED", False),
