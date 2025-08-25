@@ -22,15 +22,20 @@ The `id` matches the heading’s `-heading` suffix. Example usage appears throug
 ### Design tokens
 All styling values come from `_variables.scss`, the single source of truth for SCSS/CSS tokens【F:coresite/static/coresite/scss/abstracts/_variables.scss†L1-L8】.
 
-### Consent-aware analytics
-Analytics is tied to the site's consent banner. Until a user grants tracking permission, the analytics partial outputs nothing and no tracking scripts run【F:coresite/templates/coresite/partials/global/analytics.html†L1-L30】.
+### Analytics and consent
+Analytics scripts run whenever enabled. The consent banner simply records the visitor's preference in a signed cookie【F:coresite/templates/coresite/base.html†L20-L28】.
 
 ## Partial reference
 
+### Consent banner
+* **Path**: `coresite/templates/coresite/partials/consent_banner.html`
+* **Purpose**: Prompts visitors to accept or decline analytics cookies【F:coresite/templates/coresite/partials/consent_banner.html†L1-L8】
+* **Included in**: `base.html` (thus every page)【F:coresite/templates/coresite/base.html†L30-L32】
+
 ### Analytics
 * **Path**: `coresite/templates/coresite/partials/global/analytics.html`
-* **Purpose**: Loads the provider snippet and tiny event dispatcher only after tracking consent is granted【F:coresite/templates/coresite/partials/global/analytics.html†L1-L30】
-* **Included in**: `base.html` (thus every page)【F:coresite/templates/coresite/base.html†L21-L23】
+* **Purpose**: Loads the provider snippet and tiny event dispatcher when analytics is enabled【F:coresite/templates/coresite/partials/global/analytics.html†L1-L27】
+* **Included in**: `base.html` (thus every page)【F:coresite/templates/coresite/base.html†L34-L36】
 
 ### Header and primary navigation
 * **Path**: `coresite/templates/coresite/partials/global/header_nav.html`
@@ -91,7 +96,7 @@ Analytics is tied to the site's consent banner. Until a user grants tracking per
 * **Status**: No global notice partial exists yet; site currently has no mechanism for site-wide alert banners.
 
 ## Inclusion map
-- All templates → analytics
+- All templates → analytics, consent_banner
 - `coresite/templates/coresite/homepage.html` → header_nav, hero, trust, featured_grid, newsletter_block, signals_block, support_block, community_block
 - `coresite/templates/coresite/about.html` → header_nav
 - `coresite/templates/coresite/contact.html` → header_nav

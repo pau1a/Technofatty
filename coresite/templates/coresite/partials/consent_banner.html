@@ -1,0 +1,7 @@
+<div id="consent-banner" class="consent-banner" role="region" aria-label="Cookie consent" hidden data-consent-banner>
+  <p>We use cookies for analytics. You can accept or decline.</p>
+  <div class="consent-banner__actions">
+    <a href="{% url 'consent_accept' %}" data-consent-choice="accept" class="button">Accept</a>
+    <a href="{% url 'consent_decline' %}" data-consent-choice="decline" class="button button--secondary">Decline</a>
+  </div>
+</div>
