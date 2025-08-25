@@ -1,23 +1,37 @@
 <h2 id="contact-form-heading">General inquiries</h2>
 <p>Use this form for non-urgent questions; staff reviews messages each workday [ref:general].</p>
 <p>If the form is unavailable, email <a href="mailto:contact@technofatty.com" data-analytics-event="link.contact.email">contact@technofatty.com</a> for help [ref:general].</p>
+{% if sent %}
+<div class="form-success" role="status" aria-live="polite">
+  <p>Your message has been sent.</p>
+</div>
+{% endif %}
 <form method="post" novalidate>
   {% csrf_token %}
   {{ form.non_field_errors }}
   <p>
-    {{ form.name.label_tag }}
-    {{ form.name }}
-    {{ form.name.errors }}
+    <label for="{{ form.name.id_for_label }}">Name</label>
+    <input type="text" name="{{ form.name.html_name }}" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:'' }}" aria-invalid="{{ form.name.errors|yesno:'true,false' }}" aria-describedby="error-name">
+    <span id="error-name" role="alert" aria-live="polite">{% if form.name.errors %}{{ form.name.errors|striptags }}{% endif %}</span>
   </p>
   <p>
-    {{ form.email.label_tag }}
-    {{ form.email }}
-    {{ form.email.errors }}
+    <label for="{{ form.email.id_for_label }}">Email</label>
+    <input type="email" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:'' }}" aria-invalid="{{ form.email.errors|yesno:'true,false' }}" aria-describedby="error-email">
+    <span id="error-email" role="alert" aria-live="polite">{% if form.email.errors %}{{ form.email.errors|striptags }}{% endif %}</span>
   </p>
   <p>
-    {{ form.message.label_tag }}
-    {{ form.message }}
-    {{ form.message.errors }}
+    <label for="{{ form.subject.id_for_label }}">Subject</label>
+    <input type="text" name="{{ form.subject.html_name }}" id="{{ form.subject.id_for_label }}" value="{{ form.subject.value|default_if_none:'' }}" aria-invalid="{{ form.subject.errors|yesno:'true,false' }}" aria-describedby="error-subject">
+    <span id="error-subject" role="alert" aria-live="polite">{% if form.subject.errors %}{{ form.subject.errors|striptags }}{% endif %}</span>
+  </p>
+  <p>
+    <label for="{{ form.message.id_for_label }}">Message</label>
+    <textarea name="{{ form.message.html_name }}" id="{{ form.message.id_for_label }}" aria-invalid="{{ form.message.errors|yesno:'true,false' }}" aria-describedby="error-message">{{ form.message.value|default_if_none:'' }}</textarea>
+    <span id="error-message" role="alert" aria-live="polite">{% if form.message.errors %}{{ form.message.errors|striptags }}{% endif %}</span>
+  </p>
+  <p class="visually-hidden">
+    <label for="{{ form.website.id_for_label }}">Website</label>
+    <input type="text" name="{{ form.website.html_name }}" id="{{ form.website.id_for_label }}" value="{{ form.website.value|default_if_none:'' }}" tabindex="-1" autocomplete="off">
   </p>
   <button type="submit">Send</button>
 </form>
