@@ -1,4 +1,5 @@
 {% extends "coresite/base.html" %}
+{% load jsonld %}
 
 {% block meta %}
   {% with meta_description="Client success stories from Technofatty." %}
@@ -8,7 +9,7 @@
 
 {% block structured_data %}
   {{ block.super }}
-<script type="application/ld+json">
+  {% jsonld %}
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -28,7 +29,7 @@
     }
   ]
 }
-</script>
+  {% endjsonld %}
 {% endblock %}
 
 {% block content %}

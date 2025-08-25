@@ -1,4 +1,5 @@
 {% extends "coresite/base.html" %}
+{% load jsonld %}
 
 {% block meta %}
   {% with page_title="Support" meta_description="Find help resources for Technofatty services." canonical_url="https://technofatty.com/support/" %}
@@ -12,7 +13,7 @@
 
 {% block structured_data %}
   {{ block.super }}
-<script type="application/ld+json">
+  {% jsonld %}
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -26,7 +27,7 @@
         "url": "https://technofatty.com/"
       }
     }
-  </script>
+  {% endjsonld %}
 {% endblock %}
 
 {% block content %}

@@ -1,4 +1,5 @@
 {% extends "coresite/base.html" %}
+{% load jsonld %}
 
 {% block meta %}
   {% with meta_description=post.excerpt|default:'A blog post on Technofatty.' og_type='article' canonical_url=request.build_absolute_uri %}
@@ -10,7 +11,7 @@
 
 {% block structured_data %}
   {{ block.super }}
-<script type="application/ld+json">
+  {% jsonld %}
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -51,7 +52,7 @@
     }
   ]
 }
-</script>
+  {% endjsonld %}
 {% endblock %}
 
 {% block content %}
