@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -31,6 +32,20 @@ class SignupView(CreateView):
             getattr(settings, "DEFAULT_FROM_EMAIL", None),
             [user.email],
         )
+        return super().form_valid(form)
+
+
+class LoginView(DjangoLoginView):
+    """Extend session lifetime when "remember me" is checked."""
+
+    def form_valid(self, form):
+        remember_me = self.request.POST.get("remember_me")
+        if remember_me:
+            self.request.session.set_expiry(
+                getattr(settings, "REMEMBER_ME_SESSION_AGE", 60 * 60 * 24 * 14)
+            )
+        else:
+            self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
         return super().form_valid(form)
 
 

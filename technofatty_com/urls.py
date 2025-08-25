@@ -12,7 +12,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from coresite import views as core_views
-from coresite.auth_views import SignupView, ActivateView
+from coresite.auth_views import SignupView, ActivateView, LoginView
 
 
 class AccountHomeView(LoginRequiredMixin, TemplateView):
@@ -22,7 +22,7 @@ class AccountHomeView(LoginRequiredMixin, TemplateView):
 
 account_patterns = [
     path("", AccountHomeView.as_view(), name="account"),
-    path("login/", auth_views.LoginView.as_view(), name="account_login"),
+    path("login/", LoginView.as_view(), name="account_login"),
     path(
         "password_reset/",
         auth_views.PasswordResetView.as_view(

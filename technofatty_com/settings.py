@@ -206,6 +206,14 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.technofatty.com",
 ]
 
+# Secure cookies and sane defaults
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_AGE = 60 * 60 * 24  # 24 hours
+REMEMBER_ME_SESSION_AGE = 60 * 60 * 24 * 14  # 14 days
+
 # -------------------------------------------------
 # Auto field
 # -------------------------------------------------
