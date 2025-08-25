@@ -37,6 +37,11 @@ class ContactViewTests(TestCase):
             form.fields["name"].widget.attrs.get("autofocus"),
             "autofocus",
         )
+        self.assertContains(
+            response,
+            '<div id="form-status" role="status" aria-live="polite">',
+            html=False,
+        )
 
     def test_sent_query_param_renders_success_banner(self):
         response = self.client.get("/contact/?sent=1")
