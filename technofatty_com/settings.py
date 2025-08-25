@@ -200,6 +200,16 @@ CSRF_TRUSTED_ORIGINS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # -------------------------------------------------
+# Email
+# -------------------------------------------------
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = Path(os.environ.get("EMAIL_FILE_PATH", BASE_DIR / "var" / "outbox"))
+EMAIL_FILE_PATH.mkdir(mode=0o700, parents=True, exist_ok=True)
+os.chmod(EMAIL_FILE_PATH, 0o700)
+CONTACT_FROM_EMAIL = os.environ.get("CONTACT_FROM_EMAIL", "webmaster@localhost")
+CONTACT_TO_EMAIL = os.environ.get("CONTACT_TO_EMAIL", "webmaster@localhost")
+
+# -------------------------------------------------
 # Newsletter settings
 # -------------------------------------------------
 NEWSLETTER_PROVIDER = os.environ.get("NEWSLETTER_PROVIDER", "stub")
