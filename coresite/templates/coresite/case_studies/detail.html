@@ -1,6 +1,6 @@
 {% extends "coresite/base.html" %}
 
-{% block structured_data %}{% endblock %}
+{% block structured_data %}{{ block.super }}{% endblock %}
 
 {% block meta %}
   {% with meta_description="Case study details from Technofatty." og_type="article" %}
