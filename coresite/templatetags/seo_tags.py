@@ -1,6 +1,7 @@
-from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
+from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode, urljoin
 
 from django import template
+from django.conf import settings
 
 
 register = template.Library()
@@ -9,13 +10,29 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def canonical_url(context, url=None):
     request = context.get("request")
+    base = getattr(settings, "SITE_BASE_URL", None) or (
+        f"https://{getattr(settings, 'SITE_CANONICAL_HOST', '')}"
+        if getattr(settings, "SITE_CANONICAL_HOST", "")
+        else None
+    )
+
     if url:
         parsed = urlparse(url)
         if not parsed.scheme:
-            url = request.build_absolute_uri(url)
+            if request:
+                url = request.build_absolute_uri(url)
+            elif base:
+                url = urljoin(base, url)
+            else:
+                return ""
     else:
-        url = request.build_absolute_uri()
-        parsed = urlparse(url)
+        if request:
+            url = request.build_absolute_uri()
+        elif base:
+            url = base
+        else:
+            return ""
+
     parsed = urlparse(url)
     query = dict(parse_qsl(parsed.query, keep_blank_values=True))
     if query.get("page") == "1":

@@ -1,5 +1,7 @@
 {% extends "coresite/base.html" %}
 
+{% block meta %}{% with canonical_url='/' %}{% include 'coresite/partials/seo/meta_head.html' %}{% endwith %}{% endblock %}
+
 {% block structured_data %}{{ block.super }}{% endblock %}
 
 {% block title %}Page gone{% endblock %}
