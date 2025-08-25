@@ -10,7 +10,7 @@
 
 {% block structured_data %}
   {{ block.super }}
-<script type="application/ld+json">
+  {% jsonld %}
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -51,7 +51,7 @@
     }
   ]
 }
-</script>
+  {% endjsonld %}
 {% endblock %}
 
 {% block content %}

@@ -8,7 +8,7 @@
 
 {% block structured_data %}
   {{ block.super }}
-<script type="application/ld+json">
+  {% jsonld %}
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -27,7 +27,7 @@
     }
   ]
 }
-</script>
+  {% endjsonld %}
 {% endblock %}
 
 {% block content %}

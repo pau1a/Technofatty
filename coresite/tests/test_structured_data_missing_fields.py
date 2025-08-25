@@ -17,8 +17,9 @@ def _render(template_str: str, context: dict | None = None) -> str:
 def test_article_schema_missing_image_renders_empty():
     html = _render(
         """
+        {% load jsonld %}
         {% if headline and image %}
-        <script type=\"application/ld+json\">{"@type": "Article", "headline": "{{ headline }}", "image": "{{ image }}"}</script>
+        {% jsonld %}{"@type": "Article", "headline": "{{ headline }}", "image": "{{ image }}"}{% endjsonld %}
         {% endif %}
         """,
         {"headline": "Test headline"},
@@ -29,8 +30,9 @@ def test_article_schema_missing_image_renders_empty():
 def test_organization_schema_missing_name_renders_empty():
     html = _render(
         """
+        {% load jsonld %}
         {% if name and url %}
-        <script type=\"application/ld+json\">{"@type": "Organization", "name": "{{ name }}", "url": "{{ url }}"}</script>
+        {% jsonld %}{"@type": "Organization", "name": "{{ name }}", "url": "{{ url }}"}{% endjsonld %}
         {% endif %}
         """,
         {"url": "https://example.com"},
@@ -41,8 +43,9 @@ def test_organization_schema_missing_name_renders_empty():
 def test_faqpage_schema_missing_entities_renders_empty():
     html = _render(
         """
+        {% load jsonld %}
         {% if main_entity %}
-        <script type=\"application/ld+json\">{"@type": "FAQPage", "mainEntity": {{ main_entity }}}</script>
+        {% jsonld %}{"@type": "FAQPage", "mainEntity": {{ main_entity }}}{% endjsonld %}
         {% endif %}
         """,
         {"main_entity": None},
