@@ -499,10 +499,12 @@ def legacy_services(request):
 
 def contact(request):
     footer = get_footer_content()
+    sent = request.GET.get("sent") == "1"
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            ContactNotifier().send(**form.cleaned_data)
+            data = {k: v for k, v in form.cleaned_data.items() if k != "website"}
+            ContactNotifier().send(**data)
             log_newsletter_event(request, "submitted_success")
             return redirect("/contact/?sent=1")
         first_error = next(iter(form.errors))
@@ -516,6 +518,7 @@ def contact(request):
             "footer": footer,
             "canonical_url": f"{BASE_CANONICAL}/contact/",
             "form": form,
+            "sent": sent,
         },
     )
 
