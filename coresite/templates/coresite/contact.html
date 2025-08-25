@@ -36,6 +36,11 @@
 
 <section id="contact-form" class="section" role="region" aria-labelledby="contact-form-heading">
   <div class="wrap">
+    {% if sent %}
+    <div class="form-success" role="status" aria-live="polite">
+      <p>Your message has been sent.</p>
+    </div>
+    {% endif %}
     {% include "coresite/partials/contact/contact-form.html" %}
   </div>
 </section>
@@ -63,5 +68,21 @@
     {% include "coresite/partials/contact/contact-cta.html" %}
   </div>
 </section>
+{% endblock %}
+
+{% block body_scripts %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const firstInvalid = document.querySelector("[aria-invalid='true']");
+      if (firstInvalid) {
+        firstInvalid.focus();
+        const status = document.getElementById('form-status');
+        if (status) {
+          status.textContent = 'Please correct the errors below.';
+        }
+      }
+    });
+  </script>
 {% endblock %}
 
