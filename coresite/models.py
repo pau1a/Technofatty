@@ -1,5 +1,18 @@
 from django.db import models
 
+
+class StatusChoices(models.TextChoices):
+    DRAFT = "draft", "Draft"
+    REVIEW = "review", "Review"
+    PUBLISHED = "published", "Published"
+
+
+class PublishedManager(models.Manager):
+    """Manager that returns only published items."""
+
+    def get_queryset(self):
+        return super().get_queryset().filter(status=StatusChoices.PUBLISHED)
+
 class SiteSettings(models.Model):
     hero_image = models.ImageField(upload_to='hero/', blank=True, null=True)
     hero_video = models.FileField(upload_to='hero_videos/', blank=True, null=True)  # <-- New field
@@ -36,12 +49,6 @@ class DevImage(models.Model):
         return self.title or f"Image {self.id}"
 
 
-STATUS_CHOICES = [
-    ("draft", "Draft"),
-    ("published", "Published"),
-]
-
-
 class TimestampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -53,8 +60,15 @@ class TimestampedModel(models.Model):
 class KnowledgeCategory(TimestampedModel):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.DRAFT,
+    )
     description = models.TextField(blank=True)
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     def __str__(self):
         return self.title
@@ -66,9 +80,16 @@ class KnowledgeArticle(TimestampedModel):
     )
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.DRAFT,
+    )
     blurb = models.TextField(blank=True)
     content = models.TextField(blank=True)
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     def __str__(self):
         return self.title
@@ -77,13 +98,20 @@ class KnowledgeArticle(TimestampedModel):
 class BlogPost(TimestampedModel):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.DRAFT,
+    )
     excerpt = models.TextField(blank=True)
     content = models.TextField(blank=True)
     published_at = models.DateTimeField(blank=True, null=True)
     category_slug = models.SlugField(max_length=100, blank=True)
     category_title = models.CharField(max_length=100, blank=True)
     tags = models.JSONField(default=list, blank=True)
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     def __str__(self):
         return self.title

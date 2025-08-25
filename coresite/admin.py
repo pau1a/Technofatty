@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import SiteSettings, SiteImage, DevImage
+from .models import (
+    SiteSettings,
+    SiteImage,
+    DevImage,
+    KnowledgeCategory,
+    KnowledgeArticle,
+    BlogPost,
+)
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
@@ -28,3 +35,25 @@ class DevImageAdmin(admin.ModelAdmin):
         return ""
     image_tag.allow_tags = True
     image_tag.short_description = 'Preview'
+
+
+@admin.register(KnowledgeCategory)
+class KnowledgeCategoryAdmin(admin.ModelAdmin):
+    list_display = ("title", "status")
+    list_filter = ("status",)
+    prepopulated_fields = {"slug": ("title",)}
+
+
+@admin.register(KnowledgeArticle)
+class KnowledgeArticleAdmin(admin.ModelAdmin):
+    list_display = ("title", "category", "status")
+    list_filter = ("status", "category")
+    prepopulated_fields = {"slug": ("title",)}
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ("title", "status", "published_at")
+    list_filter = ("status",)
+    prepopulated_fields = {"slug": ("title",)}
+    date_hierarchy = "published_at"
