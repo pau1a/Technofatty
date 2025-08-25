@@ -1,7 +1,7 @@
 {% extends "coresite/base.html" %}
 
 {% block meta %}
-  {% with meta_description=post.excerpt|default:'A blog post on Technofatty.' og_type='article' %}
+  {% with meta_description=post.excerpt|default:'A blog post on Technofatty.' og_type='article' canonical_url=request.build_absolute_uri %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
   {% if post.date %}<meta property="article:published_time" content="{{ post.date|date:'c' }}">{% endif %}

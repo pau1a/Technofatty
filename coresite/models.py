@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils.text import slugify
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 class StatusChoices(models.TextChoices):
@@ -79,7 +82,7 @@ class KnowledgeArticle(TimestampedModel):
         KnowledgeCategory, related_name="articles", on_delete=models.CASCADE
     )
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField()
     status = models.CharField(
         max_length=20,
         choices=StatusChoices.choices,
@@ -93,6 +96,14 @@ class KnowledgeArticle(TimestampedModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["category", "slug"],
+                name="unique_article_slug_per_category",
+            )
+        ]
 
 
 class BlogPost(TimestampedModel):
@@ -115,3 +126,31 @@ class BlogPost(TimestampedModel):
 
     def __str__(self):
         return self.title
+
+
+def _generate_unique_slug(title: str, queryset):
+    """Return a slug unique within the given queryset."""
+    base = slugify(title)
+    slug = base
+    counter = 1
+    while queryset.filter(slug=slug).exists():
+        slug = f"{base}-{counter}"
+        counter += 1
+    return slug
+
+
+@receiver(pre_save, sender=BlogPost)
+def set_blogpost_slug(sender, instance, **kwargs):
+    if not instance.slug and instance.title:
+        instance.slug = _generate_unique_slug(
+            instance.title, BlogPost.objects.exclude(pk=instance.pk)
+        )
+
+
+@receiver(pre_save, sender=KnowledgeArticle)
+def set_knowledge_article_slug(sender, instance, **kwargs):
+    if not instance.slug and instance.title:
+        qs = KnowledgeArticle.objects.filter(category=instance.category).exclude(
+            pk=instance.pk
+        )
+        instance.slug = _generate_unique_slug(instance.title, qs)
