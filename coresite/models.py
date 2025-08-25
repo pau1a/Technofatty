@@ -34,3 +34,56 @@ class DevImage(models.Model):
 
     def __str__(self):
         return self.title or f"Image {self.id}"
+
+
+STATUS_CHOICES = [
+    ("draft", "Draft"),
+    ("published", "Published"),
+]
+
+
+class TimestampedModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class KnowledgeCategory(TimestampedModel):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class KnowledgeArticle(TimestampedModel):
+    category = models.ForeignKey(
+        KnowledgeCategory, related_name="articles", on_delete=models.CASCADE
+    )
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    blurb = models.TextField(blank=True)
+    content = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class BlogPost(TimestampedModel):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    excerpt = models.TextField(blank=True)
+    content = models.TextField(blank=True)
+    published_at = models.DateTimeField(blank=True, null=True)
+    category_slug = models.SlugField(max_length=100, blank=True)
+    category_title = models.CharField(max_length=100, blank=True)
+    tags = models.JSONField(default=list, blank=True)
+
+    def __str__(self):
+        return self.title

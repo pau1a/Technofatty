@@ -1,10 +1,10 @@
 from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
-from .models import SiteImage
+from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle
 from datetime import datetime
 from .signals import get_signals_content
 from .support import get_support_content
@@ -15,97 +15,11 @@ from .footer import get_footer_content
 BASE_CANONICAL = "https://technofatty.com"
 
 
-KNOWLEDGE_CATEGORIES = [
-    {"title": "AI Basics", "slug": "ai-basics"},
-    {"title": "Data Strategy", "slug": "data-strategy"},
-    {"title": "Automation", "slug": "automation"},
-]
-
-KNOWLEDGE_ARTICLES = {
-    "ai-basics": [
-        {
-            "title": "What Is AI?",
-            "slug": "what-is-ai",
-            "blurb": "A quick introduction to artificial intelligence.",
-        },
-        {
-            "title": "History of AI",
-            "slug": "history-of-ai",
-            "blurb": "From early concepts to modern breakthroughs.",
-        },
-        {
-            "title": "Future of AI",
-            "slug": "future-of-ai",
-            "blurb": "Where the technology may be heading next.",
-        },
-    ]
-}
-
-
 KNOWLEDGE_SUB_SECTIONS = [
     {"title": "Guides", "url_name": "knowledge_guides"},
     {"title": "Signals", "url_name": "knowledge_signals"},
     {"title": "Glossary", "url_name": "knowledge_glossary"},
     {"title": "Quick Wins", "url_name": "knowledge_quick_wins"},
-]
-
-
-BLOG_POSTS = [
-    {
-        "title": "Getting Started with Our Blog",
-        "slug": "getting-started",
-        "date": datetime(2024, 1, 1),
-        "category": {"title": "News", "slug": "news"},
-        "tags": [
-            {"title": "intro", "slug": "intro"},
-            {"title": "welcome", "slug": "welcome"},
-        ],
-        "excerpt": "A brief welcome to the Technofatty blog.",
-    },
-    {
-        "title": "AI Trends in 2024",
-        "slug": "ai-trends-2024",
-        "date": datetime(2024, 2, 15),
-        "category": {"title": "Insights", "slug": "insights"},
-        "tags": [
-            {"title": "ai", "slug": "ai"},
-            {"title": "trends", "slug": "trends"},
-        ],
-        "excerpt": "A snapshot of the AI developments we're watching this year.",
-    },
-    {
-        "title": "Behind the Scenes: Data Tips",
-        "slug": "data-tips",
-        "date": datetime(2024, 3, 10),
-        "category": {"title": "Guides", "slug": "guides"},
-        "tags": [
-            {"title": "data", "slug": "data"},
-            {"title": "tips", "slug": "tips"},
-        ],
-        "excerpt": "Practical data pointers from our team.",
-    },
-    {
-        "title": "Automation Stories",
-        "slug": "automation-stories",
-        "date": datetime(2024, 4, 5),
-        "category": {"title": "Stories", "slug": "stories"},
-        "tags": [
-            {"title": "automation", "slug": "automation"},
-            {"title": "cases", "slug": "cases"},
-        ],
-        "excerpt": "How small automations make a big impact.",
-    },
-    {
-        "title": "Community Highlights",
-        "slug": "community-highlights",
-        "date": datetime(2024, 5, 20),
-        "category": {"title": "Community", "slug": "community"},
-        "tags": [
-            {"title": "community", "slug": "community"},
-            {"title": "update", "slug": "update"},
-        ],
-        "excerpt": "Recent happenings around the Technofatty community.",
-    },
 ]
 
 # Legacy endpoints like /services/, /signup/, /community/join/, and /signals/<slug>/
@@ -170,11 +84,12 @@ def signal_detail(request, slug: str):
     )
 def knowledge(request):
     footer = get_footer_content()
+    categories = KnowledgeCategory.objects.filter(status="published")
     context = {
         "footer": footer,
         "page_id": "knowledge",
         "page_title": "Knowledge",
-        "categories": KNOWLEDGE_CATEGORIES,
+        "categories": categories,
         "sub_sections": KNOWLEDGE_SUB_SECTIONS,
         "canonical_url": f"{BASE_CANONICAL}/knowledge/",
     }
@@ -183,16 +98,16 @@ def knowledge(request):
 
 def knowledge_category(request, category_slug: str):
     footer = get_footer_content()
-    category = next(
-        (c for c in KNOWLEDGE_CATEGORIES if c["slug"] == category_slug), None
+    category = get_object_or_404(
+        KnowledgeCategory, slug=category_slug, status="published"
     )
-    if not category:
-        raise Http404
-    articles = KNOWLEDGE_ARTICLES.get(category_slug, [])
+    articles = KnowledgeArticle.objects.filter(
+        category=category, status="published"
+    )
     context = {
         "footer": footer,
         "page_id": f"knowledge-{category_slug}",
-        "page_title": category["title"],
+        "page_title": category.title,
         "category": category,
         "articles": articles,
         "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/",
@@ -202,25 +117,19 @@ def knowledge_category(request, category_slug: str):
 
 def knowledge_article(request, category_slug: str, article_slug: str):
     footer = get_footer_content()
-    category = next(
-        (c for c in KNOWLEDGE_CATEGORIES if c["slug"] == category_slug), None
+    category = get_object_or_404(
+        KnowledgeCategory, slug=category_slug, status="published"
     )
-    if not category:
-        raise Http404
-    article = next(
-        (
-            a
-            for a in KNOWLEDGE_ARTICLES.get(category_slug, [])
-            if a["slug"] == article_slug
-        ),
-        None,
+    article = get_object_or_404(
+        KnowledgeArticle,
+        category=category,
+        slug=article_slug,
+        status="published",
     )
-    if not article:
-        raise Http404
     context = {
         "footer": footer,
         "page_id": f"knowledge-{article_slug}",
-        "page_title": article["title"],
+        "page_title": article.title,
         "category": category,
         "article": article,
         "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/{article_slug}/",
@@ -348,7 +257,10 @@ def blog(request):
         return HttpResponsePermanentRedirect(reverse("blog"))
 
     footer = get_footer_content()
-    posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)
+    posts_qs = BlogPost.objects.filter(status="published").order_by(
+        "-published_at"
+    )
+    posts = list(posts_qs)
 
     # Basic pagination over in-memory posts to enable proper SEO signals.
     from django.core.paginator import Paginator, EmptyPage
@@ -365,10 +277,12 @@ def blog(request):
     remaining_posts = page_posts[1:] if page_number == 1 else page_posts
 
     categories = {
-        (p["category"]["slug"], p["category"]["title"]) for p in posts
+        (p.category_slug, p.category_title)
+        for p in posts
+        if p.category_slug
     }
     tags = {
-        (t["slug"], t["title"]) for p in posts for t in p["tags"]
+        (t["slug"], t["title"]) for p in posts for t in p.tags
     }
 
     def absolute_page_url(num: int) -> str:
@@ -401,9 +315,7 @@ def blog(request):
 
 def blog_post(request, post_slug: str):
     footer = get_footer_content()
-    post = next((p for p in BLOG_POSTS if p["slug"] == post_slug), None)
-    if not post:
-        raise Http404
+    post = get_object_or_404(BlogPost, slug=post_slug, status="published")
     context = {
         "footer": footer,
         "page_id": "post",
@@ -416,10 +328,14 @@ def blog_post(request, post_slug: str):
 
 def blog_category(request, category_slug: str):
     footer = get_footer_content()
-    posts = [p for p in BLOG_POSTS if p["category"]["slug"] == category_slug]
-    category_title = next(
-        (p["category"]["title"] for p in BLOG_POSTS if p["category"]["slug"] == category_slug),
-        category_slug.replace("-", " ").title(),
+    posts_qs = BlogPost.objects.filter(
+        status="published", category_slug=category_slug
+    ).order_by("-published_at")
+    posts = list(posts_qs)
+    category_title = (
+        posts[0].category_title
+        if posts
+        else category_slug.replace("-", " ").title()
     )
     context = {
         "footer": footer,
@@ -435,7 +351,11 @@ def blog_category(request, category_slug: str):
 
 def blog_tag(request, tag_slug: str):
     footer = get_footer_content()
-    posts = [p for p in BLOG_POSTS if any(t["slug"] == tag_slug for t in p["tags"])]
+    posts = [
+        p
+        for p in BlogPost.objects.filter(status="published")
+        if any(t.get("slug") == tag_slug for t in p.tags)
+    ]
     tag_title = tag_slug.replace("-", " ").title()
     context = {
         "footer": footer,
@@ -457,16 +377,21 @@ def blog_rss(request):
         description="Latest news and insights from Technofatty.",
     )
 
-    posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)[:10]
+    posts = (
+        BlogPost.objects.filter(status="published")
+        .order_by("-published_at")[:10]
+    )
     for post in posts:
-        pubdate = post["date"]
-        if timezone.is_naive(pubdate):
+        pubdate = post.published_at
+        if pubdate is None:
+            pubdate = timezone.now()
+        elif timezone.is_naive(pubdate):
             pubdate = timezone.make_aware(pubdate, timezone.utc)
         feed.add_item(
-            title=post["title"],
-            link=f"{BASE_CANONICAL}/blog/{post['slug']}/",
-            description=post["excerpt"],
-            unique_id=f"{BASE_CANONICAL}/blog/{post['slug']}/",
+            title=post.title,
+            link=f"{BASE_CANONICAL}/blog/{post.slug}/",
+            description=post.excerpt,
+            unique_id=f"{BASE_CANONICAL}/blog/{post.slug}/",
             pubdate=pubdate,
         )
 
@@ -481,11 +406,14 @@ def blog_rss(request):
 
 def sitemap_xml(request):
     urls = list(TOP_LEVEL_URLS)
-    posts = sorted(BLOG_POSTS, key=lambda p: p["date"], reverse=True)[:10]
+    posts = (
+        BlogPost.objects.filter(status="published")
+        .order_by("-published_at")[:10]
+    )
     for post in posts:
         urls.append(
             {
-                "loc": f"{BASE_CANONICAL}/blog/{post['slug']}/",
+                "loc": f"{BASE_CANONICAL}/blog/{post.slug}/",
                 "priority": "0.5",
                 "changefreq": "monthly",
             }
