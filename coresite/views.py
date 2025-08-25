@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
+from django.core.cache import cache
 from coresite.services.contact import contact_event
 from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle
 from .forms import ContactForm
@@ -505,11 +506,15 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             data = {k: v for k, v in form.cleaned_data.items() if k != "website"}
-            ContactNotifier().send(**data)
-            contact_event(
-                "submitted_success",
-                {"ip": request.META.get("REMOTE_ADDR", "")},
-            )
+            ip = request.META.get("REMOTE_ADDR", "")
+            email = data.get("email", "")
+            cache_key = f"contact:{ip}:{email}"
+            if cache.get(cache_key):
+                contact_event("throttle_hit", {"ip": ip, "email": email})
+            else:
+                ContactNotifier().send(**data)
+                contact_event("submitted_success", {"ip": ip})
+                cache.set(cache_key, True, timeout=60)
             return redirect("/contact/?sent=1")
         first_error = next(iter(form.errors))
         form.fields[first_error].widget.attrs["autofocus"] = "autofocus"
