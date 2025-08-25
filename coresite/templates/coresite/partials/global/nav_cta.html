@@ -1,3 +1,4 @@
+{# See docs/structured-data.md#global-nav_cta for context keys #}
 {% if user.is_authenticated %}
 <a class="btn btn--cta" href="{% url 'account' %}" data-analytics-event="nav_cta_click" data-analytics-label="Account" data-analytics-url="{% url 'account' %}">Account</a>
 {% else %}
