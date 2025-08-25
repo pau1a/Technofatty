@@ -200,6 +200,23 @@ CSRF_TRUSTED_ORIGINS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # -------------------------------------------------
+# Email
+# -------------------------------------------------
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.environ.get(
+    "EMAIL_FILE_PATH", os.path.join(BASE_DIR, "var", "outbox")
+)
+
+try:
+    os.makedirs(EMAIL_FILE_PATH, exist_ok=True)
+except Exception:
+    # Don't crash settings import; perms are handled at deploy time.
+    pass
+
+CONTACT_FROM_EMAIL = os.environ.get("CONTACT_FROM_EMAIL", "webmaster@localhost")
+CONTACT_TO_EMAIL = os.environ.get("CONTACT_TO_EMAIL", "webmaster@localhost")
+
+# -------------------------------------------------
 # Newsletter settings
 # -------------------------------------------------
 NEWSLETTER_PROVIDER = os.environ.get("NEWSLETTER_PROVIDER", "stub")
