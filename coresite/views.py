@@ -41,28 +41,26 @@ TOP_LEVEL_URLS = [
 
 def consent_accept(request):
     response = HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
-    secure = not settings.DEBUG
     response.set_signed_cookie(
-        "tf_consent",
+        settings.CONSENT_COOKIE_NAME,
         "true",
-        max_age=60 * 60 * 24 * 365,
-        samesite="Lax",
-        secure=secure,
-        httponly=True,
+        max_age=settings.CONSENT_COOKIE_MAX_AGE,
+        samesite=settings.CONSENT_COOKIE_SAMESITE,
+        secure=settings.CONSENT_COOKIE_SECURE,
+        httponly=settings.CONSENT_COOKIE_HTTPONLY,
     )
     return response
 
 
 def consent_decline(request):
     response = HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
-    secure = not settings.DEBUG
     response.set_signed_cookie(
-        "tf_consent",
+        settings.CONSENT_COOKIE_NAME,
         "false",
-        max_age=60 * 60 * 24 * 365,
-        samesite="Lax",
-        secure=secure,
-        httponly=True,
+        max_age=settings.CONSENT_COOKIE_MAX_AGE,
+        samesite=settings.CONSENT_COOKIE_SAMESITE,
+        secure=settings.CONSENT_COOKIE_SECURE,
+        httponly=settings.CONSENT_COOKIE_HTTPONLY,
     )
     return response
 

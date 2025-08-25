@@ -231,3 +231,26 @@ ANALYTICS_ENABLED = os.environ.get("ANALYTICS_ENABLED", "false").lower() == "tru
 ANALYTICS_PROVIDER = os.environ.get("ANALYTICS_PROVIDER", "plausible")
 ANALYTICS_SITE_ID = os.environ.get("ANALYTICS_SITE_ID", "")
 CONSENT_REQUIRED = os.environ.get("CONSENT_REQUIRED", "true").lower() == "true"
+
+# -------------------------------------------------
+# Consent cookie
+# -------------------------------------------------
+# Name of the signed cookie tracking the user's consent preference
+CONSENT_COOKIE_NAME = os.environ.get("CONSENT_COOKIE_NAME", "tf_consent")
+
+# One year expressed in seconds
+CONSENT_COOKIE_MAX_AGE = int(os.environ.get("CONSENT_COOKIE_MAX_AGE", 60 * 60 * 24 * 365))
+
+# SameSite policy for the consent cookie
+CONSENT_COOKIE_SAMESITE = os.environ.get("CONSENT_COOKIE_SAMESITE", "Lax")
+
+# Send the cookie only over HTTPS in non-debug environments
+CONSENT_COOKIE_SECURE = (
+    os.environ.get("CONSENT_COOKIE_SECURE")
+    or str(not DEBUG)
+).lower() == "true"
+
+# Prevent client-side JS from reading the cookie
+CONSENT_COOKIE_HTTPONLY = (
+    os.environ.get("CONSENT_COOKIE_HTTPONLY", "true").lower() == "true"
+)
