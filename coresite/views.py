@@ -84,7 +84,7 @@ def signal_detail(request, slug: str):
     )
 def knowledge(request):
     footer = get_footer_content()
-    categories = KnowledgeCategory.objects.filter(status="published")
+    categories = KnowledgeCategory.published.all()
     context = {
         "footer": footer,
         "page_id": "knowledge",
@@ -99,11 +99,9 @@ def knowledge(request):
 def knowledge_category(request, category_slug: str):
     footer = get_footer_content()
     category = get_object_or_404(
-        KnowledgeCategory, slug=category_slug, status="published"
+        KnowledgeCategory.published, slug=category_slug
     )
-    articles = KnowledgeArticle.objects.filter(
-        category=category, status="published"
-    )
+    articles = KnowledgeArticle.published.filter(category=category)
     context = {
         "footer": footer,
         "page_id": f"knowledge-{category_slug}",
@@ -118,13 +116,12 @@ def knowledge_category(request, category_slug: str):
 def knowledge_article(request, category_slug: str, article_slug: str):
     footer = get_footer_content()
     category = get_object_or_404(
-        KnowledgeCategory, slug=category_slug, status="published"
+        KnowledgeCategory.published, slug=category_slug
     )
     article = get_object_or_404(
-        KnowledgeArticle,
+        KnowledgeArticle.published,
         category=category,
         slug=article_slug,
-        status="published",
     )
     context = {
         "footer": footer,
@@ -257,9 +254,7 @@ def blog(request):
         return HttpResponsePermanentRedirect(reverse("blog"))
 
     footer = get_footer_content()
-    posts_qs = BlogPost.objects.filter(status="published").order_by(
-        "-published_at"
-    )
+    posts_qs = BlogPost.published.order_by("-published_at")
     posts = list(posts_qs)
 
     # Basic pagination over in-memory posts to enable proper SEO signals.
@@ -315,7 +310,7 @@ def blog(request):
 
 def blog_post(request, post_slug: str):
     footer = get_footer_content()
-    post = get_object_or_404(BlogPost, slug=post_slug, status="published")
+    post = get_object_or_404(BlogPost.published, slug=post_slug)
     context = {
         "footer": footer,
         "page_id": "post",
@@ -328,8 +323,8 @@ def blog_post(request, post_slug: str):
 
 def blog_category(request, category_slug: str):
     footer = get_footer_content()
-    posts_qs = BlogPost.objects.filter(
-        status="published", category_slug=category_slug
+    posts_qs = BlogPost.published.filter(
+        category_slug=category_slug
     ).order_by("-published_at")
     posts = list(posts_qs)
     category_title = (
@@ -353,7 +348,7 @@ def blog_tag(request, tag_slug: str):
     footer = get_footer_content()
     posts = [
         p
-        for p in BlogPost.objects.filter(status="published")
+        for p in BlogPost.published.all()
         if any(t.get("slug") == tag_slug for t in p.tags)
     ]
     tag_title = tag_slug.replace("-", " ").title()
@@ -377,10 +372,7 @@ def blog_rss(request):
         description="Latest news and insights from Technofatty.",
     )
 
-    posts = (
-        BlogPost.objects.filter(status="published")
-        .order_by("-published_at")[:10]
-    )
+    posts = BlogPost.published.order_by("-published_at")[:10]
     for post in posts:
         pubdate = post.published_at
         if pubdate is None:
@@ -406,10 +398,7 @@ def blog_rss(request):
 
 def sitemap_xml(request):
     urls = list(TOP_LEVEL_URLS)
-    posts = (
-        BlogPost.objects.filter(status="published")
-        .order_by("-published_at")[:10]
-    )
+    posts = BlogPost.published.order_by("-published_at")[:10]
     for post in posts:
         urls.append(
             {
