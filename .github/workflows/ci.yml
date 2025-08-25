@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install django pytest pytest-django beautifulsoup4 django-sass-processor django-compressor
+          pip install django pytest pytest-django beautifulsoup4 django-sass-processor django-compressor easy-thumbnails
       - name: Collect static
         run: |
           python manage.py collectstatic --noinput
