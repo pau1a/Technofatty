@@ -157,6 +157,13 @@ def set_knowledge_article_slug(sender, instance, **kwargs):
 
 
 class ContactEvent(models.Model):
+    """Record a contact-related event.
+
+    This minimal model provides an audit trail for contact interactions
+    while keeping the data model simple so that persisting events to an
+    external provider in the future would be straightforward.
+    """
+
     event_type = models.CharField(max_length=100)
     meta = models.JSONField(default=dict, blank=True)
     ip_hash = models.CharField(max_length=64, blank=True)

@@ -6,6 +6,7 @@ from .models import (
     KnowledgeCategory,
     KnowledgeArticle,
     BlogPost,
+    ContactEvent,
 )
 
 @admin.register(SiteSettings)
@@ -57,3 +58,12 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_filter = ("status",)
     prepopulated_fields = {"slug": ("title",)}
     date_hierarchy = "published_at"
+
+
+@admin.register(ContactEvent)
+class ContactEventAdmin(admin.ModelAdmin):
+    list_display = ("timestamp", "event_type", "ip_hash")
+    list_filter = ("event_type",)
+    search_fields = ("event_type", "ip_hash")
+    readonly_fields = ("timestamp", "event_type", "meta", "ip_hash")
+    ordering = ("-timestamp",)
