@@ -1,0 +1,13 @@
+asgiref==3.8.1
+Django==4.2.23
+django-compressor==4.4
+django-sass-processor==1.4.1
+easy-thumbnails==2.9.1
+libsass==0.23.0
+psycopg2-binary==2.9.9
+pytest==8.4.1
+pytest-django==4.10.0
+rcssmin==1.1.2
+rjsmin==1.2.1
+sqlparse==0.5.1
+tzdata==2024.1

@@ -1,5 +1,33 @@
 # Technofatty
 
+## Setup
+
+### Requirements
+- Python 3.12
+
+### Installation
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+python manage.py migrate
+python manage.py check
+```
+
+### Run server
+
+```bash
+python manage.py runserver
+```
+
+### Tests
+
+```bash
+pytest
+```
+
 ## Configuration
 
 The application reads configuration from environment variables.
