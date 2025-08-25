@@ -93,6 +93,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "coresite.middleware.ConsentMiddleware",
 ]
 
 ROOT_URLCONF = "technofatty_com.urls"
