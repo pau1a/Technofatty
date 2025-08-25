@@ -53,5 +53,6 @@ Required variables:
 - `ANALYTICS_PROVIDER`
 - `ANALYTICS_SITE_ID`
 - `CONSENT_REQUIRED`
+- `TF_EMAIL_BACKEND`
 
 See `.env.example` for placeholder values.
