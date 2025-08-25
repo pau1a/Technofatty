@@ -1,0 +1,4 @@
+# List retired paths relative to the site root that must not appear in the sitemap.
+# Lines starting with # are comments and blank lines are ignored.
+# Example:
+# old-section/unused-page/
