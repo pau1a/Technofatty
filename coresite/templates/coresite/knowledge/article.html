@@ -1,5 +1,10 @@
 {% extends "coresite/base.html" %}
 
+{% block meta %}
+  {% with meta_description=article.blurb|default:'' og_type='article' canonical_url=request.build_absolute_uri %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
 {% block structured_data %}{{ block.super }}{% endblock %}
 
 {% block content %}
