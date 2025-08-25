@@ -12,6 +12,7 @@
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "@id": "{{ canonical_url }}#breadcrumb",
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -22,8 +23,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Placeholder",
-      "item": "https://technofatty.com/placeholder"
+      "name": "{{ page_title|escapejs }}",
+      "item": "{{ canonical_url }}"
     }
   ]
 }
