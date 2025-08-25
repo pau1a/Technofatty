@@ -214,10 +214,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # -------------------------------------------------
 # Email
 # -------------------------------------------------
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = os.environ.get(
-    "EMAIL_FILE_PATH", os.path.join(BASE_DIR, "var", "outbox")
-)
+# Email
+# -------------------------------------------------
+TF_EMAIL_BACKEND = os.environ.get("TF_EMAIL_BACKEND", "file").lower()
+
+if TF_EMAIL_BACKEND == "smtp":
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "25"))
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "false").lower() == "true"
+    EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "false").lower() == "true"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = os.environ.get(
+        "EMAIL_FILE_PATH", os.path.join(BASE_DIR, "var", "outbox")
+    )
 
 DEFAULT_FROM_EMAIL = "no-reply@technofatty.com"
 
