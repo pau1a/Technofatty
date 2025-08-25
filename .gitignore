@@ -45,5 +45,6 @@ htmlcov/
 # Generated CSS
 coresite/static/coresite/scss/*.css
 
-# Ignore var outbox
-var/outbox/
+# Ignore var outbox contents but keep directory
+var/outbox/*
+!var/outbox/.gitkeep
