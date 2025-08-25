@@ -8,6 +8,8 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import CreateView, View
 from django.core.mail import send_mail
 from django.shortcuts import render
+from django.core.cache import cache
+import time
 
 from .forms import SignUpForm
 
@@ -39,6 +41,10 @@ class LoginView(DjangoLoginView):
     """Extend session lifetime when "remember me" is checked."""
 
     def form_valid(self, form):
+        username = form.cleaned_data.get("username")
+        if username:
+            cache.delete(f"failed_login_{username}")
+
         remember_me = self.request.POST.get("remember_me")
         if remember_me:
             self.request.session.set_expiry(
@@ -47,6 +53,18 @@ class LoginView(DjangoLoginView):
         else:
             self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        username = self.request.POST.get("username", "")
+        cache_key = f"failed_login_{username}"
+        attempts = cache.get(cache_key, 0) + 1
+        cache.set(
+            cache_key,
+            attempts,
+            getattr(settings, "LOGIN_FAILURE_CACHE_TIMEOUT", 300),
+        )
+        time.sleep(min(attempts, 3))
+        return super().form_invalid(form)
 
 
 class ActivateView(View):
