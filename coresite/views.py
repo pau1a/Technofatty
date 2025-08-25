@@ -1,4 +1,5 @@
-from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -36,6 +37,34 @@ TOP_LEVEL_URLS = [
     {"loc": f"{BASE_CANONICAL}/case-studies/", "priority": "0.8", "changefreq": "weekly"},
     {"loc": f"{BASE_CANONICAL}/community/", "priority": "0.8", "changefreq": "weekly"},
 ]
+
+
+def consent_accept(request):
+    response = HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+    secure = not settings.DEBUG
+    response.set_signed_cookie(
+        "tf_consent",
+        "true",
+        max_age=60 * 60 * 24 * 365,
+        samesite="Lax",
+        secure=secure,
+        httponly=True,
+    )
+    return response
+
+
+def consent_decline(request):
+    response = HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+    secure = not settings.DEBUG
+    response.set_signed_cookie(
+        "tf_consent",
+        "false",
+        max_age=60 * 60 * 24 * 365,
+        samesite="Lax",
+        secure=secure,
+        httponly=True,
+    )
+    return response
 
 
 def homepage(request):

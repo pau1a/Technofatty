@@ -13,6 +13,8 @@ from .feeds import (
 
 urlpatterns = [
     path("", views.homepage, name="home"),
+    path("consent/accept/", views.consent_accept, name="consent_accept"),
+    path("consent/decline/", views.consent_decline, name="consent_decline"),
     path("knowledge/", views.knowledge, name="knowledge"),
     path("knowledge/rss/", KnowledgeRSSFeed(), name="knowledge_rss"),
     path("knowledge/atom/", KnowledgeAtomFeed(), name="knowledge_atom"),
