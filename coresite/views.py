@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
+from coresite.services.contact import contact_event
 from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle
 from .forms import ContactForm
 from .notifiers import ContactNotifier
@@ -505,7 +506,10 @@ def contact(request):
         if form.is_valid():
             data = {k: v for k, v in form.cleaned_data.items() if k != "website"}
             ContactNotifier().send(**data)
-            log_newsletter_event(request, "submitted_success")
+            contact_event(
+                "submitted_success",
+                {"ip": request.META.get("REMOTE_ADDR", "")},
+            )
             return redirect("/contact/?sent=1")
         first_error = next(iter(form.errors))
         form.fields[first_error].widget.attrs["autofocus"] = "autofocus"

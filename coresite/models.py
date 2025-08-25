@@ -154,3 +154,16 @@ def set_knowledge_article_slug(sender, instance, **kwargs):
             pk=instance.pk
         )
         instance.slug = _generate_unique_slug(instance.title, qs)
+
+
+class ContactEvent(models.Model):
+    event_type = models.CharField(max_length=100)
+    meta = models.JSONField(default=dict, blank=True)
+    ip_hash = models.CharField(max_length=64, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        return f"{self.event_type} @ {self.timestamp}"

@@ -5,7 +5,7 @@ from django.test import TestCase
 
 
 class ContactViewTests(TestCase):
-    @mock.patch("coresite.views.log_newsletter_event")
+    @mock.patch("coresite.views.contact_event")
     @mock.patch("coresite.views.ContactNotifier")
     def test_valid_post_redirects(self, mock_notifier, mock_log):
         data = {
@@ -21,7 +21,7 @@ class ContactViewTests(TestCase):
         expected = data.copy()
         expected.pop("website")
         mock_notifier.return_value.send.assert_called_once_with(**expected)
-        mock_log.assert_called_once_with(mock.ANY, "submitted_success")
+        mock_log.assert_called_once_with("submitted_success", mock.ANY)
 
     def test_invalid_post_rerenders_with_errors_and_focus(self):
         response = self.client.post(reverse("contact"), {})
