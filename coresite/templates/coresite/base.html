@@ -21,8 +21,10 @@
       data-consent-granted="{{ CONSENT_GRANTED|yesno:'true,false' }}">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  {% if ANALYTICS_ENABLED and (not CONSENT_REQUIRED or CONSENT_GRANTED) %}
-    {% include 'coresite/partials/global/analytics.html' %}
+  {% if ANALYTICS_ENABLED %}
+    {% if not CONSENT_REQUIRED or CONSENT_GRANTED %}
+      {% include 'coresite/partials/global/analytics.html' %}
+    {% endif %}
   {% endif %}
 
   {% include 'coresite/partials/global/build_banner.html' %}
