@@ -1,10 +1,12 @@
 from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from newsletter.utils import log_newsletter_event
 from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle
+from .forms import ContactForm
+from .notifiers import ContactNotifier
 from datetime import datetime
 from .signals import get_signals_content
 from .support import get_support_content
@@ -497,10 +499,24 @@ def legacy_services(request):
 
 def contact(request):
     footer = get_footer_content()
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            ContactNotifier().send(**form.cleaned_data)
+            log_newsletter_event(request, "submitted_success")
+            return redirect("/contact/?sent=1")
+        first_error = next(iter(form.errors))
+        form.fields[first_error].widget.attrs["autofocus"] = "autofocus"
+    else:
+        form = ContactForm()
     return render(
         request,
         "coresite/contact.html",
-        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/contact/"},
+        {
+            "footer": footer,
+            "canonical_url": f"{BASE_CANONICAL}/contact/",
+            "form": form,
+        },
     )
 
 def support(request):
