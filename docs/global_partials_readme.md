@@ -23,13 +23,13 @@ The `id` matches the heading’s `-heading` suffix. Example usage appears throug
 All styling values come from `_variables.scss`, the single source of truth for SCSS/CSS tokens【F:coresite/static/coresite/scss/abstracts/_variables.scss†L1-L8】.
 
 ### Analytics and consent
-Analytics scripts run whenever enabled. The consent banner simply records the visitor's preference in a signed cookie【F:coresite/templates/coresite/base.html†L20-L28】.
+Analytics runs only when allowed by consent rules. The visitor's choice is stored in the `tf_consent` cookie and exposed to templates as `CONSENT_GRANTED`【F:coresite/context_processors.py†L8-L18】. `ANALYTICS_ENABLED` evaluates to true only when analytics is configured and either consent isn't required or `CONSENT_GRANTED` is true, so the analytics partial renders only under those conditions【F:coresite/templates/coresite/base.html†L30-L36】.
 
 ## Partial reference
 
 ### Consent banner
 * **Path**: `coresite/templates/coresite/partials/consent_banner.html`
-* **Purpose**: Prompts visitors to accept or decline analytics cookies【F:coresite/templates/coresite/partials/consent_banner.html†L1-L8】
+* **Purpose**: Prompts visitors to accept or decline analytics cookies and sets the `tf_consent` cookie accordingly【F:coresite/templates/coresite/partials/consent_banner.html†L1-L8】
 * **Included in**: `base.html` (thus every page)【F:coresite/templates/coresite/base.html†L30-L32】
 
 ### Analytics
@@ -96,7 +96,7 @@ Analytics scripts run whenever enabled. The consent banner simply records the vi
 * **Status**: No global notice partial exists yet; site currently has no mechanism for site-wide alert banners.
 
 ## Inclusion map
-- All templates → analytics, consent_banner
+- All templates → consent_banner, analytics (when enabled)
 - `coresite/templates/coresite/homepage.html` → header_nav, hero, trust, featured_grid, newsletter_block, signals_block, support_block, community_block
 - `coresite/templates/coresite/about.html` → header_nav
 - `coresite/templates/coresite/contact.html` → header_nav
