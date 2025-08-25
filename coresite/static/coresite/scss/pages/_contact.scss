@@ -12,3 +12,55 @@
   @include mq(lg) { padding-block: map-get($section-pad-y, lg); }
 }
 
+// Shared form field styles
+%contact-form-field {
+  min-height: s(7); // ≥44px for tap targets
+  border-radius: r(md);
+  @include focus-ring(c(gold));
+}
+
+#contact-form {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: s(3);
+
+    p {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      gap: s(2);
+    }
+
+    label { margin-bottom: 0; }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      @extend %contact-form-field;
+      width: 100%;
+      padding-block: s(2);
+      padding-inline: s(3);
+      border: bw(sm) solid c(border);
+    }
+
+    textarea { resize: vertical; }
+
+    [aria-invalid="true"] { border-color: c(magenta); }
+
+    span[role="alert"] {
+      color: c(magenta);
+      margin-top: s(2);
+    }
+
+    .sr-only { @include sr-only; }
+
+    button[type="submit"] {
+      @extend %contact-form-field;
+      @extend .btn--primary;
+      width: fit-content;
+      padding-inline: s(4);
+    }
+  }
+}
+
