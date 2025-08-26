@@ -1,5 +1,5 @@
 html { scroll-padding-top: var(--scroll-offset); }
-body:not(.is-home) main { padding-top: var(--scroll-offset); }
+body:not(.is-home) main { padding-top: var(--header-h); }
 
 .container { @include container; }
 .container-wide {
