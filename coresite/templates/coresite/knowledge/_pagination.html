@@ -1,0 +1,25 @@
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="knowledge-pagination" aria-label="Pagination" style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:1rem;display:flex;align-items:center;gap:0.25rem;">
+  {% for num in page_obj.paginator.page_range %}
+    {% if num <= 3 %}
+      {% if num == page_obj.number %}
+        <span>{{ num }}</span>
+      {% else %}
+        <a href="?page={{ num }}" class="knowledge-pagination__link" style="text-decoration:none;color:inherit;">{{ num }}</a>
+      {% endif %}
+      {% if num < 3 and num < page_obj.paginator.num_pages %}
+        <span>&middot;</span>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if page_obj.paginator.num_pages > 3 %}
+    <span>&hellip;</span>
+  {% endif %}
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="knowledge-pagination__link" style="text-decoration:none;color:inherit;">Next</a>
+  {% endif %}
+</nav>
+<style>
+  .knowledge-pagination__link:hover { color: gold; }
+</style>
+{% endif %}
