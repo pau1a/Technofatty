@@ -25,6 +25,7 @@ $colors: (
 /* Layout width */
 $container-max: 68rem; // ≈1088px target content width
 $container-max-width-wide: 90rem; // ≈1440px wide container
+$container-form: 30rem; // narrow form container
 
 /* Header height */
 $header-h-mobile: 4rem; // 64px
@@ -175,6 +176,7 @@ $dur: 200ms;
 
   --container-max: #{$container-max};
   --container-max-width-wide: #{$container-max-width-wide};
+  --container-form: #{$container-form};
 
   --header-h-mobile: #{$header-h-mobile};
   --header-h-desktop: #{$header-h-desktop};
@@ -243,7 +245,8 @@ $dur: 200ms;
   --dur-fast: #{$dur-fast};
   --dur: #{$dur};
   --header-h: calc(var(--header-h-mobile) + env(safe-area-inset-top, 0px));
-  --scroll-offset: calc(var(--header-h) + 2rem);
+  // sticky header + build-banner height
+  --scroll-offset: calc(var(--header-h) + var(--space-6));
 }
 
 @media (min-width: map-get($bp, md)) {

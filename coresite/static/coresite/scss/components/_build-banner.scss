@@ -17,5 +17,5 @@
   z-index: map-get($z, header) + 1;
 }
 .build-banner + .site-header {
-  top: 2rem;
+  top: s(6); // banner height
 }
