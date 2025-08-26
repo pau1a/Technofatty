@@ -1,5 +1,4 @@
-{# Load thumbnail tags for rendering article images #}
-{% load thumbnail %}
+{% load static thumbnail %}
 <a href="{% url 'knowledge_article' article.category.slug article.slug %}"
    class="knowledge-card"
    data-analytics-event="knowledge_article_click"
@@ -8,13 +7,12 @@
   <div class="knowledge-card__motif motif-grid" aria-hidden="true"></div>
   <div class="knowledge-card__inner">
     {% if article.image %}
-      {% thumbnail article.image "hero_mobile" as im %}
-        <img class="knowledge-card__image"
-             src="{{ im.url }}"
-             width="{{ im.width }}" height="{{ im.height }}"
-             alt="{{ article.image.alt|default:article.title }}"
-             loading="lazy">
-      {% endthumbnail %}
+      <img class="knowledge-card__image"
+           src="{{ article.image|thumbnail_url:'hero_mobile' }}"
+           alt="{{ article.image.alt|default_if_none:article.title }}"
+           loading="lazy" decoding="async">
+    {% else %}
+      <div class="knowledge-card__image knowledge-card__image--placeholder" aria-hidden="true"></div>
     {% endif %}
     <h3 class="knowledge-card__title">{{ article.title }}</h3>
     <p class="knowledge-card__blurb">{{ article.blurb }}</p>
