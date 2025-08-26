@@ -118,35 +118,9 @@ def knowledge(request):
     if page_str == "1":
         return HttpResponsePermanentRedirect(reverse("knowledge"))
 
-    footer = get_footer_content()
-    articles_qs = KnowledgeArticle.published.order_by("-created_at")
-    articles = list(articles_qs)
-
     from django.core.paginator import Paginator, EmptyPage
 
     page_number = int(page_str or 1)
-    paginator = Paginator(articles, 6)
-    try:
-        page_obj = paginator.page(page_number)
-    except EmptyPage:
-        raise Http404
-
-    page_articles = list(page_obj.object_list)
-    featured_article = page_articles[0] if page_number == 1 and page_articles else None
-    remaining_articles = page_articles[1:] if page_number == 1 else page_articles
-
-    categories = KnowledgeCategory.published.all()
-    filters = [
-        {"label": "All", "url": reverse("knowledge"), "active": True}
-    ]
-    for category in categories:
-        filters.append(
-            {
-                "label": category.title,
-                "url": reverse("knowledge_category", args=[category.slug]),
-                "active": False,
-            }
-        )
 
     def absolute_page_url(num: int) -> str:
         return (
@@ -155,14 +129,54 @@ def knowledge(request):
             else f"{BASE_CANONICAL}/knowledge/?page={num}"
         )
 
+    articles_qs = (
+        KnowledgeArticle.published.select_related("category").order_by("-created_at")
+    )
+    paginator = Paginator(articles_qs, 6)
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        raise Http404
+
+    page_articles = list(page_obj.object_list)
+    if page_number == 1 and page_articles:
+        first = page_articles[0]
+        featured_article = {
+            "heading": first.title,
+            "excerpt": first.blurb,
+            "image": getattr(first, "image", None),
+            "cta": {
+                "label": "Read more",
+                "url": reverse(
+                    "knowledge_article", args=[first.category.slug, first.slug]
+                ),
+            },
+        }
+        remaining_articles = page_articles[1:]
+    else:
+        featured_article = None
+        remaining_articles = page_articles
+
+    categories_qs = KnowledgeCategory.published.all()
+    categories = [{"label": "All", "url": reverse("knowledge"), "active": True}]
+    for category in categories_qs:
+        categories.append(
+            {
+                "label": category.title,
+                "url": reverse("knowledge_category", args=[category.slug]),
+                "active": False,
+            }
+        )
+
     prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
     next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
 
+    footer = get_footer_content()
     context = {
         "footer": footer,
         "page_id": "knowledge",
         "page_title": "Knowledge",
-        "filters": filters,
+        "categories": categories,
         "featured": featured_article,
         "articles": remaining_articles,
         "page_obj": page_obj,
