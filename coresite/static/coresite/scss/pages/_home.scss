@@ -1,19 +1,13 @@
 /* Page-specific nudges for homepage (keep light) */
 
 .is-home .hero__content {
-  /* existing rhythm padding */
   padding-block: map-get($section-pad-y, base);
-
-  /* add header height to the top only */
-  padding-top: calc(map-get($section-pad-y, base) + var(--header-h));
 
   @include mq(md){
     padding-block: map-get($section-pad-y, md);
-    padding-top: calc(map-get($section-pad-y, md) + var(--header-h));
   }
   @include mq(lg){
     padding-block: map-get($section-pad-y, lg);
-    padding-top: calc(map-get($section-pad-y, lg) + var(--header-h));
   }
 }
 .is-home .section-title { text-align:center; }
