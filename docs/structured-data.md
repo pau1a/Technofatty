@@ -82,6 +82,11 @@ This document lists required and optional context dictionary keys for each templ
 - Required: resources (list of {title, blurb, url})
 - Optional: None
 
+<a id="knowledge-featured"></a>
+### knowledge/_featured.html
+- Required: featured.image.url, featured.heading, featured.excerpt, featured.cta.url, featured.cta.label
+- Optional: featured.image.alt, featured.image.width, featured.image.height
+
 <a id="global-analytics"></a>
 ### global/analytics.html
 - Required: ANALYTICS_PROVIDER, ANALYTICS_SITE_ID
