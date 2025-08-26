@@ -1,0 +1,15 @@
+{# Render a featured knowledge resource with image, heading, excerpt and CTA #}
+<section class="knowledge-featured" role="region" aria-labelledby="knowledge-featured-heading">
+  <div class="wrap">
+    <article class="card knowledge-featured__card split" style="width:100%;align-items:center;">
+      <div class="knowledge-featured__media">
+        <img src="{{ featured.image.url }}" alt="{{ featured.image.alt }}" width="{{ featured.image.width }}" height="{{ featured.image.height }}" style="width:100%;height:auto;border-radius:0.5rem;">
+      </div>
+      <div class="knowledge-featured__content stack" style="justify-content:center;">
+        <h2 id="knowledge-featured-heading">{{ featured.heading }}</h2>
+        <p>{{ featured.excerpt }}</p>
+        <a href="{{ featured.cta.url }}" class="btn btn--cta" data-analytics-event="knowledge_featured_cta" data-analytics-label="{{ featured.cta.label }}" data-analytics-url="{{ featured.cta.url }}">{{ featured.cta.label }}</a>
+      </div>
+    </article>
+  </div>
+</section>
