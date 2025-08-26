@@ -14,7 +14,7 @@
 <div class="knowledge-index" style="font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;">
   {% include "coresite/knowledge/_hero.html" %}
   <div class="container" style="padding:s(6) 0;">
-    {% include "coresite/knowledge/_filterbar.html" %}
+    {% include "coresite/knowledge/_filterbar.html" with filters=categories %}
     {% if featured %}
       {% include "coresite/knowledge/_featured.html" %}
     {% endif %}
@@ -23,7 +23,7 @@
         {% include "coresite/knowledge/_card.html" %}
       {% endfor %}
     </div>
-    {% include "coresite/knowledge/_pagination.html" %}
+    {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
     {% if show_cta_strip %}
       {% include "coresite/knowledge/_cta_strip.html" %}
     {% endif %}
