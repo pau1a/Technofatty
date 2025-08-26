@@ -8,7 +8,7 @@
   <div class="knowledge-card__motif motif-grid" aria-hidden="true"></div>
   <div class="knowledge-card__inner">
     {% if article.image %}
-      {% thumbnail article.image 'hero_mobile' as im %}
+      {% thumbnail article.image "hero_mobile" as im %}
         <img class="knowledge-card__image"
              src="{{ im.url }}"
              width="{{ im.width }}" height="{{ im.height }}"
