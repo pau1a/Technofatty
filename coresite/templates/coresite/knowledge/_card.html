@@ -3,16 +3,21 @@
    class="knowledge-card"
    data-analytics-event="knowledge_article_click"
    data-analytics-label="{{ article.title }}"
-   data-analytics-url="{% url 'knowledge_article' article.category.slug article.slug %}"
-   style="position:relative;display:block;min-width:16rem;text-decoration:none;color:inherit;border-radius:0.5rem;overflow:hidden;">
-  <div class="knowledge-card__motif motif-grid" aria-hidden="true" style="position:absolute;inset:0;opacity:0.05;"></div>
-  <div class="knowledge-card__inner stack" style="position:relative;gap:0.5rem;">
+   data-analytics-url="{% url 'knowledge_article' article.category.slug article.slug %}">
+  <div class="knowledge-card__motif motif-grid" aria-hidden="true"></div>
+  <div class="knowledge-card__inner">
     {% if article.image %}
       {% thumbnail article.image 'hero_mobile' as thumb %}
-        <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ article.image.alt|default:article.title }}" style="width:100%;height:auto;display:block;border-radius:0.5rem;" loading="lazy">
+        <img class="knowledge-card__image"
+             src="{{ thumb.url }}"
+             width="{{ thumb.width }}"
+             height="{{ thumb.height }}"
+             alt="{{ article.image.alt|default:article.title }}"
+             loading="lazy">
+      {% endthumbnail %}
     {% endif %}
-    <h3>{{ article.title }}</h3>
-    <p>{{ article.blurb }}</p>
-    <p class="knowledge-card__meta" style="font-size:0.875rem;color:var(--color-text-muted);">{{ article.created_at|date:"F j, Y" }} &mdash; {{ article.category.title }}</p>
+    <h3 class="knowledge-card__title">{{ article.title }}</h3>
+    <p class="knowledge-card__blurb">{{ article.blurb }}</p>
+    <p class="knowledge-card__meta">{{ article.created_at|date:"F j, Y" }} &mdash; {{ article.category.title }}</p>
   </div>
 </a>
