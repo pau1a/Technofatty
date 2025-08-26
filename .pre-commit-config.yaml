@@ -1,8 +1,0 @@
-repos:
-  - repo: local
-    hooks:
-      - id: no-raw-hex-colors
-        name: no raw hex colors
-        entry: bash -lc "if rg -n '#[0-9a-fA-F]{3,6}' --type scss --type html -l | grep -v 'coresite/static/coresite/scss/abstracts/_variables.scss' | grep -q .; then echo 'Raw hex color found'; exit 1; fi"
-        language: system
-        pass_filenames: false

@@ -6,6 +6,7 @@
   overflow: hidden; // keeps background contained
   isolation: isolate;
   background: transparent;
+  padding-top: var(--scroll-offset);
 }
 
 /* Background container */

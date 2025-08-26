@@ -1,4 +1,4 @@
-html { scroll-padding-top: var(--scroll-offset); }
+html { scroll-padding-top: var(--header-h); }
 body main { padding-top: var(--header-h); }
 
 .container { @include container; }

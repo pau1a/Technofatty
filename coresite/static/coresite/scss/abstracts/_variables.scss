@@ -244,11 +244,4 @@ $dur: 200ms;
   --easing-standard: #{$easing-standard};
   --dur-fast: #{$dur-fast};
   --dur: #{$dur};
-  --header-h: calc(var(--header-h-mobile) + env(safe-area-inset-top, 0px));
-  // sticky header + build-banner height
-  --scroll-offset: calc(var(--header-h) + var(--space-6));
-}
-
-@media (min-width: map-get($bp, md)) {
-  :root { --header-h: calc(var(--header-h-desktop) + env(safe-area-inset-top, 0px)); }
 }
