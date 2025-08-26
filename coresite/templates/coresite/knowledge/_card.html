@@ -10,7 +10,6 @@
     {% if article.image %}
       {% thumbnail article.image 'hero_mobile' as thumb %}
         <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ article.image.alt|default:article.title }}" style="width:100%;height:auto;display:block;border-radius:0.5rem;" loading="lazy">
-      {% endthumbnail %}
     {% endif %}
     <h3>{{ article.title }}</h3>
     <p>{{ article.blurb }}</p>
