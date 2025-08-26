@@ -1,0 +1,9 @@
+/* Header layout variables */
+:root {
+  --header-h: var(--header-h-mobile);
+  --scroll-offset: calc(var(--header-h) + 2rem);
+}
+
+@media (min-width: map-get($bp, md)) {
+  :root { --header-h: var(--header-h-desktop); }
+}

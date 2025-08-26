@@ -1,6 +1,6 @@
 /* Auth-specific form styles */
 .auth-form {
-  max-width: 30rem;
+  max-width: var(--container-form, #{$container-form});
   margin-inline: auto;
   display: flex;
   flex-direction: column;
