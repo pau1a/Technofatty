@@ -1,0 +1,35 @@
+// Motif styles
+
+// Grid background
+.motif-grid {
+  background-image: linear-gradient(to right, c(border) 0, c(border) bw(sm), transparent bw(sm)),
+                    linear-gradient(to bottom, c(border) 0, c(border) bw(sm), transparent bw(sm));
+  background-size: s(6) s(6);
+}
+
+.motif-grid--mid {
+  background-image: linear-gradient(to right, c(mid) 0, c(mid) bw(sm), transparent bw(sm)),
+                    linear-gradient(to bottom, c(mid) 0, c(mid) bw(sm), transparent bw(sm));
+}
+
+// Node-field motifs
+.motif-node-field .node {
+  fill: c(mid);
+}
+.motif-node-field .node.blue {
+  fill: c(blue);
+}
+.motif-node-field .link {
+  stroke: c(border);
+  stroke-width: bw(sm);
+}
+
+// Waveform motifs
+.motif-waveform .wave {
+  fill: none;
+  stroke: c(blue);
+  stroke-width: bw(sm);
+}
+.motif-waveform.gray .wave {
+  stroke: c(gray-light);
+}
