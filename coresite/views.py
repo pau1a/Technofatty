@@ -114,17 +114,64 @@ def signal_detail(request, slug: str):
         {"slug": slug, "footer": footer},
     )
 def knowledge(request):
+    page_str = request.GET.get("page")
+    if page_str == "1":
+        return HttpResponsePermanentRedirect(reverse("knowledge"))
+
     footer = get_footer_content()
+    articles_qs = KnowledgeArticle.published.order_by("-created_at")
+    articles = list(articles_qs)
+
+    from django.core.paginator import Paginator, EmptyPage
+
+    page_number = int(page_str or 1)
+    paginator = Paginator(articles, 6)
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        raise Http404
+
+    page_articles = list(page_obj.object_list)
+    featured_article = page_articles[0] if page_number == 1 and page_articles else None
+    remaining_articles = page_articles[1:] if page_number == 1 else page_articles
+
     categories = KnowledgeCategory.published.all()
+    filters = [
+        {"label": "All", "url": reverse("knowledge"), "active": True}
+    ]
+    for category in categories:
+        filters.append(
+            {
+                "label": category.title,
+                "url": reverse("knowledge_category", args=[category.slug]),
+                "active": False,
+            }
+        )
+
+    def absolute_page_url(num: int) -> str:
+        return (
+            f"{BASE_CANONICAL}/knowledge/"
+            if num == 1
+            else f"{BASE_CANONICAL}/knowledge/?page={num}"
+        )
+
+    prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
+    next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
+
     context = {
         "footer": footer,
         "page_id": "knowledge",
         "page_title": "Knowledge",
-        "categories": categories,
-        "sub_sections": KNOWLEDGE_SUB_SECTIONS,
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/",
+        "filters": filters,
+        "featured": featured_article,
+        "articles": remaining_articles,
+        "page_obj": page_obj,
+        "next_page_url": next_page,
+        "prev_page_url": prev_page,
+        "canonical_url": absolute_page_url(page_number),
+        "show_cta_strip": True,
     }
-    return render(request, "coresite/knowledge/hub.html", context)
+    return render(request, "coresite/knowledge/index.html", context)
 
 
 def knowledge_category(request, category_slug: str):
