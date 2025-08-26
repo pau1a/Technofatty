@@ -7,14 +7,10 @@
   <div class="knowledge-card__motif motif-grid" aria-hidden="true"></div>
   <div class="knowledge-card__inner">
     {% if article.image %}
-      {% thumbnail article.image 'hero_mobile' as thumb %}
-        <img class="knowledge-card__image"
-             src="{{ thumb.url }}"
-             width="{{ thumb.width }}"
-             height="{{ thumb.height }}"
-             alt="{{ article.image.alt|default:article.title }}"
-             loading="lazy">
-      {% endthumbnail %}
+      <img class="knowledge-card__image"
+           src="{% thumbnail article.image 'hero_mobile' %}"
+           alt="{{ article.image.alt|default:article.title }}"
+           loading="lazy">
     {% endif %}
     <h3 class="knowledge-card__title">{{ article.title }}</h3>
     <p class="knowledge-card__blurb">{{ article.blurb }}</p>
