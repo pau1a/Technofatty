@@ -1,30 +1,23 @@
-# Python cache and compiled files
+# Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.sqlite3
 
-# Django defaults
+# Django
 db.sqlite3
-
-# Collected and user-uploaded files
-static_collected/
+/staticfiles/
 media/
-
-# Variable and runtime data
-var/
-
-# Logs
 *.log
 
-# Virtual environments
+# Virtual environment
 venv/
 env/
 .venv/
 technofatty_env/
 
-# Node and JS package managers
+# Node
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -33,26 +26,29 @@ package-lock.json
 # SCSS cache
 .sass-cache/
 
-# OS and IDE artifacts
+# OS / IDE files
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
-# Environment config
+# Env / secrets
 .env
 *.env
 
-# Coverage and test outputs
+# Tests / coverage
 htmlcov/
 .tox/
 .coverage
 .pytest_cache/
 
-# Generated CSS (only SCSS outputs, not sources)
+# Generated CSS
 coresite/static/coresite/scss/*.css
 
-# Database backups
+# Local runtime data (never commit)
+var/
+
+# DB backups
 *.dump
 *.sql
 db_backups/

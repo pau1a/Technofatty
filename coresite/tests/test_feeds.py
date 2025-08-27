@@ -62,6 +62,7 @@ def test_knowledge_rss_feed(client):
         title="Art",
         slug="art",
         status=StatusChoices.PUBLISHED,
+        published_at=timezone.now(),
     )
     response = client.get(reverse("knowledge_rss"))
     assert response.status_code == 200
@@ -80,6 +81,7 @@ def test_knowledge_atom_feed(client):
         title="AtomArt",
         slug="atomart",
         status=StatusChoices.PUBLISHED,
+        published_at=timezone.now(),
     )
     response = client.get(reverse("knowledge_atom"))
     assert response.status_code == 200
@@ -98,6 +100,7 @@ def test_knowledge_json_feed(client):
         title="JsonArt",
         slug="jsonart",
         status=StatusChoices.PUBLISHED,
+        published_at=timezone.now(),
     )
     response = client.get(reverse("knowledge_json"))
     assert response.status_code == 200
