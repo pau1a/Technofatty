@@ -24,6 +24,7 @@ def test_knowledge_index_renders_featured_and_pagination(client):
     assert "Article 5" in content
     assert f"/knowledge/{category.slug}/" in content
     assert "?page=2" in content
+    assert "kn-filterbar" in content
 
 
 @pytest.mark.django_db
@@ -53,6 +54,7 @@ def test_knowledge_index_empty_state(client):
     content = response.content.decode()
     assert "No articles published yet." in content
     assert "knowledge-grid" not in content
+    assert "kn-filterbar" not in content
 
 
 @pytest.mark.django_db
