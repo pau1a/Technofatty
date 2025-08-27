@@ -44,5 +44,16 @@ htmlcov/
 .coverage
 .pytest_cache/
 
-# Local runtime data (never commit)
-var/
+# Generated CSS
+coresite/static/coresite/scss/*.css
+
+# Local runtime data under var/ (ignore all, but keep outbox/.gitkeep)
+var/*
+!var/outbox/
+var/outbox/*
+!var/outbox/.gitkeep
+
+# DB backups
+*.dump
+*.sql
+db_backups/
