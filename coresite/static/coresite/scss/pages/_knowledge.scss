@@ -102,35 +102,6 @@
   .kn-filterbar__list { justify-content: center; }
 }
 
-.kn-featured__card {
-  display: flex;
-  flex-direction: column;
-  gap: s(6);
-  align-items: center;
-
-  @include mq(md) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: s(6);
-    align-items: center;
-  }
-}
-
-.kn-featured__media img {
-  width: 100%;
-  height: auto;
-  border-radius: r(md);
-  box-shadow: sh(card);
-}
-
-.kn-featured__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: s(4);
-}
-
-
 /* Knowledge cards */
 
 .knowledge-grid {
@@ -151,6 +122,11 @@
   color: inherit;
   border-radius: r(sm);
   overflow: hidden;
+}
+
+.knowledge-card--featured {
+  @include mq(md) { grid-column: span 2; }
+  @include mq(lg) { grid-column: span 3; }
 }
 
 .knowledge-card__motif {

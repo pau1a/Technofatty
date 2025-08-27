@@ -17,13 +17,13 @@
     {% if has_filters %}
       {% include "coresite/knowledge/_filterbar.html" with filters=categories %}
     {% endif %}
-    {% if featured %}
-      {% include "coresite/knowledge/_featured.html" %}
-    {% endif %}
     {% if has_content %}
       <div class="knowledge-grid">
+        {% if featured %}
+          {% include "coresite/knowledge/_card_featured.html" with article=featured %}
+        {% endif %}
         {% for article in articles %}
-          {% include "coresite/knowledge/_card.html" %}
+          {% include "coresite/knowledge/_card.html" with article=article %}
         {% endfor %}
       </div>
       {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
