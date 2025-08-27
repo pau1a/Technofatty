@@ -56,3 +56,16 @@ Required variables:
 - `TF_EMAIL_BACKEND`
 
 See `.env.example` for placeholder values.
+
+## Deployment
+
+See `docs/deployment.md` for details on production deployment with Apache + mod_wsgi.
+
+## Internal Strategy Docs
+
+For collaborators:  
+We maintain internal notes on site philosophy, content strategy, and revenue pathways.  
+See [`docs/strategy.md`](docs/strategy.md) for the latest thinking.  
+
+## License
+MIT
