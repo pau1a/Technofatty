@@ -44,3 +44,12 @@ def test_knowledge_index_second_page_has_no_featured(client):
     content = response.content.decode()
     assert "knowledge-featured" not in content
     assert "Article 0" in content
+
+
+@pytest.mark.django_db
+def test_knowledge_index_empty_state(client):
+    response = client.get(reverse("knowledge"))
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert "knowledge-empty" in content
+    assert "knowledge-grid" not in content

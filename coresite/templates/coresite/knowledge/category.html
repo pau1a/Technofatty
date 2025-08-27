@@ -12,7 +12,7 @@
   <div class="wrap">
     <h1 id="{{ page_id }}-heading">{{ category.title }}</h1>
     {% include "coresite/partials/global/status_placeholder.html" %}
-    <div class="knowledge__grid">
+    <div class="knowledge-grid">
       {% for article in articles %}
         {% include "coresite/knowledge/_card.html" with article=article %}
       {% endfor %}
