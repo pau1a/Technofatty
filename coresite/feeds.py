@@ -43,7 +43,7 @@ class KnowledgeRSSFeed(Feed):
 
     def items(self):
         return (
-            KnowledgeArticle.published.select_related("category").order_by("-created_at")[:10]
+            KnowledgeArticle.published.select_related("category").order_by("-published_at")[:10]
         )
 
     def item_title(self, item):
@@ -56,7 +56,10 @@ class KnowledgeRSSFeed(Feed):
         return reverse("knowledge_article", args=[item.category.slug, item.slug])
 
     def item_pubdate(self, item):
-        return item.created_at
+        pubdate = item.published_at or timezone.now()
+        if timezone.is_naive(pubdate):
+            pubdate = timezone.make_aware(pubdate, timezone.utc)
+        return pubdate
 
 
 class KnowledgeAtomFeed(KnowledgeRSSFeed):
@@ -79,7 +82,7 @@ def blog_json_feed(request):
 
 def knowledge_json_feed(request):
     articles = (
-        KnowledgeArticle.published.select_related("category").order_by("-created_at")[:10]
+        KnowledgeArticle.published.select_related("category").order_by("-published_at")[:10]
     )
     items = [
         {

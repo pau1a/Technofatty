@@ -130,7 +130,7 @@ def knowledge(request):
         )
 
     articles_qs = (
-        KnowledgeArticle.published.select_related("category").order_by("-created_at")
+        KnowledgeArticle.published.select_related("category").order_by("-published_at")
     )
     paginator = Paginator(articles_qs, 6)
     try:

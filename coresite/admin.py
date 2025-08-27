@@ -5,6 +5,7 @@ from .models import (
     DevImage,
     KnowledgeCategory,
     KnowledgeArticle,
+    KnowledgeTag,
     BlogPost,
     ContactEvent,
 )
@@ -50,6 +51,11 @@ class KnowledgeArticleAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "status")
     list_filter = ("status", "category")
     prepopulated_fields = {"slug": ("title",)}
+
+
+@admin.register(KnowledgeTag)
+class KnowledgeTagAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(BlogPost)
