@@ -157,6 +157,10 @@ def knowledge(request):
         featured_article = None
         remaining_articles = page_articles
 
+    has_content = bool(page_articles)
+    if not has_content:
+        remaining_articles = []
+
     categories_qs = KnowledgeCategory.published.all()
     categories = [{"label": "All", "url": reverse("knowledge"), "active": True}]
     for category in categories_qs:
@@ -183,7 +187,8 @@ def knowledge(request):
         "next_page_url": next_page,
         "prev_page_url": prev_page,
         "canonical_url": absolute_page_url(page_number),
-        "show_cta_strip": True,
+        "has_content": has_content,
+        "show_cta_strip": has_content,
     }
     return render(request, "coresite/knowledge/index.html", context)
 

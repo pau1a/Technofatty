@@ -18,14 +18,21 @@
     {% if featured %}
       {% include "coresite/knowledge/_featured.html" %}
     {% endif %}
-    <div class="knowledge__grid">
-      {% for article in articles %}
-        {% include "coresite/knowledge/_card.html" %}
-      {% endfor %}
-    </div>
-    {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
-    {% if show_cta_strip %}
-      {% include "coresite/knowledge/_cta_strip.html" %}
+    {% if has_content %}
+      <div class="knowledge-grid">
+        {% for article in articles %}
+          {% include "coresite/knowledge/_card.html" %}
+        {% endfor %}
+      </div>
+      {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
+      {% if show_cta_strip %}
+        {% include "coresite/knowledge/_cta_strip.html" %}
+      {% endif %}
+    {% else %}
+      <section class="knowledge-empty">
+        <p class="knowledge-empty__text">No articles yet. Subscribe to our newsletter for updates.</p>
+        <a href="#" class="btn btn--cta">Get the newsletter</a>
+      </section>
     {% endif %}
   </div>
 </div>

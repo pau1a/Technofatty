@@ -25,7 +25,6 @@
 }
 
 .kn-hero {
-  min-height: calc(dim(hero-min-h) - var(--header-h));
   padding-block: map-get($section-pad-y, base);
 
   background-image: linear-gradient(
@@ -134,7 +133,7 @@
 
 /* Knowledge cards */
 
-.knowledge__grid {
+.knowledge-grid {
   display: grid;
   gap: s(4);
   grid-template-columns: repeat(auto-fill, minmax(dim(grid-min), 1fr));
@@ -201,7 +200,7 @@
 /* CTA strip */
 
 @mixin motif-bg($name) {
-  background: url('/static/coresite/svg/motifs/#{$name}.svg') center/cover no-repeat;
+  background: url('../svg/motifs/#{$name}.svg') center/cover no-repeat;
 }
 
 .knowledge-cta-strip__band {
@@ -232,5 +231,29 @@
 
 .knowledge-cta-strip__text {
   margin: 0;
+}
+
+/* Empty state */
+
+.knowledge-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: s(4);
+  padding-block: map-get($section-pad-y, base);
+
+  @include mq(md) { padding-block: map-get($section-pad-y, md); }
+  @include mq(lg) { padding-block: map-get($section-pad-y, lg); }
+}
+
+.knowledge-empty__text {
+  margin: 0;
+  text-align: center;
+}
+
+/* Footer separator */
+
+.knowledge-index + footer {
+  border-top: 1px solid c(border);
 }
 
