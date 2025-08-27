@@ -109,6 +109,7 @@
             <span class="pager__current">Page {{ page_number }} of {{ total_pages }}</span>
             {% if next_page_url %}<a class="pager__next" href="{{ next_page_url }}">Older posts</a>{% endif %}
           </nav>
+          {% include "coresite/partials/newsletter_signup.html" %}
         </div>
       </div>
     </section>
