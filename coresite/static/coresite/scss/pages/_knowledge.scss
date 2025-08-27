@@ -138,9 +138,12 @@
 
 .knowledge__grid {
   display: grid;
-  gap: s(6);
+  gap: s(4);
   grid-template-columns: repeat(auto-fill, minmax(dim(grid-min), 1fr));
   margin-top: s(6);
+
+  @include mq(md) { gap: s(6); }
+  @include mq(lg) { gap: s(7); }
 }
 
 .knowledge-card {
