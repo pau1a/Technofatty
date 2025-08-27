@@ -1,20 +1,36 @@
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+import math
 
 
 class StatusChoices(models.TextChoices):
     DRAFT = "draft", "Draft"
-    REVIEW = "review", "Review"
     PUBLISHED = "published", "Published"
+    ARCHIVED = "archived", "Archived"
+
+
+class SubtypeChoices(models.TextChoices):
+    GUIDE = "guide", "Guide"
+    GLOSSARY = "glossary", "Glossary"
+    SIGNAL = "signal", "Signal"
+    QUICK_WIN = "quick_win", "Quick Win"
 
 
 class PublishedManager(models.Manager):
     """Manager that returns only published items."""
 
     def get_queryset(self):
-        return super().get_queryset().filter(status=StatusChoices.PUBLISHED)
+        qs = super().get_queryset().filter(status=StatusChoices.PUBLISHED)
+        model_fields = {f.name for f in self.model._meta.get_fields()}
+        if "published_at" in model_fields:
+            now = timezone.now()
+            qs = qs.filter(published_at__isnull=False, published_at__lte=now)
+        return qs
 
 class SiteSettings(models.Model):
     hero_image = models.ImageField(upload_to='hero/', blank=True, null=True)
@@ -77,32 +93,99 @@ class KnowledgeCategory(TimestampedModel):
         return self.title
 
 
+class KnowledgeTag(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class KnowledgeArticle(TimestampedModel):
     category = models.ForeignKey(
         KnowledgeCategory, related_name="articles", on_delete=models.CASCADE
     )
     title = models.CharField(max_length=200)
-    slug = models.SlugField()
+    slug = models.SlugField(
+        blank=True,
+        unique=True,
+        help_text="Unique across all knowledge articles for future routing flexibility",
+    )
     status = models.CharField(
         max_length=20,
         choices=StatusChoices.choices,
         default=StatusChoices.DRAFT,
+        db_index=True,
+    )
+    subtype = models.CharField(
+        max_length=20, choices=SubtypeChoices.choices, blank=True
     )
     blurb = models.TextField(blank=True)
     content = models.TextField(blank=True)
-
+    published_at = models.DateTimeField(blank=True, null=True, db_index=True)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="knowledge_articles",
+    )
+    reading_time = models.PositiveIntegerField(blank=True, null=True)
+    attribution = models.CharField(max_length=255, blank=True)
+    tags = models.ManyToManyField(KnowledgeTag, blank=True, related_name="articles")
+    image = models.ImageField(upload_to="knowledge/", blank=True, null=True)
+    image_alt = models.CharField(max_length=255, blank=True)
+    motif = models.CharField(max_length=100, blank=True)
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+    canonical_url = models.URLField(blank=True)
+    og_title = models.CharField(max_length=255, blank=True)
+    og_description = models.TextField(blank=True)
+    og_image_url = models.URLField(blank=True)
+    twitter_title = models.CharField(max_length=255, blank=True)
+    twitter_description = models.TextField(blank=True)
+    twitter_image_url = models.URLField(blank=True)
     objects = models.Manager()
     published = PublishedManager()
 
     def __str__(self):
         return self.title
 
+    def clean(self):
+        super().clean()
+        if self.image and not self.image_alt:
+            raise ValidationError({"image_alt": "Alt text is required when an image is set."})
+        if self.status == StatusChoices.PUBLISHED:
+            if not self.published_at:
+                raise ValidationError({"published_at": "Published articles must have a publish date."})
+            if timezone.is_naive(self.published_at):
+                raise ValidationError({"published_at": "published_at must be timezone-aware."})
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.title:
+            qs = self.__class__.objects.exclude(pk=self.pk)
+            self.slug = _generate_unique_slug(self.title, qs)
+        if not self.blurb and self.content:
+            snippet = self.content.strip()
+            self.blurb = snippet[:160]
+        if self.content:
+            words = len(self.content.split())
+            self.reading_time = max(1, math.ceil(words / 200)) if words else None
+        if self.status == StatusChoices.PUBLISHED:
+            original = None
+            if self.pk:
+                original = self.__class__.objects.filter(pk=self.pk).values("status", "published_at").first()
+            if original and original["status"] == StatusChoices.PUBLISHED and original["published_at"]:
+                self.published_at = original["published_at"]
+            elif self.published_at is None:
+                self.published_at = timezone.now()
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["category", "slug"],
-                name="unique_article_slug_per_category",
-            )
+        indexes = [
+            models.Index(fields=["status", "published_at"], name="knowledgearticle_status_published_at_idx"),
+            models.Index(fields=["category", "status", "published_at"], name="knowledgearticle_category_status_published_at_idx"),
         ]
 
 
@@ -145,15 +228,6 @@ def set_blogpost_slug(sender, instance, **kwargs):
         instance.slug = _generate_unique_slug(
             instance.title, BlogPost.objects.exclude(pk=instance.pk)
         )
-
-
-@receiver(pre_save, sender=KnowledgeArticle)
-def set_knowledge_article_slug(sender, instance, **kwargs):
-    if not instance.slug and instance.title:
-        qs = KnowledgeArticle.objects.filter(category=instance.category).exclude(
-            pk=instance.pk
-        )
-        instance.slug = _generate_unique_slug(instance.title, qs)
 
 
 class ContactEvent(models.Model):
