@@ -224,7 +224,6 @@ def knowledge(request):
         "page_obj": page_obj,
         "canonical_url": canonical_url,
         "has_content": has_content,
-        "show_cta_strip": has_content,
     }
     if is_filtered:
         context["meta_robots"] = "noindex,follow"
@@ -294,6 +293,24 @@ def knowledge_article(request, category_slug: str, article_slug: str):
             category=category,
             slug=article_slug,
         )
+    related_limit = 3
+    related_articles = list(
+        KnowledgeArticle.published.filter(category=category)
+        .exclude(id=article.id)
+        .order_by("-published_at")[:related_limit]
+    )
+    if len(related_articles) < related_limit:
+        tags = article.tags.all()
+        if tags:
+            tag_related = (
+                KnowledgeArticle.published.filter(tags__in=tags)
+                .exclude(id=article.id)
+                .exclude(id__in=[a.id for a in related_articles])
+                .distinct()
+                .order_by("-published_at")[: related_limit - len(related_articles)]
+            )
+            related_articles.extend(tag_related)
+
     context = {
         "footer": footer,
         "page_id": f"knowledge-{article_slug}",
@@ -302,6 +319,7 @@ def knowledge_article(request, category_slug: str, article_slug: str):
         "article": article,
         "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/{article_slug}/",
         "base_canonical": BASE_CANONICAL,
+        "related_articles": related_articles,
     }
     return render(request, "coresite/knowledge/article.html", context)
 

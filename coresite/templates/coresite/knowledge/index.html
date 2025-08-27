@@ -25,11 +25,9 @@
         {% endfor %}
       </div>
       {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
-      {% if show_cta_strip %}
-        {% include "coresite/knowledge/_cta_strip.html" %}
-      {% endif %}
+      {% include "coresite/partials/newsletter_signup.html" %}
     {% else %}
-      <p>No articles published yet.</p>
+      {% include "coresite/knowledge/_no_results.html" %}
     {% endif %}
   </div>
 </div>

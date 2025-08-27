@@ -12,3 +12,5 @@ Event Name | Location | Business Goal
 `link.support.email` | Support email link on contact page | Facilitate support requests
 `link.contact.email` | General contact email fallback | Allow direct outreach
 `link.legal.email` | Legal email link on contact/legal pages | Enable legal notices
+`share.twitter` | Twitter share button on articles | Encourage content sharing
+`share.linkedin` | LinkedIn share button on articles | Encourage professional engagement

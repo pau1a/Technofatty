@@ -1,0 +1,12 @@
+{% if related_articles %}
+<section class="related-articles" role="region" aria-labelledby="related-articles-heading">
+  <div class="wrap">
+    <h2 id="related-articles-heading">Related Articles</h2>
+    <div class="knowledge-grid">
+      {% for article in related_articles %}
+        {% include "coresite/knowledge/_card.html" with article=article %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

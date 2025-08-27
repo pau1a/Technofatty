@@ -19,6 +19,7 @@
       {% endfor %}
     </div>
     {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
+    {% include "coresite/partials/newsletter_signup.html" %}
     {% else %}
       {% include "coresite/knowledge/_no_results.html" %}
     {% endif %}

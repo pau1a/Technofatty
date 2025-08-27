@@ -61,6 +61,8 @@
     <div class="knowledge__article-body">
       <!-- Future article content goes here -->
     </div>
+    {% include "coresite/knowledge/_share_buttons.html" %}
+    {% include "coresite/knowledge/_related_articles.html" %}
     <p><a href="{% url 'knowledge_category' category.slug %}"
           data-analytics-event="knowledge_back_click"
           data-analytics-label="{{ category.title }}"

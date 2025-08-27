@@ -69,6 +69,11 @@ Analytics runs only when allowed by consent rules. The visitor's choice is store
 * **Purpose**: Email subscription form and status messaging【F:coresite/templates/coresite/partials/newsletter_block.html†L2-L27】
 * **Included in**: `homepage.html`
 
+### Newsletter signup
+* **Path**: `coresite/templates/coresite/partials/newsletter_signup.html`
+* **Purpose**: Reusable wrapper for the newsletter block on article listings and empty states【F:coresite/templates/coresite/partials/newsletter_signup.html†L1】
+* **Included in**: Knowledge and blog list pages
+
 ### Signals block
 * **Path**: `coresite/templates/coresite/partials/signals_block.html`
 * **Purpose**: Grid of current signals with optional CTAs【F:coresite/templates/coresite/partials/signals_block.html†L1-L27】
