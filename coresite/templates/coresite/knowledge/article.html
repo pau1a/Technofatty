@@ -1,11 +1,57 @@
 {% extends "coresite/base.html" %}
 
 {% block meta %}
-  {% with meta_description=article.blurb|default:'' og_type='article' canonical_url=request.build_absolute_uri %}
+  {% with page_title=article.meta_title|default:article.title
+         meta_description=article.meta_description|default:article.blurb|default:''
+         og_type='article'
+         canonical_url=article.canonical_url|default:canonical_url %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
 {% endblock %}
-{% block structured_data %}{{ block.super }}{% endblock %}
+{% block structured_data %}{{ block.super }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ article.title|escapejs }}",
+    "description": "{{ article.meta_description|default:article.blurb|escapejs }}",
+    {% if article.author %}"author": {"@type": "Person", "name": "{{ article.author.get_full_name|default:article.author.username|escapejs }}"},
+    {% endif %}
+    "datePublished": "{{ article.published_at|date:'c' }}",
+    {% if article.og_image_url %}"image": "{{ article.og_image_url }}",
+    {% endif %}
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ article.canonical_url|default:canonical_url }}"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Knowledge",
+        "item": "{{ base_canonical }}/knowledge/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "{{ category.title|escapejs }}",
+        "item": "{{ base_canonical }}/knowledge/{{ category.slug }}/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "{{ article.title|escapejs }}"
+      }
+    ]
+  }
+  </script>
+{% endblock %}
 
 {% block content %}
 <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">

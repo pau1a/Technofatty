@@ -123,13 +123,6 @@ def knowledge(request):
 
     page_number = int(page_str or 1)
 
-    def absolute_page_url(num: int) -> str:
-        return (
-            f"{BASE_CANONICAL}/knowledge/"
-            if num == 1
-            else f"{BASE_CANONICAL}/knowledge/?page={num}"
-        )
-
     # Base queryset for articles
     articles_qs = (
         KnowledgeArticle.published.select_related("category")
@@ -187,6 +180,17 @@ def knowledge(request):
     if "page" in base_params:
         del base_params["page"]
 
+    canonical_params = base_params.copy()
+    if page_number > 1:
+        canonical_params["page"] = str(page_number)
+    canonical_query = canonical_params.urlencode()
+    canonical_url = f"{BASE_CANONICAL}/knowledge/" + (
+        f"?{canonical_query}" if canonical_query else ""
+    )
+    is_filtered = any(
+        [category_slug, tag_slug, time_str, subtype, search]
+    )
+
     def build_url(**kwargs):
         params = base_params.copy()
         for key, value in kwargs.items():
@@ -218,11 +222,16 @@ def knowledge(request):
         "featured": featured_article,
         "articles": remaining_articles,
         "page_obj": page_obj,
-        "canonical_url": absolute_page_url(page_number),
+        "canonical_url": canonical_url,
         "has_content": has_content,
         "show_cta_strip": has_content,
     }
-    return render(request, "coresite/knowledge/index.html", context)
+    if is_filtered:
+        context["meta_robots"] = "noindex,follow"
+    response = render(request, "coresite/knowledge/index.html", context)
+    if is_filtered:
+        response["X-Robots-Tag"] = "noindex,follow"
+    return response
 
 
 def knowledge_category(request, category_slug: str):
@@ -286,6 +295,7 @@ def knowledge_article(request, category_slug: str, article_slug: str):
         "category": category,
         "article": article,
         "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/{article_slug}/",
+        "base_canonical": BASE_CANONICAL,
     }
     return render(request, "coresite/knowledge/article.html", context)
 
