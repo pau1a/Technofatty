@@ -197,3 +197,18 @@ def test_knowledge_index_search_queries(client):
 
     res = client.get(reverse("knowledge") + "?q=special")
     assert "Foo Title" in res.content.decode()
+
+
+@pytest.mark.django_db
+def test_filtered_results_set_noindex_header(client):
+    category = KnowledgeCategory.objects.create(
+        title="General", slug="general", status=StatusChoices.PUBLISHED
+    )
+    KnowledgeArticle.objects.create(
+        category=category,
+        title="Article", slug="article", status=StatusChoices.PUBLISHED,
+        blurb="blurb", published_at=timezone.now(),
+    )
+    res = client.get(reverse("knowledge") + f"?category={category.slug}")
+    assert res["X-Robots-Tag"] == "noindex,follow"
+    assert '<meta name="robots" content="noindex,follow">' in res.content.decode()

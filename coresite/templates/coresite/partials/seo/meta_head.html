@@ -16,6 +16,7 @@
 <meta property="og:description" content="{{ desc }}">
 <meta name="twitter:description" content="{{ desc }}">
 {% endwith %}
+{% if meta_robots %}<meta name="robots" content="{{ meta_robots }}">{% endif %}
 <link rel="canonical" href="{{ resolved_canonical }}">
 <meta property="og:url" content="{{ resolved_canonical }}">
 <meta property="og:type" content="{{ og_type|default:'website' }}">
