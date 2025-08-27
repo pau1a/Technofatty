@@ -280,14 +280,20 @@ def knowledge_category(request, category_slug: str):
 
 def knowledge_article(request, category_slug: str, article_slug: str):
     footer = get_footer_content()
-    category = get_object_or_404(
-        KnowledgeCategory.published, slug=category_slug
-    )
-    article = get_object_or_404(
-        KnowledgeArticle.published,
-        category=category,
-        slug=article_slug,
-    )
+    if request.GET.get("preview") == "1" and request.user.is_staff:
+        category = get_object_or_404(KnowledgeCategory.objects, slug=category_slug)
+        article = get_object_or_404(
+            KnowledgeArticle.objects, category=category, slug=article_slug
+        )
+    else:
+        category = get_object_or_404(
+            KnowledgeCategory.published, slug=category_slug
+        )
+        article = get_object_or_404(
+            KnowledgeArticle.published,
+            category=category,
+            slug=article_slug,
+        )
     context = {
         "footer": footer,
         "page_id": f"knowledge-{article_slug}",

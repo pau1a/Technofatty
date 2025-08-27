@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django import forms
+from django.utils import timezone
+from django.utils.html import format_html
 from .models import (
     SiteSettings,
     SiteImage,
@@ -8,7 +11,17 @@ from .models import (
     KnowledgeTag,
     BlogPost,
     ContactEvent,
+    StatusChoices,
 )
+from ckeditor.widgets import CKEditorWidget
+
+
+class KnowledgeArticleAdminForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorWidget(), required=False)
+
+    class Meta:
+        model = KnowledgeArticle
+        fields = "__all__"
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
@@ -48,9 +61,72 @@ class KnowledgeCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(KnowledgeArticle)
 class KnowledgeArticleAdmin(admin.ModelAdmin):
-    list_display = ("title", "category", "status")
+    form = KnowledgeArticleAdminForm
+    list_display = ("title", "category", "status", "published_at", "preview_link")
     list_filter = ("status", "category")
     prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ("preview_link",)
+    filter_horizontal = ("tags",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "title",
+                    "slug",
+                    "category",
+                    "status",
+                    "published_at",
+                    "subtype",
+                    "blurb",
+                    "content",
+                )
+            },
+        ),
+        ("Media", {"fields": ("image", "image_alt", "motif")}),
+        ("Tags", {"fields": ("tags",)}),
+        (
+            "Metadata",
+            {
+                "fields": (
+                    "meta_title",
+                    "meta_description",
+                    "canonical_url",
+                    "og_title",
+                    "og_description",
+                    "og_image_url",
+                    "twitter_title",
+                    "twitter_description",
+                    "twitter_image_url",
+                )
+            },
+        ),
+    )
+    actions = ["make_published", "make_archived"]
+
+    def preview_link(self, obj):
+        if not obj.pk:
+            return ""
+        url = obj.get_absolute_url()
+        return format_html('<a href="{}?preview=1" target="_blank">Preview</a>', url)
+
+    preview_link.short_description = "Preview"
+
+    def make_published(self, request, queryset):
+        for obj in queryset:
+            obj.status = StatusChoices.PUBLISHED
+            if not obj.published_at:
+                obj.published_at = timezone.now()
+            obj.save()
+        self.message_user(request, "Selected articles published.")
+
+    make_published.short_description = "Mark selected articles as published"
+
+    def make_archived(self, request, queryset):
+        updated = queryset.update(status=StatusChoices.ARCHIVED)
+        self.message_user(request, f"{updated} articles archived.")
+
+    make_archived.short_description = "Archive selected articles"
 
 
 @admin.register(KnowledgeTag)

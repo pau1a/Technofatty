@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "sass_processor",
     "compressor",
     'easy_thumbnails',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -284,3 +285,13 @@ CONSENT_COOKIE_SECURE = (
 CONSENT_COOKIE_HTTPONLY = (
     os.environ.get("CONSENT_COOKIE_HTTPONLY", "true").lower() == "true"
 )
+
+
+# -------------------------------------------------
+# CKEditor
+# -------------------------------------------------
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+    }
+}
