@@ -200,6 +200,10 @@
 
 /* CTA strip */
 
+@mixin motif-bg($name) {
+  background: url('/static/coresite/svg/motifs/#{$name}.svg') center/cover no-repeat;
+}
+
 .knowledge-cta-strip__band {
   position: relative;
   background: c(bg-alt);
@@ -209,7 +213,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: url('/static/coresite/svg/motifs/motif-waveform-1.svg') center/cover no-repeat;
+  @include motif-bg('motif-waveform-1');
   opacity: map-get($opacities, low);
 }
 
