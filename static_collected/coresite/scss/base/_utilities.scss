@@ -1,0 +1,14 @@
+html { scroll-padding-top: var(--scroll-offset); }
+body:not(.is-home) main { padding-top: var(--scroll-offset); }
+
+.container { @include container; }
+.container-wide {
+  @include container;
+  max-width: $container-max-width-wide;
+}
+.skip-link { @include sr-only; }
+.skip-link:focus {
+  position: fixed; left: s(2); top: s(2);
+  background: c(black); color: c(white); padding: s(2);
+  z-index: z(overlay);
+}

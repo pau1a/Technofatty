@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <g stroke="#4B6CB7" stroke-opacity="0.08" stroke-width="1" fill="none">
+    <!-- horizontal edge connections -->
+    <line x1="0" y1="50" x2="200" y2="80"/>
+    <line x1="0" y1="150" x2="200" y2="120"/>
+
+    <!-- vertical edge connections -->
+    <line x1="50" y1="0" x2="80" y2="200"/>
+    <line x1="150" y1="0" x2="120" y2="200"/>
+
+    <!-- cross diagonals -->
+    <line x1="0" y1="0" x2="200" y2="200"/>
+    <line x1="200" y1="0" x2="0" y2="200"/>
+
+    <!-- internal cross connectors -->
+    <line x1="50" y1="50" x2="150" y2="150"/>
+    <line x1="150" y1="50" x2="50" y2="150"/>
+
+    <!-- nodes at edge anchors -->
+    <circle cx="0" cy="50" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="0" cy="150" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="200" cy="80" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="200" cy="120" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="50" cy="0" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="150" cy="0" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="80" cy="200" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+    <circle cx="120" cy="200" r="3" fill="#4B6CB7" fill-opacity="0.3"/>
+
+    <!-- internal hubs -->
+    <circle cx="100" cy="100" r="4" fill="#4B6CB7" fill-opacity="0.4"/>
+    <circle cx="50" cy="50" r="2" fill="#4B6CB7" fill-opacity="0.25"/>
+    <circle cx="150" cy="50" r="2" fill="#4B6CB7" fill-opacity="0.25"/>
+    <circle cx="50" cy="150" r="2" fill="#4B6CB7" fill-opacity="0.25"/>
+    <circle cx="150" cy="150" r="2" fill="#4B6CB7" fill-opacity="0.25"/>
+  </g>
+</svg>
+

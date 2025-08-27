@@ -1,0 +1,37 @@
+// Media query
+@mixin mq($from) {
+  @media (min-width: bp($from)) { @content; }
+}
+
+// Fluid type (mobile -> desktop)
+@mixin fluid-type($min, $max) {
+  font-size: clamp(#{$min}, 2.5vw, #{$max});
+}
+
+// Focus ring (WCAG-friendly)
+@mixin focus-ring($c: rgba(0,0,0,.18)) {
+  &:focus-visible { outline: none; box-shadow: 0 0 0 dim(focus-ring-width) $c; }
+}
+
+// Aspect-ratio placeholder block
+@mixin ratio($w, $h) {
+  aspect-ratio: #{$w}/#{$h};
+  background: c(ph);
+  display: block;
+}
+
+// Max-width container
+@mixin container {
+  max-width: $container-max;
+  margin: 0 auto;
+  padding-inline: s(6); // 2rem from your scale
+}
+
+// Screen-reader-only utility
+@mixin sr-only {
+  position: absolute;
+  width: dim(sr-only-size); height: dim(sr-only-size);
+  padding: 0; margin: calc(dim(sr-only-size) * -1);
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}

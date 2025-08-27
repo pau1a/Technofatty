@@ -1,0 +1,79 @@
+// coresite/static/coresite/scss/sections/_featured.scss
+
+
+.featured {
+  position: relative;
+  background: c(white);
+  overflow: hidden;
+
+  // section title
+  .section-title {
+    text-align: center;
+    margin-bottom: s(7);
+    font-size: fs(xxl);
+    font-weight: 700;
+    color: var(--tf-blue, c(blue));
+    position: relative;
+    z-index: z(content);
+  }
+
+  // card grid
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($featured-card-min-width, 1fr));
+    gap: s(6);
+    position: relative;
+    z-index: z(content);
+  }
+
+  // card
+  .card {
+    background: c(white);
+    border-radius: r(lg);
+    box-shadow: map-get($shadows, card);
+    padding: s(6);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform $dur ease, box-shadow $dur ease;
+
+    &:hover {
+      transform: translateY(-s(1));
+      box-shadow: map-get($shadows, card-hover);
+    }
+
+    .card__img {
+      width: 100%;
+      height: $featured-card-img-height;
+      background: c(gray-light);
+      border-radius: r(md);
+      margin-bottom: s(4);
+    }
+
+    .card__title {
+      font-size: fs(lg);
+      font-weight: 600;
+      margin-bottom: s(2);
+      color: c(text-strong);
+    }
+
+    .card__blurb {
+      font-size: fs(base);
+      color: c(text-muted);
+      margin-bottom: s(4);
+      flex-grow: 1;
+    }
+
+    .card__link {
+      font-size: fs(sm-md);
+      font-weight: 500;
+      color: var(--tf-blue, c(blue));
+      text-decoration: none;
+      margin-top: auto;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

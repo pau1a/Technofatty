@@ -1,0 +1,250 @@
+/* =========================================
+   Technofatty — Design Tokens (variables)
+   Single source of truth for SCSS + CSS vars
+   ========================================= */
+
+/* Colors */
+$colors: (
+  white:   #FFFFFF,
+  mid:     #F1EEFF,  // subtle panels / hovers
+  blue:    #4B6CB7,  // primary brand / headings / primary CTA
+  gold:    #FFD166,  // hover accents / secondary emphasis
+  green:   #56FF8D,  // community CTA
+  magenta: #D94BCD,  // rare accent
+  ph:      #D5EDF2,  // placeholder blocks for images
+  text:    #333333,
+  text-strong: #222222, // strong headings
+  text-muted:  #555555, // muted text
+  gray-light:  #F5F5F5, // neutral light surfaces
+  border:  #DDDDDD,  // neutral border color
+  black:   #000000,
+  bg-alt:  #F9FAFB,  // pale background bands
+  bg-accent-light: #F5FBFF  // light accent backgrounds
+);
+
+/* Layout width */
+$container-max: 68rem; // ≈1088px target content width
+$container-max-width-wide: 90rem; // ≈1440px wide container
+
+/* Header height */
+$header-h-mobile: 4rem; // 64px
+$header-h-desktop: 5rem; // 80px
+
+/* Featured card dimensions */
+$featured-card-min-width: 17.5rem; // 280px
+$featured-card-img-height: 10rem; // 160px
+
+/* Component dimensions */
+$dimensions: (
+  hero-min-h: 37.5rem,     // 600px
+  hero-pad-block: 8rem,    // 128px
+  hero-logo-max-w: 56.25rem, // 900px
+  home-hero-pad-min: 2.5rem,
+  home-hero-pad-max: 5rem,
+  hamburger-size: 2.75rem,
+  hamburger-line-height: 0.1875rem,
+  hamburger-line-radius: 0.125rem,
+  hamburger-padding: 0.625rem,
+  hamburger-focus-offset: 0.1875rem,
+  menu-overlay-min-w: 16rem,
+  menu-overlay-max-w: 24rem,
+  grid-min: 16rem,
+  sr-only-size: 1px,
+  focus-ring-width: 3px
+);
+
+/* Spacing scale (t-shirt friendly) */
+$space: (
+  0: 0,
+  1: .25rem,   // 4px
+  2: .5rem,    // 8px
+  3: .75rem,   // 12px
+  4: 1rem,     // 16px
+  5: 1.5rem,   // 24px
+  6: 2rem,     // 32px
+  7: 3rem,     // 48px
+  8: 4rem      // 64px
+);
+
+/* Section vertical rhythm */
+$section-pad-y: (
+  base: s(6),
+  md: s(7),
+  lg: s(8)
+);
+
+/* Typographic Scale */
+$font-sizes: (
+  xs: 0.75rem,    // 12px
+  sm: 0.875rem,   // 14px
+  sm-md: 0.95rem, // ≈15px
+  base: 1rem,     // 16px
+  md: 1.125rem,   // 18px
+  lg: 1.25rem,    // 20px
+  xl: 1.5rem,     // 24px
+  xxl: 2rem,      // 32px
+  display-sm: 1.8rem,
+  display-lg: 3rem
+);
+
+/* Font families */
+$font-families: (
+  base: (system-ui, -apple-system, "Segoe UI", Roboto, sans-serif)
+);
+
+/* Line heights */
+$line-heights: (
+  base: 1.5
+);
+
+/* Corner radii */
+$radii: (
+  xs: .25rem,
+  sm: .5rem,
+  md: .75rem,
+  lg: 1rem,
+  full: 9999px
+);
+
+/* Border widths */
+$border-widths: (
+  sm: 1px,
+  md: 2px,
+  lg: 4px
+);
+
+/* Blurs */
+$blurs: (
+  sm: 2px,
+  md: 4px,
+  lg: 8px
+);
+
+/* Opacities */
+$opacities: (
+  low: 0.1,
+  mid: 0.5,
+  high: 0.8
+);
+
+/* Breakpoints */
+$bp: (
+  xs: 480px,
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px
+);
+
+/* Z-index layers */
+$z: (
+  base: 0,
+  content: 1,
+  header: 1000,
+  dropdown: 2000,
+  overlay: 9000, // backdrop
+  menu: 9001,    // menu overlay itself
+  modal: 10000,
+  toast: 11000
+);
+
+/* Shadows */
+$shadows: (
+  sm: 0 1px 2px rgba(map-get($colors, black), 0.05),
+  md: 0 2px 6px rgba(map-get($colors, black), 0.15),
+  lg: -4px 0 12px rgba(map-get($colors, black), 0.3),
+  card: 0 4px 12px rgba(map-get($colors, black), 0.08),
+  card-hover: 0 6px 18px rgba(map-get($colors, black), 0.12)
+);
+
+/* Timing & easing (nice-to-have) */
+$easing-standard: cubic-bezier(.2, .6, .2, 1);
+$dur-fast: 120ms;
+$dur: 200ms;
+
+/* ------------------------------------------------
+   Optional: expose CSS variables for runtime usage
+   (keeps brand tokens available in plain CSS/JS)
+   ------------------------------------------------ */
+:root{
+  // Colors
+  @each $name, $value in $colors {
+    --color-#{$name}: #{$value};
+  }
+
+  --container-max: #{$container-max};
+  --container-max-width-wide: #{$container-max-width-wide};
+
+  --header-h-mobile: #{$header-h-mobile};
+  --header-h-desktop: #{$header-h-desktop};
+
+  // Radii
+  @each $name, $value in $radii {
+    --radius-#{$name}: #{$value};
+  }
+
+  // Spacing
+  @each $name, $value in $space {
+    --space-#{$name}: #{$value};
+  }
+
+  // Font sizes
+  @each $name, $value in $font-sizes {
+    --font-size-#{$name}: #{$value};
+  }
+
+  // Font families
+  @each $name, $value in $font-families {
+    --font-family-#{$name}: #{$value};
+  }
+
+  // Line heights
+  @each $name, $value in $line-heights {
+    --line-height-#{$name}: #{$value};
+  }
+
+  // Border widths
+  @each $name, $value in $border-widths {
+    --border-width-#{$name}: #{$value};
+  }
+
+  // Blurs
+  @each $name, $value in $blurs {
+    --blur-#{$name}: #{$value};
+  }
+
+  // Opacities
+  @each $name, $value in $opacities {
+    --opacity-#{$name}: #{$value};
+  }
+
+  // Shadows
+  @each $name, $value in $shadows {
+    --shadow-#{$name}: #{$value};
+  }
+
+  // Z-index layers
+  @each $name, $value in $z {
+    --z-#{$name}: #{$value};
+  }
+
+  // Breakpoints
+  @each $name, $value in $bp {
+    --bp-#{$name}: #{$value};
+  }
+
+  // Component dimensions
+  @each $name, $value in $dimensions {
+    --#{$name}: #{$value};
+  }
+
+  --easing-standard: #{$easing-standard};
+  --dur-fast: #{$dur-fast};
+  --dur: #{$dur};
+  --header-h: calc(var(--header-h-mobile) + env(safe-area-inset-top, 0px));
+  --scroll-offset: var(--header-h);
+}
+
+@media (min-width: map-get($bp, md)) {
+  :root { --header-h: calc(var(--header-h-desktop) + env(safe-area-inset-top, 0px)); }
+}

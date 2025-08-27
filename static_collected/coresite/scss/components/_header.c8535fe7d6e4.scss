@@ -1,0 +1,34 @@
+/* ===============================
+   Site Header
+   =============================== */
+
+.site-header {
+  z-index: map-get($z, header);
+  width: 100%;
+  top: 0;
+
+  // Hero mode for homepage
+  &.hero-mode {
+    background: rgba(map-get($colors, white), var(--header-bg-opacity, 0.5));
+    transition: background-color $dur $easing-standard;
+    position: absolute; // Initially absolute
+  }
+
+  // Sticky state for hero-mode on scroll, and default for fixed-mode
+  &.fixed-mode,
+  &.hero-mode.is-sticky {
+    background: map-get($colors, white);
+    box-shadow: map-get($shadows, sm);
+    position: fixed;
+  }
+
+  // The hamburger is part of the header, but its display logic
+  // is handled within its own component file based on screen size.
+  // This keeps the header component cleaner.
+  @media (max-width: map-get($bp, sm)) {
+    .global-hamburger {
+      // Positioning is now handled in _hamburger.scss
+      // We just need to ensure it's part of the layout flow.
+    }
+  }
+}

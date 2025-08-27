@@ -1,0 +1,33 @@
+// abstracts/_bootstrap-overrides.scss
+$primary:   map-get($colors, blue);
+$secondary: map-get($colors, gold);
+$success:   map-get($colors, green);
+$danger:    map-get($colors, magenta);
+$warning:   map-get($colors, gold);
+
+$body-bg:    map-get($colors, white);
+$body-color: map-get($colors, text);
+
+$border-radius:     map-get($radii, md);
+$btn-padding-y:     map-get($space, 1);
+$btn-padding-x:     map-get($space, 3);
+$btn-border-radius: map-get($radii, sm);
+
+$spacer: map-get($space, 4);
+$spacers: (
+  0: map-get($space, 0),
+  1: map-get($space, 2),
+  2: map-get($space, 4),
+  3: map-get($space, 5),
+  4: map-get($space, 6),
+  5: map-get($space, 7)
+);
+
+// Custom button hover states to match Technofatty brand
+$btn-primary-hover-bg:    map-get($colors, gold);
+$btn-primary-hover-color: map-get($colors, black);
+$btn-success-hover-bg:    map-get($colors, gold);
+$btn-success-hover-color: map-get($colors, black);
+
+// Use gold for the focus ring instead of the default blue
+$btn-focus-box-shadow: 0 0 0 #{s(1)} rgba(map-get($colors, gold), 0.5);

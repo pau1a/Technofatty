@@ -1,0 +1,43 @@
+/* ===============================
+   Cards & responsive grid
+   =============================== */
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: s(6);
+
+  @include mq(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include mq(lg) {
+    // Assuming 4 columns for large screens, but you can adjust
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  background: c(white);
+  border: bw(sm) solid c(border);
+  border-radius: r(md);
+  padding: s(3); // was .75rem
+  transition: background $dur $easing-standard;
+
+  &:hover,
+  &:focus-within {
+    background: c(mid);
+  }
+}
+
+.card__img {
+  /* When adding real image, ensure descriptive alt text or empty alt if decorative */
+  width: 100%;
+  @include ratio(3, 2);
+  border-radius: r(sm);
+  margin-bottom: s(2); // was .5rem
+  /* If/when real images arrive, replace placeholder div with <img> and keep ratio */
+}
+
+.card__title { color: c(blue); margin: s(1) 0; } // was .25rem
+.card__meta { color: rgba(map-get($colors, text), 0.6); font-size: fs(sm); }
+.card__link { color: c(blue); text-decoration: none; &:hover, &:focus { text-decoration: underline; } }

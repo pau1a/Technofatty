@@ -1,0 +1,5 @@
+/* Page-specific nudges for homepage (keep light) */
+
+.homepage .hero__content { padding-block: clamp(var(--home-hero-pad-min, #{map-get($dimensions, home-hero-pad-min)}), 8vh, var(--home-hero-pad-max, #{map-get($dimensions, home-hero-pad-max)})); }
+.homepage .section-title { text-align:center; }
+.homepage .cards .card__title { @include fluid-type(fs(base), fs(md)); }

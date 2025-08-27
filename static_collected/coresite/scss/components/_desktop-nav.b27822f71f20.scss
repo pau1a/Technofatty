@@ -1,0 +1,81 @@
+
+.desktop-nav {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  @include container;
+  padding-block: map-get($space, 1);
+
+  @include mq(sm) {
+    display: flex;
+  }
+
+  &__logo a {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+    transition: color $dur-fast $easing-standard;
+
+    &:hover,
+    &:focus {
+      color: map-get($colors, blue);
+    }
+  }
+
+  &__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: map-get($space, 6);
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      padding-bottom: map-get($space, 1); // Creates space for the underline
+      border-bottom: map-get($border-widths, md) solid transparent;
+      transition: color $dur-fast $easing-standard, border-color $dur-fast $easing-standard;
+
+      &:hover,
+      &:focus {
+        color: map-get($colors, blue);
+        border-bottom-color: map-get($colors, gold);
+      }
+    }
+
+    li {
+      position: relative;
+    }
+
+    .sub-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      list-style: none;
+      margin: 0;
+      padding: map-get($space, 3) map-get($space, 4);
+      background-color: map-get($colors, white);
+      box-shadow: map-get($shadows, sm);
+    }
+
+    li:focus-within > .sub-menu,
+    li:hover > .sub-menu {
+      display: block;
+    }
+
+    .sub-menu li {
+      margin: 0;
+    }
+
+    .sub-menu a {
+      display: block;
+      padding: map-get($space, 1) 0;
+      white-space: nowrap;
+    }
+  }
+
+  &__cta {
+    // CTA button styles are already defined in _buttons.scss
+  }
+}

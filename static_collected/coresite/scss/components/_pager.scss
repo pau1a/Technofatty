@@ -1,0 +1,18 @@
+.pager {
+  margin-top: s(6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: s(4);
+  font-size: fs(sm);
+}
+
+.pager__prev,
+.pager__next {
+  color: c(blue);
+  text-decoration: none;
+}
+
+.pager__current {
+  font-weight: 600;
+}
