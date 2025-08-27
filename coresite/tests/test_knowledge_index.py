@@ -51,5 +51,17 @@ def test_knowledge_index_empty_state(client):
     response = client.get(reverse("knowledge"))
     assert response.status_code == 200
     content = response.content.decode()
-    assert "knowledge-empty" in content
+    assert "No articles published yet." in content
+    assert "knowledge-grid" not in content
+
+
+@pytest.mark.django_db
+def test_knowledge_category_no_results(client):
+    category = KnowledgeCategory.objects.create(
+        title="General", slug="general", status=StatusChoices.PUBLISHED
+    )
+    response = client.get(reverse("knowledge_category", args=[category.slug]))
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert "No articles found for your selection." in content
     assert "knowledge-grid" not in content
