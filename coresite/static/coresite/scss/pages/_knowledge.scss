@@ -233,27 +233,19 @@
   margin: 0;
 }
 
-/* Empty state */
+/* No results */
 
-.knowledge-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: s(4);
+.kn-no-results {
   padding-block: map-get($section-pad-y, base);
+  text-align: center;
 
   @include mq(md) { padding-block: map-get($section-pad-y, md); }
   @include mq(lg) { padding-block: map-get($section-pad-y, lg); }
 }
 
-.knowledge-empty__text {
-  margin: 0;
-  text-align: center;
-}
-
 /* Footer separator */
 
-.knowledge-index + footer {
+main + footer {
   border-top: 1px solid c(border);
 }
 

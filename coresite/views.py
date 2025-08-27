@@ -171,6 +171,7 @@ def knowledge(request):
                 "active": False,
             }
         )
+    has_filters = len(categories) > 1
 
     prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
     next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
@@ -181,6 +182,7 @@ def knowledge(request):
         "page_id": "knowledge",
         "page_title": "Knowledge",
         "categories": categories,
+        "has_filters": has_filters,
         "featured": featured_article,
         "articles": remaining_articles,
         "page_obj": page_obj,
