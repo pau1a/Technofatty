@@ -22,6 +22,8 @@ $colors: (
   bg-accent-light: #F5FBFF  // light accent backgrounds
 );
 
+$color-focus: map-get($colors, blue);
+
 /* Layout width */
 $container-max: 68rem; // ≈1088px target content width
 $container-max-width-wide: 90rem; // ≈1440px wide container
@@ -58,6 +60,7 @@ $dimensions: (
 /* Spacing scale (t-shirt friendly) */
 $space: (
   0: 0,
+  0.5: .125rem,
   1: .25rem,   // 4px
   2: .5rem,    // 8px
   3: .75rem,   // 12px

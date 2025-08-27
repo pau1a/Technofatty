@@ -423,12 +423,48 @@ def resources(request):
 def tools(request):
     footer = get_footer_content()
     robots = "index,follow" if settings.TOOLS_INDEXABLE else "noindex,nofollow"
+    tools_list = [
+        {
+            "title": "ROI Calculator",
+            "description": "Estimate returns from your AI marketing spend.",
+            "url": "/tools/roi-calculator/",
+        },
+        {
+            "title": "Content Ideator",
+            "description": "Generate growth ideas powered by machine intelligence.",
+            "url": "/tools/content-ideator/",
+        },
+    ]
+    learn_items = [
+        {
+            "title": "What is AI marketing?",
+            "url": "/knowledge/ai-marketing/",
+        },
+        {
+            "title": "How to measure AI ROI",
+            "url": "/knowledge/ai-roi/",
+        },
+    ]
+    blog_items = [
+        {
+            "title": "Launching our ROI tool",
+            "url": "/blog/roi-tool/",
+        },
+        {
+            "title": "3 AI tips for Q4",
+            "url": "/blog/ai-tips-q4/",
+        },
+    ]
     context = {
         "footer": footer,
         "page_id": "tools",
         "page_title": "Tools",
+        "page_intro": "Short utilities to explore AI for growth.",
         "canonical_url": "/tools/",
         "meta_robots": robots,
+        "tools": tools_list,
+        "knowledge_items": learn_items,
+        "blog_posts": blog_items,
     }
     response = render(
         request,
