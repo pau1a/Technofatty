@@ -27,9 +27,8 @@
 }
 
 .kn-hero {
-  --hero-min-h: 30vh;
-  max-height: 30vh;
-  --hero-pad-block: s(6);
+  min-height: calc(dim(hero-min-h) - var(--header-h));
+  padding-block: map-get($section-pad-y, base);
 
   background-image: linear-gradient(
       to right,
@@ -45,8 +44,8 @@
     );
   background-size: s(6) s(6);
 
-  @include mq(md) { --hero-pad-block: s(7); }
-  @include mq(lg) { --hero-pad-block: s(8); }
+  @include mq(md) { padding-block: map-get($section-pad-y, md); }
+  @include mq(lg) { padding-block: map-get($section-pad-y, lg); }
 }
 
 .kn-filterbar {
