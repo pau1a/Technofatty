@@ -11,14 +11,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="knowledge-index" style="font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;">
+<div class="knowledge-index">
   {% include "coresite/knowledge/_hero.html" %}
-  <div class="container" style="padding:s(6) 0;">
+  <div class="container">
     {% include "coresite/knowledge/_filterbar.html" with filters=categories %}
     {% if featured %}
       {% include "coresite/knowledge/_featured.html" %}
     {% endif %}
-    <div class="knowledge-grid" style="display:grid;gap:s(6);grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));margin-top:s(6);">
+    <div class="knowledge__grid">
       {% for article in articles %}
         {% include "coresite/knowledge/_card.html" %}
       {% endfor %}
@@ -29,11 +29,4 @@
     {% endif %}
   </div>
 </div>
-<style>
-  .knowledge-index h1,
-  .knowledge-index h2,
-  .knowledge-index h3 {
-    font-family: 'IBM Plex Sans', var(--font-family-base, sans-serif);
-  }
-</style>
 {% endblock %}
