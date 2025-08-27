@@ -201,7 +201,7 @@
 /* CTA strip */
 
 @mixin motif-bg($name) {
-  background: url('/static/coresite/img/motifs/#{$name}.svg') center/cover no-repeat;
+  background: url('/static/coresite/svg/motifs/#{$name}.svg') center/cover no-repeat;
 }
 
 .knowledge-cta-strip__band {
