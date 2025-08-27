@@ -1,7 +1,7 @@
 {% extends "coresite/base.html" %}
 
 {% block meta %}
-  {% with meta_description="Posts filed under "|add:page_title|add:"." canonical_url=request.build_absolute_uri %}
+  {% with meta_description="Posts filed under "|add:page_title|add:"." %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
 {% endblock %}

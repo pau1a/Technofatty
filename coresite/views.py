@@ -18,9 +18,6 @@ from .community import get_community_content
 from .footer import get_footer_content
 
 
-BASE_CANONICAL = "https://technofatty.com"
-
-
 KNOWLEDGE_SUB_SECTIONS = [
     {"title": "Guides", "url_name": "knowledge_guides"},
     {"title": "Signals", "url_name": "knowledge_signals"},
@@ -31,12 +28,28 @@ KNOWLEDGE_SUB_SECTIONS = [
 # Legacy endpoints like /services/, /signup/, /community/join/, and /signals/<slug>/
 # are intentionally omitted to keep retired paths out of the sitemap.
 TOP_LEVEL_URLS = [
-    {"loc": f"{BASE_CANONICAL}/", "priority": "1.0", "changefreq": "weekly"},
-    {"loc": f"{BASE_CANONICAL}/knowledge/", "priority": "0.8", "changefreq": "weekly"},
-    {"loc": f"{BASE_CANONICAL}/blog/", "priority": "0.8", "changefreq": "weekly"},
-    {"loc": f"{BASE_CANONICAL}/resources/", "priority": "0.8", "changefreq": "weekly"},
-    {"loc": f"{BASE_CANONICAL}/case-studies/", "priority": "0.8", "changefreq": "weekly"},
-    {"loc": f"{BASE_CANONICAL}/community/", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": f"{settings.SITE_BASE_URL}/", "priority": "1.0", "changefreq": "weekly"},
+    {
+        "loc": f"{settings.SITE_BASE_URL}/knowledge/",
+        "priority": "0.8",
+        "changefreq": "weekly",
+    },
+    {"loc": f"{settings.SITE_BASE_URL}/blog/", "priority": "0.8", "changefreq": "weekly"},
+    {
+        "loc": f"{settings.SITE_BASE_URL}/resources/",
+        "priority": "0.8",
+        "changefreq": "weekly",
+    },
+    {
+        "loc": f"{settings.SITE_BASE_URL}/case-studies/",
+        "priority": "0.8",
+        "changefreq": "weekly",
+    },
+    {
+        "loc": f"{settings.SITE_BASE_URL}/community/",
+        "priority": "0.8",
+        "changefreq": "weekly",
+    },
 ]
 
 
@@ -101,7 +114,7 @@ def homepage(request):
         "support": support,
         "community": community,
         "footer": footer,
-        "canonical_url": f"{BASE_CANONICAL}/",
+        "canonical_url": "/",
     }
     log_newsletter_event(request, "newsletter_block_view")
     return render(request, "coresite/homepage.html", context)
@@ -184,9 +197,7 @@ def knowledge(request):
     if page_number > 1:
         canonical_params["page"] = str(page_number)
     canonical_query = canonical_params.urlencode()
-    canonical_url = f"{BASE_CANONICAL}/knowledge/" + (
-        f"?{canonical_query}" if canonical_query else ""
-    )
+    canonical_url = "/knowledge/" + (f"?{canonical_query}" if canonical_query else "")
     is_filtered = any(
         [category_slug, tag_slug, time_str, subtype, search]
     )
@@ -250,9 +261,9 @@ def knowledge_category(request, category_slug: str):
 
     def absolute_page_url(num: int) -> str:
         return (
-            f"{BASE_CANONICAL}/knowledge/{category_slug}/"
+            f"/knowledge/{category_slug}/"
             if num == 1
-            else f"{BASE_CANONICAL}/knowledge/{category_slug}/?page={num}"
+            else f"/knowledge/{category_slug}/?page={num}"
         )
 
     articles_qs = (
@@ -317,8 +328,7 @@ def knowledge_article(request, category_slug: str, article_slug: str):
         "page_title": article.title,
         "category": category,
         "article": article,
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/{article_slug}/",
-        "base_canonical": BASE_CANONICAL,
+        "canonical_url": f"/knowledge/{category_slug}/{article_slug}/",
         "related_articles": related_articles,
     }
     return render(request, "coresite/knowledge/article.html", context)
@@ -330,7 +340,7 @@ def knowledge_guides(request):
         "footer": footer,
         "page_id": "knowledge-guides",
         "page_title": "Guides",
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/guides/",
+        "canonical_url": "/knowledge/guides/",
     }
     return render(request, "coresite/knowledge/guides.html", context)
 
@@ -341,7 +351,7 @@ def knowledge_signals(request):
         "footer": footer,
         "page_id": "knowledge-signals",
         "page_title": "Signals",
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/signals/",
+        "canonical_url": "/knowledge/signals/",
     }
     return render(request, "coresite/knowledge/signals.html", context)
 
@@ -352,7 +362,7 @@ def knowledge_glossary(request):
         "footer": footer,
         "page_id": "knowledge-glossary",
         "page_title": "Glossary",
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/glossary/",
+        "canonical_url": "/knowledge/glossary/",
     }
     return render(request, "coresite/knowledge/glossary.html", context)
 
@@ -363,7 +373,7 @@ def knowledge_quick_wins(request):
         "footer": footer,
         "page_id": "knowledge-quick-wins",
         "page_title": "Quick Wins",
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/quick-wins/",
+        "canonical_url": "/knowledge/quick-wins/",
     }
     return render(request, "coresite/knowledge/quick_wins.html", context)
 
@@ -377,7 +387,7 @@ def case_studies_landing(request):
             "footer": footer,
             "page_id": "case-studies",
             "page_title": "Case Studies",
-            "canonical_url": f"{BASE_CANONICAL}/case-studies/",
+            "canonical_url": "/case-studies/",
         },
     )
 
@@ -391,7 +401,7 @@ def case_study_detail(request, slug: str):
             "footer": footer,
             "page_id": "case-study-detail",
             "page_title": "Case Study Title",
-            "canonical_url": f"{BASE_CANONICAL}/case-studies/{slug}/",
+            "canonical_url": f"/case-studies/{slug}/",
         },
     )
 
@@ -405,7 +415,7 @@ def resources(request):
             "footer": footer,
             "page_id": "resources",
             "page_title": "Resources",
-            "canonical_url": f"{BASE_CANONICAL}/resources/",
+            "canonical_url": "/resources/",
         },
     )
 
@@ -419,7 +429,7 @@ def tools(request):
             "footer": footer,
             "page_id": "tools",
             "page_title": "Tools",
-            "canonical_url": f"{BASE_CANONICAL}/tools/",
+            "canonical_url": "/tools/",
         },
     )
 
@@ -433,7 +443,7 @@ def community(request):
             "footer": footer,
             "page_id": "community",
             "page_title": "Community",
-            "canonical_url": f"{BASE_CANONICAL}/community/",
+            "canonical_url": "/community/",
         },
     )
 
@@ -471,7 +481,7 @@ def blog(request):
     }
 
     def absolute_page_url(num: int) -> str:
-        return f"{BASE_CANONICAL}/blog/" if num == 1 else f"{BASE_CANONICAL}/blog/?page={num}"
+        return "/blog/" if num == 1 else f"/blog/?page={num}"
 
     prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
     next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
@@ -506,7 +516,7 @@ def blog_post(request, post_slug: str):
         "page_id": "post",
         "page_title": post["title"],
         "post": post,
-        "canonical_url": f"{BASE_CANONICAL}/blog/{post_slug}/",
+        "canonical_url": f"/blog/{post_slug}/",
     }
     return render(request, "coresite/blog_detail.html", context)
 
@@ -529,7 +539,7 @@ def blog_category(request, category_slug: str):
         "posts": posts,
         "next_page_url": "#",
         "prev_page_url": "#",
-        "canonical_url": f"{BASE_CANONICAL}/blog/category/{category_slug}/",
+        "canonical_url": f"/blog/category/{category_slug}/",
     }
     return render(request, "coresite/blog_category.html", context)
 
@@ -549,7 +559,7 @@ def blog_tag(request, tag_slug: str):
         "posts": posts,
         "next_page_url": "#",
         "prev_page_url": "#",
-        "canonical_url": f"{BASE_CANONICAL}/blog/tag/{tag_slug}/",
+        "canonical_url": f"/blog/tag/{tag_slug}/",
     }
     return render(request, "coresite/blog_tag.html", context)
 
@@ -558,7 +568,7 @@ def blog_rss(request):
     """Return an RSS 2.0 feed of recent blog posts."""
     feed = Rss201rev2Feed(
         title="Technofatty Blog",
-        link=f"{BASE_CANONICAL}/blog/",
+        link=f"{settings.SITE_BASE_URL}/blog/",
         description="Latest news and insights from Technofatty.",
     )
 
@@ -571,9 +581,9 @@ def blog_rss(request):
             pubdate = timezone.make_aware(pubdate, timezone.utc)
         feed.add_item(
             title=post.title,
-            link=f"{BASE_CANONICAL}/blog/{post.slug}/",
+            link=f"{settings.SITE_BASE_URL}/blog/{post.slug}/",
             description=post.excerpt,
-            unique_id=f"{BASE_CANONICAL}/blog/{post.slug}/",
+            unique_id=f"{settings.SITE_BASE_URL}/blog/{post.slug}/",
             pubdate=pubdate,
         )
 
@@ -592,7 +602,7 @@ def sitemap_xml(request):
     for post in posts:
         urls.append(
             {
-                "loc": f"{BASE_CANONICAL}/blog/{post.slug}/",
+                "loc": f"{settings.SITE_BASE_URL}/blog/{post.slug}/",
                 "priority": "0.5",
                 "changefreq": "monthly",
             }
@@ -621,7 +631,7 @@ def robots_txt(request):
         lines = [
             "User-agent: *",
             "Allow: /",
-            "Sitemap: https://technofatty.com/sitemap.xml",
+            f"Sitemap: {settings.SITE_BASE_URL}/sitemap.xml",
         ]
     else:
         lines = [
@@ -640,7 +650,7 @@ def join(request):
             "footer": footer,
             "page_id": "join",
             "page_title": "Join Free",
-            "canonical_url": f"{BASE_CANONICAL}/join/",
+            "canonical_url": "/join/",
         },
     )
 
@@ -650,7 +660,7 @@ def about(request):
     return render(
         request,
         "coresite/about.html",
-        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/about/"},
+        {"footer": footer, "canonical_url": "/about/"},
     )
 
 
@@ -680,7 +690,7 @@ def contact(request):
         "coresite/contact.html",
         {
             "footer": footer,
-            "canonical_url": f"{BASE_CANONICAL}/contact/",
+            "canonical_url": "/contact/",
             "form": form,
             "sent": sent,
         },
@@ -691,7 +701,7 @@ def support(request):
     return render(
         request,
         "coresite/support.html",
-        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/support/"},
+        {"footer": footer, "canonical_url": "/support/"},
     )
 
 def legal(request):
@@ -699,5 +709,5 @@ def legal(request):
     return render(
         request,
         "coresite/legal.html",
-        {"footer": footer, "canonical_url": f"{BASE_CANONICAL}/legal/"},
+        {"footer": footer, "canonical_url": "/legal/"},
     )

@@ -4,7 +4,7 @@ from django.urls import path, re_path
 from django.views.generic import RedirectView
 
 from . import views
-from .views import BASE_CANONICAL
+from django.conf import settings
 from .feeds import (
     BlogAtomFeed,
     BlogRSSFeed,
@@ -63,22 +63,22 @@ urlpatterns = [
 legacy_redirects = [
     (
         re.compile(r"^signup/?$", re.IGNORECASE),
-        f"{BASE_CANONICAL}/#signup",
+        f"{settings.SITE_BASE_URL}/#signup",
         "legacy_signup",
     ),
     (
         re.compile(r"^services/?$", re.IGNORECASE),
-        f"{BASE_CANONICAL}/about/",
+        f"{settings.SITE_BASE_URL}/about/",
         "legacy_services",
     ),
     (
         re.compile(r"^signals/(?P<slug>[^/]+)/?$", re.IGNORECASE),
-        f"{BASE_CANONICAL}/knowledge/signals/#signal-%(slug)s",
+        f"{settings.SITE_BASE_URL}/knowledge/signals/#signal-%(slug)s",
         "legacy_signal",
     ),
     (
         re.compile(r"^community/join/?$", re.IGNORECASE),
-        f"{BASE_CANONICAL}/community/",
+        f"{settings.SITE_BASE_URL}/community/",
         "legacy_community_join",
     ),
 ]

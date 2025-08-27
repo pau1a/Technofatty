@@ -2,7 +2,7 @@
 {% load jsonld %}
 
 {% block meta %}
-  {% with page_title="Support" meta_description="Find help resources for Technofatty services." canonical_url="https://technofatty.com/support/" %}
+  {% with page_title="Support" meta_description="Find help resources for Technofatty services." %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
 {% endblock %}
@@ -13,12 +13,13 @@
 
 {% block structured_data %}
   {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
   {% jsonld %}
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "@id": "{{ canonical_url }}#webpage",
-      "url": "{{ canonical_url }}",
+      "@id": "{{ resolved_canonical }}#webpage",
+      "url": "{{ resolved_canonical }}",
       "name": "Support – Technofatty",
       "publisher": {
         "@type": "Organization",

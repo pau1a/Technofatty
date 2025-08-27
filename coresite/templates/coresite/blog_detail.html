@@ -2,7 +2,7 @@
 {% load jsonld %}
 
 {% block meta %}
-  {% with meta_description=post.excerpt|default:'A blog post on Technofatty.' og_type='article' canonical_url=request.build_absolute_uri %}
+  {% with meta_description=post.excerpt|default:'A blog post on Technofatty.' og_type='article' %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
   {% if post.date %}<meta property="article:published_time" content="{{ post.date|date:'c' }}">{% endif %}
@@ -11,19 +11,20 @@
 
 {% block structured_data %}
   {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
   {% jsonld %}
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "BlogPosting",
-      "@id": "{{ canonical_url }}#article",
+      "@id": "{{ resolved_canonical }}#article",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "{{ canonical_url }}#webpage"
+        "@id": "{{ resolved_canonical }}#webpage"
       },
       "headline": "{{ post.title|escapejs }}",
-      "url": "{{ canonical_url }}",
+      "url": "{{ resolved_canonical }}",
       "datePublished": "{{ post.date|date:'c' }}",
       "dateModified": "{{ post.updated|default:post.date|date:'c' }}",
       "author": {
@@ -43,11 +44,11 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "{{ canonical_url }}#breadcrumb",
+      "@id": "{{ resolved_canonical }}#breadcrumb",
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://technofatty.com/"},
         {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://technofatty.com/blog/"},
-        {"@type": "ListItem", "position": 3, "name": "{{ post.title|escapejs }}", "item": "{{ canonical_url }}"}
+        {"@type": "ListItem", "position": 3, "name": "{{ post.title|escapejs }}", "item": "{{ resolved_canonical }}"}
       ]
     }
   ]

@@ -9,11 +9,12 @@
 
 {% block structured_data %}
   {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
   {% jsonld %}
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "@id": "{{ canonical_url }}#breadcrumb",
+  "@id": "{{ resolved_canonical }}#breadcrumb",
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -25,7 +26,7 @@
       "@type": "ListItem",
       "position": 2,
       "name": "{{ page_title|escapejs }}",
-      "item": "{{ canonical_url }}"
+      "item": "{{ resolved_canonical }}"
     }
   ]
 }
