@@ -77,9 +77,12 @@
   li { flex: 0 0 auto; }
 
   a {
+    display: inline-block;
     color: c(text);
     text-decoration: none;
     letter-spacing: 0.02em; // design sign-off
+    padding: s(3) s(4);
+    @include focus-ring(c(blue));
 
     &:hover,
     &:focus {
@@ -122,6 +125,8 @@
   color: inherit;
   border-radius: r(sm);
   overflow: hidden;
+  min-height: s(7);
+  @include focus-ring(c(blue));
 }
 
 .knowledge-card--featured {
@@ -239,6 +244,6 @@
 /* Footer separator */
 
 main + footer {
-  border-top: 1px solid c(border);
+  border-top: bw(sm) solid c(border);
 }
 
