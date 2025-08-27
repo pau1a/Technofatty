@@ -422,16 +422,21 @@ def resources(request):
 
 def tools(request):
     footer = get_footer_content()
-    return render(
+    robots = "index,follow" if settings.TOOLS_INDEXABLE else "noindex,nofollow"
+    context = {
+        "footer": footer,
+        "page_id": "tools",
+        "page_title": "Tools",
+        "canonical_url": "/tools/",
+        "meta_robots": robots,
+    }
+    response = render(
         request,
         "coresite/tools.html",
-        {
-            "footer": footer,
-            "page_id": "tools",
-            "page_title": "Tools",
-            "canonical_url": "/tools/",
-        },
+        context,
     )
+    response["X-Robots-Tag"] = robots
+    return response
 
 
 def community(request):
