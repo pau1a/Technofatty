@@ -1,12 +1,14 @@
+{% load seo_tags %}
+{% canonical_url canonical_url as resolved_canonical %}
 <div class="share-buttons" role="region" aria-label="Share">
-  <a href="https://twitter.com/intent/tweet?url={{ canonical_url|urlencode }}&text={{ article.title|urlencode }}"
+  <a href="https://twitter.com/intent/tweet?url={{ resolved_canonical|urlencode }}&text={{ article.title|urlencode }}"
      target="_blank" rel="noopener"
      data-analytics-event="share.twitter"
      data-analytics-label="{{ article.title }}"
-     data-analytics-url="{{ canonical_url }}">Twitter</a>
-  <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ canonical_url|urlencode }}"
+     data-analytics-url="{{ resolved_canonical }}">Twitter</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ resolved_canonical|urlencode }}"
      target="_blank" rel="noopener"
      data-analytics-event="share.linkedin"
      data-analytics-label="{{ article.title }}"
-     data-analytics-url="{{ canonical_url }}">LinkedIn</a>
+     data-analytics-url="{{ resolved_canonical }}">LinkedIn</a>
 </div>

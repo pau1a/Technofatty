@@ -1,5 +1,5 @@
 {% extends "coresite/base.html" %}
-{% load jsonld %}
+{% load jsonld seo_tags %}
 
 {% block meta %}
   {% if page_number > 1 %}
@@ -19,14 +19,15 @@
 
 {% block structured_data %}
   {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
   {% jsonld %}
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "CollectionPage",
-      "@id": "{{ canonical_url }}#webpage",
-      "url": "{{ canonical_url }}",
+      "@id": "{{ resolved_canonical }}#webpage",
+      "url": "{{ resolved_canonical }}",
       "name": "{{ page_title|escapejs }}",
       "isPartOf": {
         "@type": "WebSite",
@@ -36,15 +37,15 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "{{ canonical_url }}#breadcrumb",
+      "@id": "{{ resolved_canonical }}#breadcrumb",
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://technofatty.com/"},
-        {"@type": "ListItem", "position": 2, "name": "{{ page_title|escapejs }}", "item": "{{ canonical_url }}"}
+        {"@type": "ListItem", "position": 2, "name": "{{ page_title|escapejs }}", "item": "{{ resolved_canonical }}"}
       ]
     },
     {
       "@type": "ItemList",
-      "@id": "{{ canonical_url }}#list",
+      "@id": "{{ resolved_canonical }}#list",
       "itemListElement": [
         {% for post in page_posts %}{"@type": "ListItem", "position": {{ forloop.counter }}, "url": "https://technofatty.com/blog/{{ post.slug }}/"}{% if not forloop.last %},{% endif %}{% endfor %}
       ]

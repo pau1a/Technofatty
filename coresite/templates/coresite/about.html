@@ -1,8 +1,8 @@
 {% extends "coresite/base.html" %}
-{% load jsonld %}
+{% load jsonld seo_tags %}
 
 {% block meta %}
-  {% with page_title="About" meta_description="Discover Technofatty's mission and team values." canonical_url="https://technofatty.com/about/" %}
+  {% with page_title="About" meta_description="Discover Technofatty's mission and team values." %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
 {% endblock %}
@@ -13,12 +13,13 @@
 
 {% block structured_data %}
   {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
   {% jsonld %}
     {
       "@context": "https://schema.org",
       "@type": "AboutPage",
-      "@id": "{{ canonical_url }}#webpage",
-      "url": "{{ canonical_url }}",
+      "@id": "{{ resolved_canonical }}#webpage",
+      "url": "{{ resolved_canonical }}",
       "name": "About – Technofatty",
       "publisher": {
         "@type": "Organization",
