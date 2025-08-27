@@ -6,16 +6,16 @@
    data-analytics-url="{% url 'knowledge_article' article.category.slug article.slug %}">
   <div class="knowledge-card__motif motif-grid" aria-hidden="true"></div>
   <div class="knowledge-card__inner">
-    {% if article.image %}
+    {% if article.image and article.image_alt %}
       <img class="knowledge-card__image"
            src="{{ article.image|thumbnail_url:'hero_mobile' }}"
-           alt="{{ article.image.alt|default_if_none:article.title }}"
+           alt="{{ article.image_alt }}"
            loading="lazy" decoding="async">
     {% else %}
       <div class="knowledge-card__image knowledge-card__image--placeholder" aria-hidden="true"></div>
     {% endif %}
     <h3 class="knowledge-card__title">{{ article.title }}</h3>
     <p class="knowledge-card__blurb">{{ article.blurb }}</p>
-    <p class="knowledge-card__meta">{{ article.created_at|date:"F j, Y" }} &mdash; {{ article.category.title }}</p>
+    <p class="knowledge-card__meta">{{ article.published_at|date:"F j, Y" }} &mdash; {{ article.category.title }}</p>
   </div>
 </a>

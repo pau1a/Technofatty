@@ -166,8 +166,8 @@ class KnowledgeArticle(TimestampedModel):
             qs = self.__class__.objects.exclude(pk=self.pk)
             self.slug = _generate_unique_slug(self.title, qs)
         if not self.blurb and self.content:
-            snippet = self.content.strip()
-            self.blurb = snippet[:160]
+            snippet = self.content.strip().split("\n\n", 1)[0]
+            self.blurb = snippet
         if self.content:
             words = len(self.content.split())
             self.reading_time = max(1, math.ceil(words / 200)) if words else None
