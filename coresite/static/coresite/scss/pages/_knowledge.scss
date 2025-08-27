@@ -1,21 +1,19 @@
 /* Knowledge page partials */
 
 .knowledge-index {
-  font-family: map-get($font-families, base);
-
   h1 {
-    font-family: map-get($font-families, base);
-    font-size: fs(xxl);
+    font-size: map-get($font-sizes, xxl);
+    line-height: map-get($line-heights, base);
   }
 
   h2 {
-    font-family: map-get($font-families, base);
-    font-size: fs(xl);
+    font-size: map-get($font-sizes, xl);
+    line-height: map-get($line-heights, base);
   }
 
   h3 {
-    font-family: map-get($font-families, base);
-    font-size: fs(lg);
+    font-size: map-get($font-sizes, lg);
+    line-height: map-get($line-heights, base);
   }
 }
 
