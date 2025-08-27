@@ -3,14 +3,56 @@
 {% block structured_data %}{{ block.super }}{% endblock %}
 
 {% block content %}
-  <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
+  <section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
       <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
+      <p class="page-intro">{{ page_intro }}</p>
       <div class="scaffold__body">
-          {% include "coresite/partials/global/status_placeholder.html" %}
-        <!-- Empty placeholder container. Content to be built in later passes. -->
+        {% include "coresite/partials/global/status_placeholder.html" %}
+        <p class="tools__subscribe">
+          <a
+            href="#signup"
+            class="btn btn--cta"
+            data-analytics-event="cta.tools.signup"
+            data-analytics-label="Get AI Growth Tips"
+            data-analytics-url="#signup"
+          >Get AI Growth Tips</a>
+        </p>
+        <div class="tools__grid">
+          {% for tool in tools %}
+            <article class="tool-card">
+              <h2 class="tool-card__title">{{ tool.title }}</h2>
+              <p class="tool-card__desc">{{ tool.description }}</p>
+              <p><a
+                class="btn btn--secondary"
+                href="{{ tool.url }}"
+                data-analytics-event="cta.tools.open"
+                data-analytics-label="{{ tool.title }}"
+                data-analytics-url="{{ tool.url }}"
+                aria-label="Open {{ tool.title }}"
+              >Open tool</a></p>
+            </article>
+          {% endfor %}
+        </div>
+        <section class="tools__learn" aria-labelledby="tools-learn-heading">
+          <h2 id="tools-learn-heading">Learn</h2>
+          <ul class="tools__links">
+            {% for item in knowledge_items %}
+              <li><a href="{{ item.url }}" class="tools__link">{{ item.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </section>
+        <section class="tools__blog" aria-labelledby="tools-blog-heading">
+          <h2 id="tools-blog-heading">From the Blog</h2>
+          <ul class="tools__links">
+            {% for post in blog_posts %}
+              <li><a href="{{ post.url }}" class="tools__link">{{ post.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </section>
       </div>
     </div>
   </section>
+  {% include "coresite/partials/newsletter_signup.html" %}
 {% endblock %}
 

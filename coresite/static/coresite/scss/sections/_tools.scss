@@ -1,0 +1,21 @@
+.tools__subscribe .btn,
+.tools__grid .btn {
+  min-width: s(7);
+  min-height: s(7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tools__link {
+  display: block;
+  min-height: s(7);
+  padding: s(2) 0;
+}
+
+.tools__link:focus-visible,
+.tools__link:focus {
+  outline: s(0.5) solid var(--focus-outline, $color-focus);
+  outline-offset: s(0.5);
+  text-decoration: underline;
+}
