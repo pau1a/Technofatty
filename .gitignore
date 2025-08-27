@@ -5,46 +5,44 @@ __pycache__/
 *.pyd
 *.sqlite3
 
-# Django
+# Django / project artifacts
 db.sqlite3
-/staticfiles/
+static_collected/
+staticfiles/
 media/
 *.log
 
-# Virtual environment
+# Virtual environments
+.venv/
 venv/
 env/
-.venv/
 technofatty_env/
 
 # Node
 node_modules/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-error.log*
 package-lock.json
 
-# SCSS cache
+# SCSS cache / generated CSS in source tree
 .sass-cache/
+coresite/static/coresite/scss/*.css
 
-# OS / IDE files
+# Editor / OS
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
-# Env files
+# Env / secrets
 .env
 *.env
 
-# Coverage / Test
+# Tests / coverage
 htmlcov/
 .tox/
 .coverage
 .pytest_cache/
 
-# Generated CSS
-coresite/static/coresite/scss/*.css
-
-# Ignore var outbox contents but keep directory
-var/outbox/*
-!var/outbox/.gitkeep
+# Local runtime data (never commit)
+var/

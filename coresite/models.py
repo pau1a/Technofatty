@@ -184,8 +184,8 @@ class KnowledgeArticle(TimestampedModel):
 
     class Meta:
         indexes = [
-            models.Index(fields=["status", "published_at"], name="knowledgearticle_status_published_at_idx"),
-            models.Index(fields=["category", "status", "published_at"], name="knowledgearticle_category_status_published_at_idx"),
+            models.Index(fields=["status", "published_at"], name="knart_status_pub_idx"),
+            models.Index(fields=["category", "status", "published_at"], name="knart_cat_status_pub_idx"),
         ]
 
 
