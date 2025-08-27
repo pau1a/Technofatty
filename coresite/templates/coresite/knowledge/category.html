@@ -18,6 +18,7 @@
         {% include "coresite/knowledge/_card.html" with article=article %}
       {% endfor %}
     </div>
+    {% include "coresite/knowledge/_pagination.html" with page_obj=page_obj %}
     {% else %}
       {% include "coresite/knowledge/_no_results.html" %}
     {% endif %}

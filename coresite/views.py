@@ -132,7 +132,7 @@ def knowledge(request):
     articles_qs = (
         KnowledgeArticle.published.select_related("category").order_by("-published_at")
     )
-    paginator = Paginator(articles_qs, 6)
+    paginator = Paginator(articles_qs, 9)
     try:
         page_obj = paginator.page(page_number)
     except EmptyPage:
@@ -140,18 +140,7 @@ def knowledge(request):
 
     page_articles = list(page_obj.object_list)
     if page_number == 1 and page_articles:
-        first = page_articles[0]
-        featured_article = {
-            "heading": first.title,
-            "excerpt": first.blurb,
-            "image": getattr(first, "image", None),
-            "cta": {
-                "label": "Read more",
-                "url": reverse(
-                    "knowledge_article", args=[first.category.slug, first.slug]
-                ),
-            },
-        }
+        featured_article = page_articles[0]
         remaining_articles = page_articles[1:]
     else:
         featured_article = None
@@ -173,9 +162,6 @@ def knowledge(request):
         )
     has_filters = len(categories) > 1
 
-    prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
-    next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
-
     footer = get_footer_content()
     context = {
         "footer": footer,
@@ -186,8 +172,6 @@ def knowledge(request):
         "featured": featured_article,
         "articles": remaining_articles,
         "page_obj": page_obj,
-        "next_page_url": next_page,
-        "prev_page_url": prev_page,
         "canonical_url": absolute_page_url(page_number),
         "has_content": has_content,
         "show_cta_strip": has_content,
@@ -196,18 +180,45 @@ def knowledge(request):
 
 
 def knowledge_category(request, category_slug: str):
-    footer = get_footer_content()
+    page_str = request.GET.get("page")
+    if page_str == "1":
+        return HttpResponsePermanentRedirect(
+            reverse("knowledge_category", args=[category_slug])
+        )
+
+    from django.core.paginator import Paginator, EmptyPage
+
+    page_number = int(page_str or 1)
+
     category = get_object_or_404(
         KnowledgeCategory.published, slug=category_slug
     )
-    articles = KnowledgeArticle.published.filter(category=category)
+
+    def absolute_page_url(num: int) -> str:
+        return (
+            f"{BASE_CANONICAL}/knowledge/{category_slug}/"
+            if num == 1
+            else f"{BASE_CANONICAL}/knowledge/{category_slug}/?page={num}"
+        )
+
+    articles_qs = (
+        KnowledgeArticle.published.filter(category=category).order_by("-published_at")
+    )
+    paginator = Paginator(articles_qs, 9)
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        raise Http404
+
+    footer = get_footer_content()
     context = {
         "footer": footer,
         "page_id": f"knowledge-{category_slug}",
         "page_title": category.title,
         "category": category,
-        "articles": articles,
-        "canonical_url": f"{BASE_CANONICAL}/knowledge/{category_slug}/",
+        "articles": page_obj.object_list,
+        "page_obj": page_obj,
+        "canonical_url": absolute_page_url(page_number),
     }
     return render(request, "coresite/knowledge/category.html", context)
 
