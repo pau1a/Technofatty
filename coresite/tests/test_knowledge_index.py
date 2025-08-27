@@ -2,7 +2,13 @@ import pytest
 from django.urls import reverse
 from django.utils import timezone
 
-from coresite.models import KnowledgeCategory, KnowledgeArticle, StatusChoices
+from coresite.models import (
+    KnowledgeCategory,
+    KnowledgeArticle,
+    KnowledgeTag,
+    StatusChoices,
+    SubtypeChoices,
+)
 
 
 @pytest.mark.django_db
@@ -24,7 +30,7 @@ def test_knowledge_index_renders_featured_and_pagination(client):
     content = response.content.decode()
     assert "Article 9" in content
     assert "Article 8" in content
-    assert f"/knowledge/{category.slug}/" in content
+    assert f"?category={category.slug}" in content
     assert "?page=2" in content
     assert "knowledge-card--featured" in content
     assert "kn-filterbar" in content
@@ -101,3 +107,93 @@ def test_future_articles_excluded_from_index(client):
     )
     response = client.get(reverse("knowledge"))
     assert "Future" not in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_knowledge_index_filters_combination(client):
+    cat1 = KnowledgeCategory.objects.create(
+        title="Cat1", slug="cat1", status=StatusChoices.PUBLISHED
+    )
+    cat2 = KnowledgeCategory.objects.create(
+        title="Cat2", slug="cat2", status=StatusChoices.PUBLISHED
+    )
+    tag1 = KnowledgeTag.objects.create(name="Tag1", slug="tag1")
+    tag2 = KnowledgeTag.objects.create(name="Tag2", slug="tag2")
+    match = KnowledgeArticle.objects.create(
+        category=cat1,
+        title="Match",
+        slug="match",
+        status=StatusChoices.PUBLISHED,
+        blurb="blurb",
+        subtype=SubtypeChoices.GUIDE,
+        reading_time=4,
+        published_at=timezone.now(),
+    )
+    match.tags.add(tag1)
+    other = KnowledgeArticle.objects.create(
+        category=cat1,
+        title="Other",
+        slug="other",
+        status=StatusChoices.PUBLISHED,
+        blurb="blurb",
+        subtype=SubtypeChoices.GUIDE,
+        reading_time=10,
+        published_at=timezone.now(),
+    )
+    other.tags.add(tag2)
+    different_cat = KnowledgeArticle.objects.create(
+        category=cat2,
+        title="Different",
+        slug="different",
+        status=StatusChoices.PUBLISHED,
+        blurb="blurb",
+        subtype=SubtypeChoices.GUIDE,
+        reading_time=4,
+        published_at=timezone.now(),
+    )
+    different_cat.tags.add(tag1)
+
+    url = (
+        reverse("knowledge")
+        + f"?category={cat1.slug}&tag={tag1.slug}&time=5&subtype=guide"
+    )
+    response = client.get(url)
+    content = response.content.decode()
+    assert "Match" in content
+    assert "Other" not in content
+    assert "Different" not in content
+
+
+@pytest.mark.django_db
+def test_knowledge_index_search_queries(client):
+    category = KnowledgeCategory.objects.create(
+        title="General", slug="general", status=StatusChoices.PUBLISHED
+    )
+    tag = KnowledgeTag.objects.create(name="Special", slug="special")
+    article = KnowledgeArticle.objects.create(
+        category=category,
+        title="Foo Title",
+        slug="foo",
+        status=StatusChoices.PUBLISHED,
+        blurb="Bar blurb",
+        published_at=timezone.now(),
+    )
+    article.tags.add(tag)
+    KnowledgeArticle.objects.create(
+        category=category,
+        title="Other",
+        slug="other",
+        status=StatusChoices.PUBLISHED,
+        blurb="Different",
+        published_at=timezone.now(),
+    )
+
+    res = client.get(reverse("knowledge") + "?q=foo")
+    assert "Foo Title" in res.content.decode()
+    assert "Other" not in res.content.decode()
+
+    res = client.get(reverse("knowledge") + "?q=bar")
+    assert "Foo Title" in res.content.decode()
+
+    res = client.get(reverse("knowledge") + "?q=special")
+    assert "Foo Title" in res.content.decode()

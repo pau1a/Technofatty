@@ -14,9 +14,7 @@
 <div class="knowledge-index">
   {% include "coresite/knowledge/_hero.html" %}
   <div class="container">
-    {% if has_filters %}
       {% include "coresite/knowledge/_filterbar.html" with filters=categories %}
-    {% endif %}
     {% if has_content %}
       <div class="knowledge-grid">
         {% if featured %}
