@@ -1,26 +1,17 @@
 # Technofatty Internal Docs
 
-⚠️ **Collaborator-only. This folder is not for public consumption.**
+This folder is the aide-memoire for collaborators. It is not public messaging. It records how we think, decide, and build so context never evaporates.
 
-This is our **lab notebook + compass** for how Technofatty evolves.
+## Map
+Strategy → `strategy.md`  
+Tools (product line) → `tools.md`  
+Knowledge (content system) → `knowledge.md`  
+Blog (editorial tie-ins) → `blog.md`  
+Telemetry & data layer → `telemetry.md`  
+PR & release hygiene → `pr-playbook.md`
 
----
+## How to use this folder
+Capture ideas as they surface. Link them across docs rather than duplicating. Prefer small, frequent commits that keep rationale next to decisions.
 
-## Core Mandates
-- [`strategy.md`](strategy.md) → our overarching site strategy and neural-net model.  
-- [`knowledge.md`](knowledge.md) → documentation of the Knowledge segment (articles, taxonomy, SEO/structured data).  
-- [`tools.md`](tools.md) → playbook for ideating, logging, and prioritising business tools.  
-- [`blog.md`](blog.md) → framing and guidance for blog entries (positioning, tie-ins, tone).  
-
----
-
-## How to Use
-- Treat these docs as **aide-memoires** for collaborators.  
-- Capture *everything* — ideas, patterns, experiments, even half-baked gems.  
-- Don’t worry about polish: this is our **gold dust sieve**.  
-- Cross-link aggressively between sections: the power is in the neural net.  
-
----
-
-✦ Remember: none of this is public messaging. These docs are for us to keep continuity, so we never lose what we surfaced in conversation.
-
+## Promise to ourselves
+We will surface and retain every flake of gold dust. These docs exist to prevent strategic and architectural drift.
