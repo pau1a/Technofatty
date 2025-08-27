@@ -66,6 +66,10 @@ ALLOWED_HOSTS = os.environ.get(
 SITE_CANONICAL_HOST = os.environ.get("SITE_CANONICAL_HOST", "technofatty.com")
 SITE_BASE_URL = os.environ.get("SITE_BASE_URL", f"https://{SITE_CANONICAL_HOST}")
 
+# Whether tools pages should be indexable by search engines.
+# Only the lowercase string "true" enables indexing.
+TOOLS_INDEXABLE = os.environ.get("TOOLS_INDEXABLE", "false").lower() == "true"
+
 # -------------------------------------------------
 # Applications
 # -------------------------------------------------
