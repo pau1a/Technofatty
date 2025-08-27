@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 import math
@@ -150,6 +151,12 @@ class KnowledgeArticle(TimestampedModel):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse(
+            "knowledge_article",
+            kwargs={"category_slug": self.category.slug, "article_slug": self.slug},
+        )
 
     def clean(self):
         super().clean()
