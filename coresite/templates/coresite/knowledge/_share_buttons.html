@@ -1,3 +1,4 @@
+{% load seo_tags %}
 {% canonical_url canonical_url as resolved_canonical %}
 <div class="share-buttons" role="region" aria-label="Share">
   <a href="https://twitter.com/intent/tweet?url={{ resolved_canonical|urlencode }}&text={{ article.title|urlencode }}"
