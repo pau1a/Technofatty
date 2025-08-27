@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
+from django.db.models import Q
 from newsletter.utils import log_newsletter_event
 from django.core.cache import cache
 from coresite.services.contact import contact_event
@@ -129,9 +130,39 @@ def knowledge(request):
             else f"{BASE_CANONICAL}/knowledge/?page={num}"
         )
 
+    # Base queryset for articles
     articles_qs = (
-        KnowledgeArticle.published.select_related("category").order_by("-published_at")
+        KnowledgeArticle.published.select_related("category")
+        .prefetch_related("tags")
+        .order_by("-published_at")
     )
+
+    # Optional filters
+    category_slug = request.GET.get("category")
+    tag_slug = request.GET.get("tag")
+    time_str = request.GET.get("time")
+    subtype = request.GET.get("subtype")
+    search = request.GET.get("q")
+
+    if category_slug:
+        articles_qs = articles_qs.filter(category__slug=category_slug)
+    if tag_slug:
+        articles_qs = articles_qs.filter(tags__slug=tag_slug)
+    if subtype:
+        articles_qs = articles_qs.filter(subtype=subtype)
+    if time_str:
+        try:
+            minutes = int(time_str)
+        except (TypeError, ValueError):
+            minutes = None
+        if minutes is not None:
+            articles_qs = articles_qs.filter(reading_time__lte=minutes)
+    if search:
+        articles_qs = articles_qs.filter(
+            Q(title__icontains=search)
+            | Q(blurb__icontains=search)
+            | Q(tags__name__icontains=search)
+        ).distinct()
     paginator = Paginator(articles_qs, 9)
     try:
         page_obj = paginator.page(page_number)
@@ -151,16 +182,32 @@ def knowledge(request):
         remaining_articles = []
 
     categories_qs = KnowledgeCategory.published.all()
-    categories = [{"label": "All", "url": reverse("knowledge"), "active": True}]
+
+    base_params = request.GET.copy()
+    if "page" in base_params:
+        del base_params["page"]
+
+    def build_url(**kwargs):
+        params = base_params.copy()
+        for key, value in kwargs.items():
+            if value is None:
+                params.pop(key, None)
+            else:
+                params[key] = value
+        query = params.urlencode()
+        return reverse("knowledge") + (f"?{query}" if query else "")
+
+    categories = [
+        {"label": "All", "url": build_url(category=None), "active": not category_slug}
+    ]
     for category in categories_qs:
         categories.append(
             {
                 "label": category.title,
-                "url": reverse("knowledge_category", args=[category.slug]),
-                "active": False,
+                "url": build_url(category=category.slug),
+                "active": category_slug == category.slug,
             }
         )
-    has_filters = len(categories) > 1
 
     footer = get_footer_content()
     context = {
@@ -168,7 +215,6 @@ def knowledge(request):
         "page_id": "knowledge",
         "page_title": "Knowledge",
         "categories": categories,
-        "has_filters": has_filters,
         "featured": featured_article,
         "articles": remaining_articles,
         "page_obj": page_obj,
