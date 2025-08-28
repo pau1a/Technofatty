@@ -254,8 +254,14 @@ class Tool(TimestampedModel):
     class Meta:
         ordering = ("display_order", "title")
         indexes = [
-            models.Index(fields=("is_published", "display_order")),
-            models.Index(fields=("schema_kind",)),
+            models.Index(
+                fields=["is_published", "display_order"],
+                name="tool_pub_order_idx",
+            ),
+            models.Index(
+                fields=["schema_kind"],
+                name="tool_schema_idx",
+            ),
         ]
 
 
