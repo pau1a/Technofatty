@@ -50,7 +50,7 @@
                 class="btn btn--secondary"
                 href="{{ tool.url }}"
                 data-analytics-event="cta.tools.open"
-                data-analytics-meta='{"tool":"{{ tool.slug }}"}'
+                data-analytics-meta='{"tool":"{{ tool.slug|escapejs }}"}'
                 data-analytics-label="{{ tool.title }}"
                 data-analytics-url="{{ tool.url }}"
                 aria-label="Open {{ tool.title }}"
