@@ -18,6 +18,7 @@
       function hasConsent(){return body.dataset.consentRequired!=='true'||body.dataset.consentGranted==='true';}
       function send(n,m){if(!hasConsent())return;m=m||{};if(p==='plausible'&&window.plausible){window.plausible(n,{props:m});}
         else if(p==='ga4'&&window.gtag){window.gtag('event',n,m);}}
+      if (hasConsent()) { window.tfSend = send; }
       var fired={};
       function meta(el){try{return JSON.parse(el.dataset.analyticsMeta||'{}')}catch(e){return {};}}
       document.addEventListener('click',function(e){var el=e.target;

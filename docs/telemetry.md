@@ -32,6 +32,33 @@ Blog CTA:
 ## Implementation note
 Emit events with a thin wrapper that no-ops if network is unavailable. Batch where possible. Respect consent flags from `coresite.context_processors.analytics_flags`.
 
+## Using tfSend
+Pages can dispatch analytics events through the global `tfSend(name, meta)` function exposed by the
+`analytics.html` partial. The helper is defined only when an analytics provider is configured and
+required consent is granted, so guard calls with `if (window.tfSend)`.
+
+```html
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.tfSend) {
+      window.tfSend('tools_list.view', { count: 3 });
+    }
+  });
+</script>
+```
+
+Use `tool_detail.view` with the tool identifier on individual tool pages:
+
+```html
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.tfSend) {
+      window.tfSend('tool_detail.view', { tool: 'pricing-calibrator' });
+    }
+  });
+</script>
+```
+
 ## Current events
 
 These events support upcoming filtering and pagination features:
