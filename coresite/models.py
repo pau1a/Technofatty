@@ -33,6 +33,13 @@ class PublishedManager(models.Manager):
             qs = qs.filter(published_at__isnull=False, published_at__lte=now)
         return qs
 
+
+class ToolQuerySet(models.QuerySet):
+    """Custom queryset for Tool with publication helpers."""
+
+    def published(self):
+        return self.filter(is_published=True)
+
 class SiteSettings(models.Model):
     hero_image = models.ImageField(upload_to='hero/', blank=True, null=True)
     hero_video = models.FileField(upload_to='hero_videos/', blank=True, null=True)  # <-- New field
@@ -218,9 +225,43 @@ class BlogPost(TimestampedModel):
         return self.title
 
 
+class Tool(TimestampedModel):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="tools/", blank=True, null=True)
+    external_url = models.URLField(blank=True)
+    schema_kind = models.CharField(max_length=100, blank=True)
+    is_published = models.BooleanField(default=False)
+    is_premium = models.BooleanField(default=False)
+    display_order = models.PositiveIntegerField(default=0)
+
+    objects = ToolQuerySet.as_manager()
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.title:
+            self.slug = _generate_unique_slug(
+                self.title, Tool.objects.exclude(pk=self.pk)
+            )
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("tool_detail", kwargs={"slug": self.slug})
+
+    class Meta:
+        ordering = ("display_order", "title")
+        indexes = [
+            models.Index(fields=("is_published", "display_order")),
+            models.Index(fields=("schema_kind",)),
+        ]
+
+
 def _generate_unique_slug(title: str, queryset):
     """Return a slug unique within the given queryset."""
-    base = slugify(title)
+    base = slugify(title) or "tool"
     slug = base
     counter = 1
     while queryset.filter(slug=slug).exists():
