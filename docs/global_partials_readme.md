@@ -13,13 +13,13 @@ Pages use only one `<h1>`. When a design calls for a visually hidden title, the 
 Content blocks are wrapped in:
 
 ```html
-<section id="section-id" class="section" role="region" aria-labelledby="section-id-heading">
+<section id="section-id" class="section" aria-labelledby="section-id-heading">
   <div class="wrap">
     ...
   </div>
 </section>
 ```
-The `id` matches the heading’s `-heading` suffix. Example usage appears throughout `about.html`【F:coresite/templates/coresite/about.html†L20-L24】.
+The `id` matches the heading’s `-heading` suffix. Example usage appears throughout `about.html`【F:coresite/templates/coresite/about.html†L35-L39】.
 
 ### Design tokens
 All styling values come from `_variables.scss`, the single source of truth for SCSS/CSS tokens【F:coresite/static/coresite/scss/abstracts/_variables.scss†L1-L8】.

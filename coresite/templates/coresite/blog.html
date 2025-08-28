@@ -56,7 +56,7 @@
 {% endblock %}
 
 {% block content %}
-  <section class="section section--scaffold" role="region" aria-labelledby="{{ page_id }}-heading">
+  <section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
       <div class="scaffold__header">
         <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
@@ -92,7 +92,7 @@
                 {% endfor %}
               </div>
             </div>
-            <aside class="topics" role="region" aria-labelledby="topics-heading">
+            <aside class="topics" aria-labelledby="topics-heading">
               <h2 id="topics-heading">Topics</h2>
               <ul class="topics__list">
                 {% for category in categories %}
