@@ -10,12 +10,12 @@
       "@graph": [
         {% for tool in tools %}
         {
-          "@type": "SoftwareApplication",
+          "@type": "{% if tool.schema_kind == 'software' %}SoftwareApplication{% else %}CreativeWork{% endif %}",
           "name": "{{ tool.title|escapejs }}",
           "description": "{{ tool.description|escapejs }}",
-          "url": "{{ tool.url|escapejs }}",
-          {% if tool.image %}"image": "{{ tool.image|escapejs }}",{% endif %}
-          "operatingSystem": "Web"
+          "url": "{{ tool.url|escapejs }}"{% if tool.image %},
+          "image": "{{ tool.image|escapejs }}"{% endif %}{% if tool.schema_kind == 'software' %},
+          "operatingSystem": "Web"{% endif %}
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
       ]

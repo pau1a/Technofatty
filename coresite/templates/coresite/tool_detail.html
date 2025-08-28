@@ -1,4 +1,21 @@
 {% extends "coresite/base.html" %}
+{% load jsonld %}
+
+{% block structured_data %}{{ block.super }}
+  {% if tool %}
+  {% jsonld %}
+  {
+    "@context": "https://schema.org",
+    "@type": "{% if tool.schema_kind == 'software' %}SoftwareApplication{% else %}CreativeWork{% endif %}",
+    "name": "{{ tool.title|escapejs }}",
+    "description": "{{ tool.description|escapejs }}",
+    "url": "{{ tool.url|escapejs }}"{% if tool.image %},
+    "image": "{{ tool.image|escapejs }}"{% endif %}{% if tool.schema_kind == 'software' %},
+    "operatingSystem": "Web"{% endif %}
+  }
+  {% endjsonld %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
