@@ -80,3 +80,14 @@
   {% include "coresite/partials/newsletter_signup.html" %}
 {% endblock %}
 
+{% block body_scripts %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.tfSend) {
+        window.tfSend('tools_list.view', { count: {{ tools|length|default:0 }} });
+      }
+    });
+  </script>
+{% endblock %}
+
