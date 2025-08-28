@@ -36,6 +36,7 @@
             href="#signup"
             class="btn btn--cta"
             data-analytics-event="cta.tools.signup"
+            data-analytics-meta='{"cta":"tools-signup"}'
             data-analytics-label="Get AI Growth Tips"
             data-analytics-url="#signup"
           >Get AI Growth Tips</a>
@@ -49,6 +50,7 @@
                 class="btn btn--secondary"
                 href="{{ tool.url }}"
                 data-analytics-event="cta.tools.open"
+                data-analytics-meta='{"tool":"{{ tool.slug }}"}'
                 data-analytics-label="{{ tool.title }}"
                 data-analytics-url="{{ tool.url }}"
                 aria-label="Open {{ tool.title }}"
