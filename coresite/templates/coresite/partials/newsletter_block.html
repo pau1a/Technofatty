@@ -25,7 +25,11 @@
                      aria-describedby="newsletter-privacy newsletter-status"
                      data-analytics-event="form.newsletter.start">
               <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-              <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
+              <button type="submit"
+                      aria-label="Subscribe to the newsletter"
+                      class="btn btn--cta radius-md"
+                      data-analytics-event="cta.newsletter.subscribe"
+                      data-analytics-meta='{"form":"newsletter"}'>{{ APPROVED_CTA|default:'Subscribe' }}</button>
               <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" class="form-message is-{{ m.tags }}">{{ m }}</div>
             </fieldset>
           </form>
@@ -44,7 +48,11 @@
                  aria-describedby="newsletter-privacy newsletter-status"
                  data-analytics-event="form.newsletter.start">
           <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" hidden>
-          <button type="submit" aria-label="Subscribe to the newsletter" class="btn btn--cta radius-md">{{ APPROVED_CTA|default:'Subscribe' }}</button>
+          <button type="submit"
+                  aria-label="Subscribe to the newsletter"
+                  class="btn btn--cta radius-md"
+                  data-analytics-event="cta.newsletter.subscribe"
+                  data-analytics-meta='{"form":"newsletter"}'>{{ APPROVED_CTA|default:'Subscribe' }}</button>
           <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" class="form-message"></div>
         </fieldset>
       </form>
