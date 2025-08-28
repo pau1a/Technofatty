@@ -25,7 +25,7 @@ def test_tool_button_has_analytics(client):
     res = client.get(reverse("tools"))
     html = res.content.decode()
     assert 'data-analytics-event="cta.tools.open"' in html
-    assert 'data-analytics-meta="{\"tool\":\"roi-calculator\"}"' in html
+    assert "data-analytics-meta='{\"tool\":\"roi-calculator\"}'" in html
 
 
 def test_focus_style_exists_in_css():

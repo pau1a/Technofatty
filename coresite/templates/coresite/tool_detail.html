@@ -13,7 +13,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       if (window.tfSend) {
-        window.tfSend('tool_detail.view', { tool: '{{ tool_slug|default:"" }}' });
+        window.tfSend('tool_detail.view', { tool: '{{ tool_slug|default:""|escapejs }}' });
       }
     });
   </script>
