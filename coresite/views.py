@@ -428,11 +428,13 @@ def tools(request):
             "title": "ROI Calculator",
             "description": "Estimate returns from your AI marketing spend.",
             "url": "/tools/roi-calculator/",
+            "slug": "roi-calculator",
         },
         {
             "title": "Content Ideator",
             "description": "Generate growth ideas powered by machine intelligence.",
             "url": "/tools/content-ideator/",
+            "slug": "content-ideator",
         },
     ]
     learn_items = [

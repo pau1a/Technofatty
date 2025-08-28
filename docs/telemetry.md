@@ -32,5 +32,15 @@ Blog CTA:
 ## Implementation note
 Emit events with a thin wrapper that no-ops if network is unavailable. Batch where possible. Respect consent flags from `coresite.context_processors.analytics_flags`.
 
+## Current events
+
+These events support upcoming filtering and pagination features:
+
+- `cta.newsletter.subscribe` – click on the newsletter subscribe button. Meta `{ "form": "newsletter" }`
+- `form.newsletter.start` – email field focused.
+- `form.newsletter.submit` – newsletter form submitted. Meta `{ "form": "newsletter" }`
+- `cta.tools.signup` – click on the Tools page signup CTA.
+- `cta.tools.open` – open a tool from the Tools page. Meta `{ "tool": "<slug>" }`
+
 ## KPIs and how to compute
 Time-to-first-value: difference between `tool_run` and `tool_result_render`. Completion rate: `tool_result_render / tool_run` per tool. Assisted conversions: number of sessions that include a `tool_*` event and end with `form_submit` or `booking_start` within 7 days.
