@@ -8,7 +8,7 @@ from django.db.models import Q
 from newsletter.utils import log_newsletter_event
 from django.core.cache import cache
 from coresite.services.contact import contact_event
-from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle
+from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle, Tool
 from .forms import ContactForm
 from .notifiers import ContactNotifier
 from datetime import datetime
@@ -473,6 +473,24 @@ def tools(request):
         "coresite/tools.html",
         context,
     )
+    response["X-Robots-Tag"] = robots
+    return response
+
+
+def tool_detail(request, slug: str):
+    footer = get_footer_content()
+    tool = get_object_or_404(Tool.objects.published(), slug=slug)
+    robots = "index,follow" if settings.TOOLS_INDEXABLE else "noindex,nofollow"
+    context = {
+        "footer": footer,
+        "page_id": "tool-detail",
+        "page_title": tool.title,
+        "tool": tool,
+        "tool_slug": tool.slug,
+        "canonical_url": f"/tools/{tool.slug}/",
+        "meta_robots": robots,
+    }
+    response = render(request, "coresite/tool_detail.html", context)
     response["X-Robots-Tag"] = robots
     return response
 

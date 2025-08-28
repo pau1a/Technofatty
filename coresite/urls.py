@@ -44,6 +44,7 @@ urlpatterns = [
     ),
     path("resources/", views.resources, name="resources"),
     path("tools/", views.tools, name="tools"),
+    path("tools/<slug:slug>/", views.tool_detail, name="tool_detail"),
     path("community/", views.community, name="community"),
     path("blog/", views.blog, name="blog"),
     path("blog/rss/", BlogRSSFeed(), name="blog_rss"),
