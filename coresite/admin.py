@@ -10,6 +10,7 @@ from .models import (
     KnowledgeArticle,
     KnowledgeTag,
     BlogPost,
+    Tool,
     ContactEvent,
     StatusChoices,
 )
@@ -140,6 +141,31 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_filter = ("status",)
     prepopulated_fields = {"slug": ("title",)}
     date_hierarchy = "published_at"
+
+
+@admin.register(Tool)
+class ToolAdmin(admin.ModelAdmin):
+    def thumb(self, obj):
+        return (
+            format_html('<img src="{}" style="height:32px;">', obj.image.url)
+            if obj.image
+            else ""
+        )
+
+    thumb.short_description = "Image"
+
+    list_display = (
+        "title",
+        "thumb",
+        "schema_kind",
+        "is_published",
+        "is_premium",
+        "display_order",
+    )
+    list_editable = ("display_order", "is_published", "is_premium")
+    list_filter = ("is_published", "is_premium", "schema_kind")
+    search_fields = ("title", "slug")
+    prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(ContactEvent)
