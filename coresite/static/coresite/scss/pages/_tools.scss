@@ -1,0 +1,40 @@
+/* =============================
+   Tools page styles
+   ============================= */
+
+.tools__grid {
+  display: grid;
+  gap: s(5);
+
+  @include mq(md) {
+    grid-template-columns: repeat(auto-fit, minmax(dim(grid-min), 1fr));
+  }
+}
+
+.tool-card {
+  padding: s(4);
+  background: c(mid);
+  border-radius: r(md);
+  box-shadow: sh(sm);
+}
+
+.tools__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: s(2);
+}
+
+.tools__link {
+  display: inline-block;
+  padding: s(1) s(2);
+  border-radius: r(sm);
+  color: c(text);
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
