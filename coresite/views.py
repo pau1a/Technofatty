@@ -2,6 +2,7 @@ from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect, Ht
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
 from django.db.models import Q, Max
@@ -68,8 +69,17 @@ TOP_LEVEL_URLS = [
 ]
 
 
+def _redirect_with_consent_flag(referer: str) -> str:
+    parsed = urlparse(referer)
+    query = dict(parse_qsl(parsed.query))
+    query["consent"] = "updated"
+    new_query = urlencode(query)
+    return urlunparse(parsed._replace(query=new_query))
+
+
 def consent_accept(request):
-    response = HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+    redirect_to = _redirect_with_consent_flag(request.META.get("HTTP_REFERER", "/"))
+    response = HttpResponseRedirect(redirect_to)
     response.set_signed_cookie(
         settings.CONSENT_COOKIE_NAME,
         "true",
@@ -82,7 +92,8 @@ def consent_accept(request):
 
 
 def consent_decline(request):
-    response = HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+    redirect_to = _redirect_with_consent_flag(request.META.get("HTTP_REFERER", "/"))
+    response = HttpResponseRedirect(redirect_to)
     response.set_signed_cookie(
         settings.CONSENT_COOKIE_NAME,
         "false",

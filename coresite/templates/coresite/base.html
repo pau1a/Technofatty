@@ -48,6 +48,13 @@
 
   <script src="{% static 'coresite/js/consent.js' %}?v={{ now|date:'U' }}" defer></script>
   <script src="{% static 'coresite/js/main.js' %}?v={{ now|date:'U' }}" defer></script>
+  <script>
+  (function() {
+    if (new URLSearchParams(location.search).get('consent') === 'updated') {
+      document.dispatchEvent(new Event('tf:consent-updated'));
+    }
+  })();
+  </script>
   {% block body_scripts %}{% endblock %}
 </body>
 </html>

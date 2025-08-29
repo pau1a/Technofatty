@@ -45,7 +45,7 @@ def test_consent_not_granted_with_invalid_cookie(settings):
 def test_accept_sets_signed_cookie(client, settings):
     response = client.get(reverse('consent_accept'), HTTP_REFERER='/prev/')
     assert response.status_code == 302
-    assert response['Location'] == '/prev/'
+    assert response['Location'] == '/prev/?consent=updated'
     assert (
         signing.loads(
             response.cookies[settings.CONSENT_COOKIE_NAME].value
@@ -57,7 +57,7 @@ def test_accept_sets_signed_cookie(client, settings):
 def test_decline_sets_signed_cookie(client, settings):
     response = client.get(reverse('consent_decline'), HTTP_REFERER='/prev/')
     assert response.status_code == 302
-    assert response['Location'] == '/prev/'
+    assert response['Location'] == '/prev/?consent=updated'
     assert (
         signing.loads(
             response.cookies[settings.CONSENT_COOKIE_NAME].value
