@@ -47,11 +47,17 @@ TOP_LEVEL_URLS = [
         "priority": "0.8",
         "changefreq": "weekly",
     },
-    {
-        "loc": f"{settings.SITE_BASE_URL}/case-studies/",
-        "priority": "0.8",
-        "changefreq": "weekly",
-    },
+    *(
+        [
+            {
+                "loc": f"{settings.SITE_BASE_URL}/case-studies/",
+                "priority": "0.7",
+                "changefreq": "weekly",
+            }
+        ]
+        if settings.CASE_STUDIES_INDEXABLE
+        else []
+    ),
     {
         "loc": f"{settings.SITE_BASE_URL}/community/",
         "priority": "0.8",
@@ -98,12 +104,8 @@ def homepage(request):
             "blurb": "Cut waste and streamline workflows with predictive AI.",
             "url": "/resources/operations/",
         },
-        {
-            "title": "AI Case Studies",
-            "blurb": "See how real businesses turned AI into growth.",
-            "url": "/case-studies/",
-        },
     ]
+    case_studies = CaseStudy.objects.filter(is_published=True)[:3]
     try:
         images = {img.key.replace("-", "_"): img for img in SiteImage.objects.all()}
     except Exception:
@@ -117,6 +119,7 @@ def homepage(request):
         "is_homepage": True,
         "now": datetime.now(),
         "resources": resources,
+        "case_studies": case_studies,
         "signals": signals,
         "support": support,
         "community": community,
