@@ -66,3 +66,9 @@ All community events include payload properties:
 
 Events are emitted only after consent; before consent, event senders must no-op.
 
+### Gating & Tests
+- Canonical URL and JSON-LD schema are regression-tested for stability.
+- Hero copy and analytics event tokens are snapshot-tested to guard accidental changes.
+- `community.view_hub` fires only when consent enables `tfSend`.
+- Sitemap validation honors `ENV`/`CANONICAL_HOST` environment variables.
+
