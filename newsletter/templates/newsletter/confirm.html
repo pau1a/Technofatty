@@ -1,0 +1,13 @@
+{% extends "coresite/base.html" %}
+
+{% block meta %}
+  {% with meta_title=page_title meta_robots=meta_robots %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block content %}
+<h1>You're on the list</h1>
+<p>{{ message }}</p>
+{% endblock %}
+

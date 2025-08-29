@@ -7,6 +7,7 @@ def get_copy() -> dict:
         "server_busy": "We’re having trouble right now. Try again in a few minutes.",
         "required_email": "Please enter your email address to subscribe.",
         "invalid_email": "Enter a valid email address (example: name@example.com).",
+        "consent": "By subscribing, you consent to receive emails from Technofatty. You can unsubscribe at any time.",
     }
     if getattr(settings, "OPT_IN_MODE", "single") == "double":
         copy["success"] = (

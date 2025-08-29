@@ -108,6 +108,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "coresite.middleware.ConsentMiddleware",
+    "coresite.middleware.PostRateLimitMiddleware",
 ]
 
 if DEBUG:
