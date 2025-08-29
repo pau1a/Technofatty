@@ -8,7 +8,9 @@ __pycache__/
 # Django
 db.sqlite3
 /staticfiles/
-media/
+media/*
+!media/case_studies/
+!media/case_studies/*.png
 *.log
 
 # Virtual environment

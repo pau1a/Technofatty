@@ -1,13 +1,21 @@
+import base64
+import tempfile
 import pytest
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import override_settings
 from coresite.models import CaseStudy
 
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 @pytest.mark.django_db
 def test_case_studies_page(client):
-    CaseStudy.objects.create(title="Alpha", is_published=True)
+    img_bytes = base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+    )
+    image = SimpleUploadedFile("gamma.png", img_bytes, content_type="image/png")
+    CaseStudy.objects.create(title="Gamma", is_published=True, image=image)
     res = client.get(reverse("case_studies"))
     html = res.content.decode()
     expected = (
@@ -17,6 +25,7 @@ def test_case_studies_page(client):
     assert '<h1 id="case-studies-heading">Case Studies</h1>' in html
     assert '"@type": "BreadcrumbList"' in html
     assert 'data-analytics-event="case_study_card_click"' in html
+    assert 'alt="Case study: Gamma"' in html
 
 
 @pytest.mark.django_db
@@ -42,7 +51,7 @@ def test_case_study_preview_requires_staff(client):
 @pytest.mark.django_db
 def test_case_study_preview_staff_client(client):
     study = CaseStudy.objects.create(title="Alpha", summary="Summary", is_published=False)
-    User = get_user_model()
+    from django.contrib.auth.models import User
     User.objects.create_user("staff", "staff@example.com", "pass", is_staff=True)
     assert client.login(username="staff", password="pass")
     res = client.get(f"{study.get_absolute_url()}?preview=1")
