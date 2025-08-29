@@ -434,8 +434,12 @@ case_studies.meta_robots = _CASE_STUDY_ROBOTS
 
 
 def case_study_detail(request, slug: str):
+    preview = request.GET.get("preview") == "1" and request.user.is_staff
+    lookup = {"slug": slug}
+    if not preview:
+        lookup["is_published"] = True
     footer = get_footer_content()
-    study = get_object_or_404(CaseStudy, slug=slug, is_published=True)
+    study = get_object_or_404(CaseStudy, **lookup)
     context = {
         "footer": footer,
         "page_id": "case-study-detail",

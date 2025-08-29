@@ -57,6 +57,10 @@ Required variables:
 
 See `.env.example` for placeholder values.
 
+Optional variables:
+
+- `STAGING_BASE_URL` – base URL for generating preview links; defaults to `SITE_BASE_URL`
+
 ## Admin editor
 
 The Django admin uses [`django-ckeditor-5`](https://pypi.org/project/django-ckeditor-5/) for rich-text fields.

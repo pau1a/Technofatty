@@ -2,6 +2,9 @@ from django.contrib import admin
 from django import forms
 from django.utils import timezone
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+from django.contrib.admin.widgets import AdminFileWidget
+from django.conf import settings
 from .models import (
     SiteSettings,
     SiteImage,
@@ -11,6 +14,7 @@ from .models import (
     KnowledgeTag,
     BlogPost,
     Tool,
+    CaseStudy,
     ContactEvent,
     StatusChoices,
 )
@@ -168,6 +172,45 @@ class ToolAdmin(admin.ModelAdmin):
     list_filter = ("is_published", "is_premium", "schema_kind")
     search_fields = ("title", "slug")
     prepopulated_fields = {"slug": ("title",)}
+
+
+class AdminImageWidget(AdminFileWidget):
+    def render(self, name, value, attrs=None, renderer=None):
+        parts = []
+        if value and getattr(value, "url", None):
+            parts.append(
+                format_html('<img src="{}" style="max-height:200px;" />', value.url)
+            )
+        parts.append(super().render(name, value, attrs, renderer))
+        return mark_safe("".join(parts))
+
+
+class CaseStudyAdminForm(forms.ModelForm):
+    class Meta:
+        model = CaseStudy
+        fields = "__all__"
+        widgets = {"image": AdminImageWidget}
+
+
+@admin.register(CaseStudy)
+class CaseStudyAdmin(admin.ModelAdmin):
+    form = CaseStudyAdminForm
+    list_display = ("title", "display_order", "preview_link")
+    list_editable = ("display_order",)
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ("preview_link",)
+
+    def preview_link(self, obj):
+        if not obj.pk:
+            return ""
+        base = (getattr(settings, "STAGING_BASE_URL", settings.SITE_BASE_URL) or "").rstrip("/")
+        return format_html(
+            '<a href="{}{}?preview=1" target="_blank">Preview</a>',
+            base,
+            obj.get_absolute_url(),
+        )
+
+    preview_link.short_description = "Preview"
 
 
 @admin.register(ContactEvent)
