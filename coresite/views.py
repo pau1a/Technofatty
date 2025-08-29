@@ -26,6 +26,8 @@ from .signals import get_signals_content
 from .support import get_support_content
 from .community import get_community_content
 from .footer import get_footer_content
+from . import moderation
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 KNOWLEDGE_SUB_SECTIONS = [
@@ -98,6 +100,15 @@ THREADS = [
         "answered": False,
         "author": "Ava",
     },
+    {
+        "title": "How do I contribute to Technofatty?",
+        "slug": "contribute-to-technofatty",
+        "tags": ["community"],
+        "replies": 1,
+        "updated": datetime(2024, 3, 5),
+        "answered": True,
+        "author": "Mia",
+    },
 ]
 
 RELATED_CONTENT_ITEMS = {
@@ -169,6 +180,22 @@ THREAD_DETAILS = {
                 "is_staff": False,
                 "accepted": False,
                 "created": datetime(2024, 2, 6),
+            }
+        ],
+    },
+    "contribute-to-technofatty": {
+        "title": "How do I contribute to Technofatty?",
+        "body": "I'd like to help. Where should I start?",
+        "author": "Mia",
+        "created": datetime(2024, 3, 1),
+        "answers": [
+            {
+                "id": 1,
+                "author": "Zoe",
+                "body": "Check out our CONTRIBUTING guide and join discussions in this community.",
+                "is_staff": True,
+                "accepted": True,
+                "created": datetime(2024, 3, 6),
             }
         ],
     },
@@ -759,6 +786,7 @@ def community_thread(request, slug: str):
         "footer": footer,
         "page_id": "community-thread",
         "thread": thread,
+        "slug": slug,
         "answers": page_obj.object_list,
         "accepted_answer": accepted,
         "other_answers": other_answers,
@@ -776,6 +804,36 @@ def community_thread(request, slug: str):
     response = render(request, "coresite/thread.html", context)
     response["X-Robots-Tag"] = "noindex"
     return response
+
+
+def report_thread(request, slug: str):
+    """Queue a report for the thread and log it."""
+    moderation.queue_report(
+        request.user,
+        {"type": "thread", "id": slug},
+    )
+    return redirect("community_thread", slug=slug)
+
+
+def report_answer(request, slug: str, answer_id: int):
+    """Queue a report for a specific answer and log it."""
+    moderation.queue_report(
+        request.user,
+        {"type": "answer", "thread": slug, "id": answer_id},
+    )
+    return redirect("community_thread", slug=slug)
+
+
+@staff_member_required
+def moderation_dashboard(request):
+    """Simple staff-only dashboard listing reports and audit log."""
+    footer = get_footer_content()
+    context = {
+        "footer": footer,
+        "reports": moderation.REPORT_QUEUE,
+        "audit_log": moderation.AUDIT_LOG,
+    }
+    return render(request, "coresite/moderation_dashboard.html", context)
 
 
 def blog(request):

@@ -55,7 +55,7 @@
   <div class="wrap">
     <article class="thread-question">
       <h1 id="thread-heading">{{ thread.title }}</h1>
-      <p class="post-meta"><span class="post-author">{{ thread.author }}</span> <span class="badge badge--op">OP</span></p>
+      <p class="post-meta"><span class="post-author">{{ thread.author }}</span> <span class="badge badge--op">OP</span> <a class="post-report" href="{% url 'community_report_thread' slug=slug %}">Report</a></p>
       <div class="post-body"><p>{{ thread.body }}</p></div>
     </article>
 
@@ -76,6 +76,7 @@
               <span class="post-author">{{ answer.author }}</span>
               {% if answer.is_staff %}<span class="badge badge--staff">Staff</span>{% endif %}
               {% if answer.author == thread.author %}<span class="badge badge--op">OP</span>{% endif %}
+              <a class="post-report" href="{% url 'community_report_answer' slug=slug answer_id=answer.id %}">Report</a>
             </p>
             <div class="post-body"><p>{{ answer.body }}</p></div>
           </article>
@@ -98,6 +99,7 @@
       {% endif %}
     </nav>
     {% endif %}
+    <footer class="thread-footer"><a href="/code-of-conduct/">Code of Conduct</a></footer>
   </div>
 </section>
 {% endblock %}

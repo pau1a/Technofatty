@@ -16,7 +16,8 @@
       "label": "Company",
       "links": [
         {"label": "Privacy", "url": "/legal/privacy/"},
-        {"label": "Terms", "url": "/legal/terms/"}
+        {"label": "Terms", "url": "/legal/terms/"},
+        {"label": "Code of Conduct", "url": "/code-of-conduct/"}
       ]
     }
   ],
