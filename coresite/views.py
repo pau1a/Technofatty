@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.feedgenerator import Rss201rev2Feed
-from django.db.models import Q
+from django.db.models import Q, Max
 from newsletter.utils import log_newsletter_event
 from django.core.cache import cache
 from coresite.services.contact import contact_event
@@ -15,10 +15,12 @@ from .models import (
     KnowledgeArticle,
     Tool,
     CaseStudy,
+    SITEMAP_CACHE_KEY,
 )
 from .forms import ContactForm
 from .notifiers import ContactNotifier
 from datetime import datetime
+import hashlib
 from .signals import get_signals_content
 from .support import get_support_content
 from .community import get_community_content
@@ -105,7 +107,13 @@ def homepage(request):
             "url": "/resources/operations/",
         },
     ]
-    case_studies = CaseStudy.objects.filter(is_published=True)[:3]
+    resources_sig = hashlib.md5(
+        "|".join(r["title"] + r["url"] for r in resources).encode()
+    ).hexdigest()
+    cs_qs = CaseStudy.objects.filter(is_published=True)
+    case_studies = cs_qs[:3]
+    cs_ver = cs_qs.aggregate(v=Max("updated_at"))["v"]
+    cs_ver_ts = int(cs_ver.timestamp()) if cs_ver else 0
     try:
         images = {img.key.replace("-", "_"): img for img in SiteImage.objects.all()}
     except Exception:
@@ -120,6 +128,7 @@ def homepage(request):
         "now": datetime.now(),
         "resources": resources,
         "case_studies": case_studies,
+        "featured_grid_version": f"{resources_sig}:{cs_qs.count()}:{cs_ver_ts}",
         "signals": signals,
         "support": support,
         "community": community,
@@ -683,43 +692,46 @@ def blog_rss(request):
         rss_content, content_type="application/rss+xml; charset=utf-8"
     )
 
-
 def sitemap_xml(request):
-    urls = list(TOP_LEVEL_URLS)
-    posts = BlogPost.published.order_by("-published_at")[:10]
-    for post in posts:
-        urls.append(
-            {
-                "loc": f"{settings.SITE_BASE_URL}/blog/{post.slug}/",
-                "priority": "0.5",
-                "changefreq": "monthly",
-            }
-        )
-    if settings.CASE_STUDIES_INDEXABLE:
-        studies = CaseStudy.objects.filter(is_published=True).only("slug", "updated_at")
-        for study in studies:
+    cache_key = SITEMAP_CACHE_KEY
+    xml_content = cache.get(cache_key)
+    if xml_content is None:
+        urls = list(TOP_LEVEL_URLS)
+        posts = BlogPost.published.order_by("-published_at")[:10]
+        for post in posts:
             urls.append(
                 {
-                    "loc": f"{settings.SITE_BASE_URL}{study.get_absolute_url()}",
+                    "loc": f"{settings.SITE_BASE_URL}/blog/{post.slug}/",
                     "priority": "0.5",
                     "changefreq": "monthly",
-                    "lastmod": (study.updated_at or timezone.now()).date().isoformat(),
                 }
             )
-    xml_parts = [
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ]
-    for url in urls:
-        xml_parts.append("  <url>")
-        xml_parts.append(f"    <loc>{url['loc']}</loc>")
-        xml_parts.append(f"    <changefreq>{url['changefreq']}</changefreq>")
-        if 'lastmod' in url:
-            xml_parts.append(f"    <lastmod>{url['lastmod']}</lastmod>")
-        xml_parts.append(f"    <priority>{url['priority']}</priority>")
-        xml_parts.append("  </url>")
-    xml_parts.append("</urlset>")
-    xml_content = "\n".join(xml_parts)
+        if settings.CASE_STUDIES_INDEXABLE:
+            studies = CaseStudy.objects.filter(is_published=True).only("slug", "updated_at")
+            for study in studies:
+                urls.append(
+                    {
+                        "loc": f"{settings.SITE_BASE_URL}{study.get_absolute_url()}",
+                        "priority": "0.5",
+                        "changefreq": "monthly",
+                        "lastmod": (study.updated_at or timezone.now()).date().isoformat(),
+                    }
+                )
+        xml_parts = [
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ]
+        for url in urls:
+            xml_parts.append("  <url>")
+            xml_parts.append(f"    <loc>{url['loc']}</loc>")
+            xml_parts.append(f"    <changefreq>{url['changefreq']}</changefreq>")
+            if 'lastmod' in url:
+                xml_parts.append(f"    <lastmod>{url['lastmod']}</lastmod>")
+            xml_parts.append(f"    <priority>{url['priority']}</priority>")
+            xml_parts.append("  </url>")
+        xml_parts.append("</urlset>")
+        xml_content = "\n".join(xml_parts)
+        cache.set(cache_key, xml_content, 60 * 60)
     return HttpResponse(
         xml_content, content_type="application/xml; charset=utf-8"
     )

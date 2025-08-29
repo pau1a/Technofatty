@@ -1,6 +1,7 @@
 {# See docs/structured-data.md#featured_grid for context keys #}
-{% load static %}
+{% load static cache thumbnail %}
 
+{% cache 3600 featured_grid featured_grid_version|default:"v1" %}
 <section id="featured" class="featured" aria-labelledby="featured-heading">
   <div class="container-wide">
     <h2 id="featured-heading" class="section-title">Featured Resources</h2>
@@ -22,7 +23,13 @@
       {% if case_studies %}
       {% for cs in case_studies %}
         <article class="card">
+          {% if cs.image %}
+          <div class="card__img">
+            <img src="{{ cs.image|thumbnail_url:'case_study_card' }}" alt="" loading="lazy">
+          </div>
+          {% else %}
           <div class="card__img" aria-hidden="true"></div>
+          {% endif %}
           <h3 class="card__title">{{ cs.title }}</h3>
           <p class="card__blurb">{{ cs.summary }}</p>
           <a class="card__link"
@@ -49,3 +56,4 @@
   </div>
 
 </section>
+{% endcache %}
