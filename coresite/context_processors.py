@@ -20,7 +20,7 @@ def _build_nav_links():
         },
         {
             "label": "Case Studies",
-            "url": "case_studies_landing",
+            "url": "case_studies",
             "locations": ["header", "footer"],
             "order": 3,
         },
