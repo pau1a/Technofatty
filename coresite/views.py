@@ -786,6 +786,7 @@ def community_thread(request, slug: str):
         "footer": footer,
         "page_id": "community-thread",
         "thread": thread,
+        "slug": slug,
         "answers": page_obj.object_list,
         "accepted_answer": accepted,
         "other_answers": other_answers,
