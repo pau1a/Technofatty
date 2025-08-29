@@ -51,6 +51,13 @@ urlpatterns = [
     path("tools/<slug:slug>/", views.tool_detail, name="tool_detail"),
     path("community/", views.community, name="community"),
     path("community/t/<slug:slug>/", views.community_thread, name="community_thread"),
+    path("community/t/<slug:slug>/report/", views.report_thread, name="community_report_thread"),
+    path(
+        "community/t/<slug:slug>/a/<int:answer_id>/report/",
+        views.report_answer,
+        name="community_report_answer",
+    ),
+    path("community/moderation/", views.moderation_dashboard, name="moderation_dashboard"),
     path("blog/", views.blog, name="blog"),
     path("blog/rss/", BlogRSSFeed(), name="blog_rss"),
     path("blog/atom/", BlogAtomFeed(), name="blog_atom"),

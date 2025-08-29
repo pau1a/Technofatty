@@ -1,0 +1,25 @@
+{% extends "coresite/base.html" %}
+
+{% block content %}
+<section class="moderation-dashboard" aria-labelledby="mod-heading">
+  <div class="wrap">
+    <h1 id="mod-heading">Moderation Dashboard</h1>
+    <h2>Reports Queue</h2>
+    <ul>
+      {% for r in reports %}
+        <li>{{ r.timestamp }} – {{ r.target.type }} {{ r.target.id }} reported by {{ r.user }}</li>
+      {% empty %}
+        <li>No reports.</li>
+      {% endfor %}
+    </ul>
+    <h2>Audit Log</h2>
+    <ul>
+      {% for item in audit_log %}
+        <li>{{ item.timestamp }} – {{ item.user }} {{ item.action }} {{ item.target.type }} {{ item.target.id }}</li>
+      {% empty %}
+        <li>No actions logged.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}
