@@ -1,0 +1,106 @@
+{% extends "coresite/base.html" %}
+{% load seo_tags jsonld %}
+
+{% block meta %}
+  {% with meta_description=meta_description meta_robots=meta_robots meta_title=meta_title %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+  {% if prev_page_url %}<link rel="prev" href="{{ prev_page_url }}">{% endif %}
+  {% if next_page_url %}<link rel="next" href="{{ next_page_url }}">{% endif %}
+{% endblock %}
+
+{% block structured_data %}
+  {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
+  {% jsonld %}
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "QAPage",
+        "@id": "{{ resolved_canonical }}#webpage",
+        "url": "{{ resolved_canonical }}",
+        "name": "{{ thread.title|escapejs }}",
+        "inLanguage": "en",
+        "mainEntity": {
+          "@type": "Question",
+          "name": "{{ thread.title|escapejs }}",
+          "text": "{{ thread.body|escapejs }}",
+          "answerCount": {{ total_answers }},
+          "author": {"@type":"Person","name":"{{ thread.author|escapejs }}"}
+          {% if accepted_answer %},
+          "acceptedAnswer": {"@type":"Answer","text":"{{ accepted_answer.body|escapejs }}","dateCreated":"{{ accepted_answer.created|date:'c' }}","author":{"@type":"Person","name":"{{ accepted_answer.author|escapejs }}"}}
+          {% if other_answers %},{% endif %}
+          {% endif %}
+          {% if other_answers %}
+          "suggestedAnswer": [
+            {% for a in other_answers %}{"@type":"Answer","text":"{{ a.body|escapejs }}","dateCreated":"{{ a.created|date:'c' }}","author":{"@type":"Person","name":"{{ a.author|escapejs }}"}}{% if not forloop.last %},{% endif %}{% endfor %}
+          ]
+          {% endif %}
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "{{ resolved_canonical }}#breadcrumb",
+        "itemListElement": [
+          {"@type":"ListItem","position":1,"name":"Home","item":"{{ site_base_url }}/"},
+          {"@type":"ListItem","position":2,"name":"Technofatty Community","item":"{{ site_base_url }}/community/"},
+          {"@type":"ListItem","position":3,"name":"{{ thread.title|escapejs }}","item":"{{ resolved_canonical }}"}
+        ]
+      }
+    ]
+  }
+  {% endjsonld %}
+{% endblock %}
+
+{% block content %}
+<section class="thread-page" aria-labelledby="thread-heading">
+  <div class="wrap">
+    <article class="thread-question">
+      <h1 id="thread-heading">{{ thread.title }}</h1>
+      <p class="post-meta"><span class="post-author">{{ thread.author }}</span> <span class="badge badge--op">OP</span></p>
+      <div class="post-body"><p>{{ thread.body }}</p></div>
+    </article>
+
+    {% include "coresite/partials/newsletter_block.html" %}
+
+    {% if not accepted_answer %}
+      <p class="no-accepted">No accepted answer yet.</p>
+    {% endif %}
+
+    {% if answers %}
+    <section class="thread-answers" aria-labelledby="answers-heading">
+      <h2 id="answers-heading">Answers</h2>
+      <ol class="answer-list">
+        {% for answer in answers %}
+        <li class="answer-item">
+          <article class="post{% if answer.accepted %} is-accepted{% endif %}">
+            <p class="post-meta">
+              <span class="post-author">{{ answer.author }}</span>
+              {% if answer.is_staff %}<span class="badge badge--staff">Staff</span>{% endif %}
+              {% if answer.author == thread.author %}<span class="badge badge--op">OP</span>{% endif %}
+            </p>
+            <div class="post-body"><p>{{ answer.body }}</p></div>
+          </article>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% else %}
+      <p>Be the first to answer.</p>
+    {% endif %}
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="pager" aria-label="Pagination">
+      {% if page_obj.has_previous %}
+        <a class="pager__prev" rel="prev" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous Page">Previous Page</a>
+      {% endif %}
+      <span class="pager__current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="pager__next" rel="next" href="?page={{ page_obj.next_page_number }}" aria-label="Next Page">Next Page</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

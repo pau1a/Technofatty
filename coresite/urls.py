@@ -50,6 +50,7 @@ urlpatterns = [
     path("tools/", views.tools, name="tools"),
     path("tools/<slug:slug>/", views.tool_detail, name="tool_detail"),
     path("community/", views.community, name="community"),
+    path("community/t/<slug:slug>/", views.community_thread, name="community_thread"),
     path("blog/", views.blog, name="blog"),
     path("blog/rss/", BlogRSSFeed(), name="blog_rss"),
     path("blog/atom/", BlogAtomFeed(), name="blog_atom"),

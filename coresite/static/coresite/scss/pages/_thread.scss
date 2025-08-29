@@ -1,0 +1,41 @@
+.thread-page {
+  padding-block: map-get($section-pad-y, base);
+  @include mq(md) { padding-block: map-get($section-pad-y, md); }
+}
+
+.thread-question,
+.answer-item .post {
+  border-bottom: bw(sm) solid c(border);
+  padding-bottom: s(4);
+  margin-bottom: s(4);
+}
+
+.post-meta {
+  font-size: fs(sm);
+  color: c(text-muted);
+  .post-author { font-weight: 600; }
+}
+
+.badge {
+  display: inline-block;
+  padding: s(0.5) s(1);
+  border-radius: r(sm);
+  font-size: fs(xs);
+  margin-left: s(1);
+}
+
+.badge--op {
+  background: c(gold);
+  color: c(black);
+}
+
+.badge--staff {
+  background: c(blue);
+  color: c(white);
+}
+
+.post.is-accepted {
+  border-left: bw(md) solid c(green);
+  background: c(bg-accent-light);
+  padding-left: s(3);
+}

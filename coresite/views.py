@@ -115,6 +115,66 @@ RELATED_CONTENT_ITEMS = {
 }
 
 
+# Placeholder thread content for individual thread pages.
+THREAD_DETAILS = {
+    "deploy-technofatty": {
+        "title": "How do I deploy Technofatty?",
+        "body": "What's the best way to deploy the platform?",
+        "author": "Priya",
+        "created": datetime(2024, 1, 10),
+        "answers": [
+            {
+                "id": 1,
+                "author": "Sam",
+                "body": "Use Docker Compose for a quick start.",
+                "is_staff": True,
+                "accepted": True,
+                "created": datetime(2024, 1, 16),
+            },
+            {
+                "id": 2,
+                "author": "Alex",
+                "body": "Kubernetes works well once you scale.",
+                "is_staff": False,
+                "accepted": False,
+                "created": datetime(2024, 1, 17),
+            },
+            {
+                "id": 3,
+                "author": "Priya",
+                "body": "Thanks everyone, the Docker route worked!",
+                "is_staff": False,
+                "accepted": False,
+                "created": datetime(2024, 1, 18),
+            },
+        ],
+    },
+    "scaling-best-practices": {
+        "title": "Scaling best practices?",
+        "body": "How should I scale Technofatty for growing workloads?",
+        "author": "Liam",
+        "created": datetime(2024, 2, 1),
+        "answers": [],
+    },
+    "api-authentication-options": {
+        "title": "API authentication options",
+        "body": "Which authentication methods does the API support?",
+        "author": "Ava",
+        "created": datetime(2024, 2, 3),
+        "answers": [
+            {
+                "id": 1,
+                "author": "Tom",
+                "body": "OAuth2 and API keys are both available.",
+                "is_staff": False,
+                "accepted": False,
+                "created": datetime(2024, 2, 6),
+            }
+        ],
+    },
+}
+
+
 def _redirect_with_consent_flag(referer: str) -> str:
     parsed = urlparse(referer)
     query = dict(parse_qsl(parsed.query))
@@ -665,6 +725,56 @@ def community(request):
     }
     response = render(request, "coresite/community.html", context)
     response["X-Robots-Tag"] = robots
+    return response
+
+
+def community_thread(request, slug: str):
+    """Render an individual community thread with pagination."""
+    footer = get_footer_content()
+    thread = THREAD_DETAILS.get(slug)
+    if not thread:
+        raise Http404
+
+    from django.core.paginator import Paginator, EmptyPage
+
+    answers_all = list(thread.get("answers", []))
+    accepted = next((a for a in answers_all if a.get("accepted")), None)
+    other_answers = [a for a in answers_all if not a.get("accepted")]
+
+    page_number = int(request.GET.get("page", 1))
+    paginator = Paginator(answers_all, 10)
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    def absolute_page_url(num: int) -> str:
+        return f"/community/t/{slug}/" + (f"?page={num}" if num != 1 else "")
+
+    prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
+    next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
+
+    meta_desc_source = accepted["body"] if accepted else thread["body"]
+    context = {
+        "footer": footer,
+        "page_id": "community-thread",
+        "thread": thread,
+        "answers": page_obj.object_list,
+        "accepted_answer": accepted,
+        "other_answers": other_answers,
+        "page_obj": page_obj,
+        "canonical_url": absolute_page_url(page_number),
+        "prev_page_url": prev_page,
+        "next_page_url": next_page,
+        "page_title": thread["title"],
+        "meta_title": thread["title"],
+        "meta_description": meta_desc_source[:155],
+        "meta_robots": "noindex",
+        "total_answers": len(answers_all),
+        "site_base_url": settings.SITE_BASE_URL,
+    }
+    response = render(request, "coresite/thread.html", context)
+    response["X-Robots-Tag"] = "noindex"
     return response
 
 
