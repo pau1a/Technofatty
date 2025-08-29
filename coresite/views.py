@@ -8,7 +8,14 @@ from django.db.models import Q
 from newsletter.utils import log_newsletter_event
 from django.core.cache import cache
 from coresite.services.contact import contact_event
-from .models import SiteImage, BlogPost, KnowledgeCategory, KnowledgeArticle, Tool
+from .models import (
+    SiteImage,
+    BlogPost,
+    KnowledgeCategory,
+    KnowledgeArticle,
+    Tool,
+    CaseStudy,
+)
 from .forms import ContactForm
 from .notifiers import ContactNotifier
 from datetime import datetime
@@ -378,32 +385,49 @@ def knowledge_quick_wins(request):
     return render(request, "coresite/knowledge/quick_wins.html", context)
 
 
-def case_studies_landing(request):
+_CASE_STUDY_ROBOTS = (
+    "index,follow" if settings.CASE_STUDIES_INDEXABLE else "noindex,nofollow"
+)
+
+
+def case_studies(request):
     footer = get_footer_content()
-    return render(
-        request,
-        "coresite/case_studies/landing.html",
-        {
-            "footer": footer,
-            "page_id": "case-studies",
-            "page_title": "Case Studies",
-            "canonical_url": "/case-studies/",
-        },
-    )
+    studies = CaseStudy.objects.filter(is_published=True)
+    context = {
+        "footer": footer,
+        "page_id": "case-studies",
+        "page_title": "Case Studies",
+        "canonical_url": "/case-studies/",
+        "case_studies": studies,
+        "meta_robots": _CASE_STUDY_ROBOTS,
+    }
+    response = render(request, "coresite/case_studies/index.html", context)
+    response["X-Robots-Tag"] = _CASE_STUDY_ROBOTS
+    return response
+
+
+case_studies.context_object_name = "case_studies"
+case_studies.meta_robots = _CASE_STUDY_ROBOTS
 
 
 def case_study_detail(request, slug: str):
     footer = get_footer_content()
-    return render(
-        request,
-        "coresite/case_studies/detail.html",
-        {
-            "footer": footer,
-            "page_id": "case-study-detail",
-            "page_title": "Case Study Title",
-            "canonical_url": f"/case-studies/{slug}/",
-        },
-    )
+    study = get_object_or_404(CaseStudy, slug=slug, is_published=True)
+    context = {
+        "footer": footer,
+        "page_id": "case-study-detail",
+        "page_title": study.title,
+        "canonical_url": f"/case-studies/{study.slug}/",
+        "case_study": study,
+        "meta_robots": _CASE_STUDY_ROBOTS,
+    }
+    response = render(request, "coresite/case_studies/detail.html", context)
+    response["X-Robots-Tag"] = _CASE_STUDY_ROBOTS
+    return response
+
+
+case_study_detail.context_object_name = "case_study"
+case_study_detail.meta_robots = _CASE_STUDY_ROBOTS
 
 
 def resources(request):
