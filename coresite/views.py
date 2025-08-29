@@ -741,11 +741,12 @@ def robots_txt(request):
     host = request.get_host().split(":")[0].lower()
     production_hosts = {"technofatty.com", "www.technofatty.com"}
     if host in production_hosts:
-        lines = [
-            "User-agent: *",
-            "Allow: /",
-            f"Sitemap: {settings.SITE_BASE_URL}/sitemap.xml",
-        ]
+        lines = ["User-agent: *", "Allow: /"]
+        if not settings.CASE_STUDIES_INDEXABLE:
+            lines.append("Disallow: /case-studies/")
+        if not settings.TOOLS_INDEXABLE:
+            lines.append("Disallow: /tools/")
+        lines.append(f"Sitemap: {settings.SITE_BASE_URL}/sitemap.xml")
     else:
         lines = [
             "User-agent: *",
