@@ -178,7 +178,7 @@ class KnowledgeArticle(TimestampedModel):
     def save(self, *args, **kwargs):
         if not self.slug and self.title:
             qs = self.__class__.objects.exclude(pk=self.pk)
-            self.slug = _generate_unique_slug(self.title, qs)
+            self.slug = _generate_unique_slug(self.title, qs, fallback="article")
         if not self.blurb and self.content:
             snippet = self.content.strip().split("\n\n", 1)[0]
             self.blurb = snippet
@@ -244,7 +244,7 @@ class Tool(TimestampedModel):
     def save(self, *args, **kwargs):
         if not self.slug and self.title:
             self.slug = _generate_unique_slug(
-                self.title, Tool.objects.exclude(pk=self.pk)
+                self.title, Tool.objects.exclude(pk=self.pk), fallback="tool"
             )
         super().save(*args, **kwargs)
 
@@ -277,10 +277,14 @@ class CaseStudy(TimestampedModel):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse("case_study_detail", kwargs={"slug": self.slug})
+
     def save(self, *args, **kwargs):
         if not self.slug and self.title:
             self.slug = _generate_unique_slug(
-                self.title, CaseStudy.objects.exclude(pk=self.pk)
+                self.title, CaseStudy.objects.exclude(pk=self.pk), fallback="case-study"
             )
         super().save(*args, **kwargs)
 
@@ -294,9 +298,9 @@ class CaseStudy(TimestampedModel):
         ]
 
 
-def _generate_unique_slug(title: str, queryset):
+def _generate_unique_slug(title: str, queryset, fallback: str = "item"):
     """Return a slug unique within the given queryset."""
-    base = slugify(title) or "tool"
+    base = slugify(title) or slugify(fallback) or "item"
     slug = base
     counter = 1
     while queryset.filter(slug=slug).exists():
@@ -309,7 +313,7 @@ def _generate_unique_slug(title: str, queryset):
 def set_blogpost_slug(sender, instance, **kwargs):
     if not instance.slug and instance.title:
         instance.slug = _generate_unique_slug(
-            instance.title, BlogPost.objects.exclude(pk=instance.pk)
+            instance.title, BlogPost.objects.exclude(pk=instance.pk), fallback="blog-post"
         )
 
 

@@ -80,7 +80,7 @@ This document lists required and optional context dictionary keys for each templ
 <a id="featured_grid"></a>
 ### featured_grid.html
 - Required: resources (list of {title, blurb, url})
-- Optional: None
+- Optional: case_studies (list of CaseStudy objects)
 
 <a id="knowledge-featured"></a>
 ### knowledge/_featured.html

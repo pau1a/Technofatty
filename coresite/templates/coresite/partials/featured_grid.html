@@ -13,13 +13,39 @@
           <p class="card__blurb">{{ resource.blurb }}</p>
           <a class="card__link"
              href="{{ resource.url }}"
-             data-analytics-event="featured_card_click"
+             data-analytics-event="{{ resource.event|default:'featured_card_click' }}"
              data-analytics-section="featured"
              data-analytics-label="{{ resource.title }}"
              data-analytics-url="{{ resource.url }}">Read more</a>
         </article>
       {% endfor %}
+      {% if case_studies %}
+      {% for cs in case_studies %}
+        <article class="card">
+          <div class="card__img" aria-hidden="true"></div>
+          <h3 class="card__title">{{ cs.title }}</h3>
+          <p class="card__blurb">{{ cs.summary }}</p>
+          <a class="card__link"
+             href="{{ cs.get_absolute_url }}"
+             aria-label="Read case study: {{ cs.title }}"
+             data-analytics-event="case_study_card_click"
+             data-analytics-section="featured"
+             data-analytics-label="{{ cs.title }}"
+             data-analytics-url="{{ cs.get_absolute_url }}">Read more</a>
+        </article>
+      {% endfor %}
+      {% endif %}
     </div>
+    {% if case_studies %}
+    <p class="featured__cta">
+      <a class="btn btn--secondary"
+         href="{% url 'case_studies' %}"
+         data-analytics-event="cta.case_studies.open"
+         data-analytics-section="featured"
+         data-analytics-label="All case studies"
+         data-analytics-url="{% url 'case_studies' %}">View all case studies</a>
+    </p>
+    {% endif %}
   </div>
 
 </section>
