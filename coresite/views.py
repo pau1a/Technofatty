@@ -695,6 +695,17 @@ def sitemap_xml(request):
                 "changefreq": "monthly",
             }
         )
+    if settings.CASE_STUDIES_INDEXABLE:
+        studies = CaseStudy.objects.filter(is_published=True).only("slug", "updated_at")
+        for study in studies:
+            urls.append(
+                {
+                    "loc": f"{settings.SITE_BASE_URL}{study.get_absolute_url()}",
+                    "priority": "0.5",
+                    "changefreq": "monthly",
+                    "lastmod": (study.updated_at or timezone.now()).date().isoformat(),
+                }
+            )
     xml_parts = [
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -703,6 +714,8 @@ def sitemap_xml(request):
         xml_parts.append("  <url>")
         xml_parts.append(f"    <loc>{url['loc']}</loc>")
         xml_parts.append(f"    <changefreq>{url['changefreq']}</changefreq>")
+        if 'lastmod' in url:
+            xml_parts.append(f"    <lastmod>{url['lastmod']}</lastmod>")
         xml_parts.append(f"    <priority>{url['priority']}</priority>")
         xml_parts.append("  </url>")
     xml_parts.append("</urlset>")

@@ -109,3 +109,18 @@ def test_tool_detail_jsonld_handles_schema_kinds():
     data = _extract_json(html)
     assert data["@type"] == "CreativeWork"
     assert "operatingSystem" not in data
+
+
+FIXTURES_DIR = pathlib.Path(__file__).resolve().parent / "fixtures"
+
+
+@pytest.fixture
+def case_study_json():
+    html = (FIXTURES_DIR / "case_study.html").read_text()
+    return _extract_json(html)
+
+
+def test_case_study_detail_schema(case_study_json):
+    assert case_study_json["@type"] == "Article"
+    assert case_study_json["url"] == "https://example.com/case-studies/acme"
+    assert case_study_json["publisher"]["@type"] == "Organization"
