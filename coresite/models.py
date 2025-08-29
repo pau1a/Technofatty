@@ -4,8 +4,9 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.core.cache import cache
 import math
 
 
@@ -315,6 +316,15 @@ def set_blogpost_slug(sender, instance, **kwargs):
         instance.slug = _generate_unique_slug(
             instance.title, BlogPost.objects.exclude(pk=instance.pk), fallback="blog-post"
         )
+
+
+SITEMAP_CACHE_KEY = "sitemap_xml"
+
+
+@receiver(post_save, sender=BlogPost)
+@receiver(post_save, sender=CaseStudy)
+def clear_sitemap_cache(**kwargs):
+    cache.delete(SITEMAP_CACHE_KEY)
 
 
 class ContactEvent(models.Model):

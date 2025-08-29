@@ -20,6 +20,7 @@ THUMBNAIL_ALIASES = {
         'hero_desktop': {'size': (1920, 1080), 'crop': True},
         'hero_tablet': {'size': (1280, 720), 'crop': True},
         'hero_mobile': {'size': (640, 360), 'crop': True},
+        'case_study_card': {'size': (600, 400), 'crop': True},
     },
 }
 
@@ -108,6 +109,9 @@ MIDDLEWARE = [
     "coresite.middleware.ConsentMiddleware",
 ]
 
+if DEBUG:
+    MIDDLEWARE.insert(1, "coresite.middleware.StaticCacheControlMiddleware")
+
 ROOT_URLCONF = "technofatty_com.urls"
 
 TEMPLATES = [
@@ -185,7 +189,7 @@ STATICFILES_DIRS = []
 # Where collectstatic will gather files for production serving (Nginx, etc.)
 STATIC_ROOT = Path("/var/www/technofatty_com/static")
 
-# Hash filenames for cache-busting in prod (works fine with Nginx or any static server)
+# Hash filenames for cache-busting; CDN should set long-lived cache headers
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Let Django find compiled CSS from sass_processor
