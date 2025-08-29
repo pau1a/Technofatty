@@ -265,6 +265,35 @@ class Tool(TimestampedModel):
         ]
 
 
+class CaseStudy(TimestampedModel):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, blank=True)
+    summary = models.TextField(blank=True)
+    body = models.TextField(blank=True)
+    image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
+    display_order = models.PositiveIntegerField(default=0)
+    is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.title:
+            self.slug = _generate_unique_slug(
+                self.title, CaseStudy.objects.exclude(pk=self.pk)
+            )
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ("display_order", "title")
+        indexes = [
+            models.Index(
+                fields=["is_published", "display_order"],
+                name="casestudy_pub_order_idx",
+            ),
+        ]
+
+
 def _generate_unique_slug(title: str, queryset):
     """Return a slug unique within the given queryset."""
     base = slugify(title) or "tool"
