@@ -60,6 +60,7 @@ See `.env.example` for placeholder values.
 ## Admin editor
 
 The Django admin uses [`django-ckeditor-5`](https://pypi.org/project/django-ckeditor-5/) for rich-text fields.
+The package wraps the open-source CKEditor 5 core; premium features are optional.
 Toolbar and plugin options live in `CKEDITOR_5_CONFIGS` inside `technofatty_com/settings.py`.
 
 ## Deployment
