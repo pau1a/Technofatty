@@ -71,7 +71,7 @@ class UrlResolutionTests(SimpleTestCase):
             "home",
             "knowledge",
             "tools",
-            "case_studies_landing",
+            "case_studies",
             "community",
             "blog",
         ]
