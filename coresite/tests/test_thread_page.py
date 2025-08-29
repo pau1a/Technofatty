@@ -25,3 +25,9 @@ def test_no_accepted_answer_state(client):
     res = client.get("/community/t/api-authentication-options/")
     html = res.content.decode()
     assert "No accepted answer yet" in html
+    match = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.DOTALL)
+    assert match
+    data = json.loads(match.group(1))
+    qapage = next(item for item in data["@graph"] if item["@type"] == "QAPage")
+    question = qapage["mainEntity"]
+    assert question["acceptedAnswer"] is None

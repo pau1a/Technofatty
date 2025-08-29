@@ -26,16 +26,13 @@
           "@type": "Question",
           "name": "{{ thread.title|escapejs }}",
           "text": "{{ thread.body|escapejs }}",
-          "answerCount": {{ total_answers }},
-          "author": {"@type":"Person","name":"{{ thread.author|escapejs }}"}
-          {% if accepted_answer %},
-          "acceptedAnswer": {"@type":"Answer","text":"{{ accepted_answer.body|escapejs }}","dateCreated":"{{ accepted_answer.created|date:'c' }}","author":{"@type":"Person","name":"{{ accepted_answer.author|escapejs }}"}}
-          {% if other_answers %},{% endif %}
-          {% endif %}
-          {% if other_answers %}
-          "suggestedAnswer": [
-            {% for a in other_answers %}{"@type":"Answer","text":"{{ a.body|escapejs }}","dateCreated":"{{ a.created|date:'c' }}","author":{"@type":"Person","name":"{{ a.author|escapejs }}"}}{% if not forloop.last %},{% endif %}{% endfor %}
-          ]
+          {% if accepted_answer %}
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{ accepted_answer.body|escapejs }}"
+          }
+          {% else %}
+          "acceptedAnswer": null
           {% endif %}
         }
       },
@@ -44,7 +41,7 @@
         "@id": "{{ resolved_canonical }}#breadcrumb",
         "itemListElement": [
           {"@type":"ListItem","position":1,"name":"Home","item":"{{ site_base_url }}/"},
-          {"@type":"ListItem","position":2,"name":"Technofatty Community","item":"{{ site_base_url }}/community/"},
+          {"@type":"ListItem","position":2,"name":"Community","item":"{{ site_base_url }}/community/"},
           {"@type":"ListItem","position":3,"name":"{{ thread.title|escapejs }}","item":"{{ resolved_canonical }}"}
         ]
       }
