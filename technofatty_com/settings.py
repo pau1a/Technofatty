@@ -312,3 +312,6 @@ CKEDITOR_5_CONFIGS = {
         ],
     }
 }
+
+# store uploaded assets under MEDIA_ROOT/ckeditor5/
+CKEDITOR_5_FILE_UPLOAD_PATH = "ckeditor5/"
