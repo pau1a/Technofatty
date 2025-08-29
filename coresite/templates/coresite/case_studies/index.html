@@ -43,7 +43,7 @@
         {% for cs in case_studies %}
         <article class="case-study-card">
           {% if cs.image %}
-          <img src="{{ cs.image|thumbnail_url:'case_study_card' }}" alt="" class="case-study-card__img" loading="lazy">
+          <img src="{{ cs.image|thumbnail_url:'case_study_card' }}" alt="Case study: {{ cs.title }}" class="case-study-card__img" loading="lazy">
           {% endif %}
           <h2 class="case-study-card__title">{{ cs.title }}</h2>
           <p class="case-study-card__summary">{{ cs.summary }}</p>
