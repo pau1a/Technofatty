@@ -69,6 +69,52 @@ TOP_LEVEL_URLS = [
 ]
 
 
+# Placeholder thread and related content data for the community hub.
+THREADS = [
+    {
+        "title": "How do I deploy Technofatty?",
+        "slug": "deploy-technofatty",
+        "tags": ["deployment", "tf"],
+        "replies": 3,
+        "updated": datetime(2024, 1, 15),
+        "answered": True,
+        "author": "Priya",
+    },
+    {
+        "title": "Scaling best practices?",
+        "slug": "scaling-best-practices",
+        "tags": ["scaling"],
+        "replies": 0,
+        "updated": datetime(2024, 2, 10),
+        "answered": False,
+        "author": "Liam",
+    },
+    {
+        "title": "API authentication options",
+        "slug": "api-authentication-options",
+        "tags": ["api", "security"],
+        "replies": 1,
+        "updated": datetime(2024, 2, 5),
+        "answered": False,
+        "author": "Ava",
+    },
+]
+
+RELATED_CONTENT_ITEMS = {
+    "knowledge": [
+        {"title": "Getting Started", "url": "/knowledge/getting-started/", "tags": ["deployment"]},
+        {"title": "Scaling 101", "url": "/knowledge/scaling-101/", "tags": ["scaling"]},
+        {"title": "API Security", "url": "/knowledge/api-security/", "tags": ["api", "security"]},
+    ],
+    "tools": [
+        {"title": "TF CLI", "url": "/tools/tf-cli/", "tags": ["deployment"]},
+    ],
+    "case_studies": [
+        {"title": "ACME scales with TF", "url": "/case-studies/acme/", "tags": ["scaling"]},
+    ],
+}
+
+
 def _redirect_with_consent_flag(referer: str) -> str:
     parsed = urlparse(referer)
     query = dict(parse_qsl(parsed.query))
@@ -547,17 +593,79 @@ def tool_detail(request, slug: str):
 
 
 def community(request):
+    """Render the community hub with basic filtering and pagination."""
     footer = get_footer_content()
-    return render(
-        request,
-        "coresite/community.html",
-        {
-            "footer": footer,
-            "page_id": "community",
-            "page_title": "Community",
-            "canonical_url": "/community/",
-        },
-    )
+    filter_param = request.GET.get("filter", "latest")
+    tag = request.GET.get("tag")
+    page_number = int(request.GET.get("page", 1))
+    robots = "index,follow" if settings.COMMUNITY_INDEXABLE else "noindex,nofollow"
+
+    error = False
+    from django.core.paginator import Paginator, EmptyPage
+    try:
+        threads = list(THREADS)
+        if filter_param == "unanswered":
+            threads = [t for t in threads if not t["answered"]]
+        if tag:
+            threads = [t for t in threads if tag in t["tags"]]
+        threads.sort(key=lambda t: t["updated"], reverse=True)
+        paginator = Paginator(threads, 10)
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    except Exception:
+        threads = []
+        paginator = Paginator([], 1)
+        page_obj = paginator.page(1)
+        error = True
+
+    selected_tags = set([tag]) if tag else set()
+    if not selected_tags:
+        for t in page_obj.object_list:
+            selected_tags.update(t["tags"])
+
+    related = {}
+    for key, items in RELATED_CONTENT_ITEMS.items():
+        filtered = [i for i in items if selected_tags.intersection(i["tags"])]
+        if key == "knowledge":
+            related[key] = filtered[:2]
+        else:
+            related[key] = filtered[:1]
+
+    def absolute_page_url(num: int) -> str:
+        params = {}
+        if num != 1:
+            params["page"] = num
+        if filter_param != "latest":
+            params["filter"] = filter_param
+        if tag:
+            params["tag"] = tag
+        query = f"?{urlencode(params)}" if params else ""
+        return f"/community/{query}"
+
+    prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
+    next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
+
+    context = {
+        "footer": footer,
+        "page_id": "community",
+        "page_title": "Technofatty Community",
+        "meta_title": "Technofatty Community — Questions & Discussions",
+        "canonical_url": absolute_page_url(page_number),
+        "threads": page_obj.object_list,
+        "page_obj": page_obj,
+        "filter": filter_param,
+        "tag": tag,
+        "related_content": related,
+        "error": error,
+        "meta_robots": robots,
+        "prev_page_url": prev_page,
+        "next_page_url": next_page,
+        "site_base_url": settings.SITE_BASE_URL,
+    }
+    response = render(request, "coresite/community.html", context)
+    response["X-Robots-Tag"] = robots
+    return response
 
 
 def blog(request):
