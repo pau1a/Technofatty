@@ -3,7 +3,7 @@ Django==4.2.23
 django-ckeditor-5==0.2.9
 django-compressor==4.4
 django-sass-processor==1.4.1
-easy-thumbnails==2.9.1
+easy-thumbnails==2.10
 libsass==0.23.0
 Pillow==10.3.0
 psycopg2-binary==2.9.9
