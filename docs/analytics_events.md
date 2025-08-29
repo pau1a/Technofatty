@@ -16,3 +16,17 @@ Event Name | Location | Business Goal
 `share.twitter` | Twitter share button on articles | Encourage content sharing
 `share.linkedin` | LinkedIn share button on articles | Encourage professional engagement
 `case_study_card_click` | Case study card links | Explore individual case studies
+`community.view_hub` | Community hub page load | Measure community page visits
+`cta.community.ask_question` | "Ask a Question" CTA | Encourage new thread creation
+`cta.community.subscribe_updates` | "Subscribe to Updates" CTA | Grow community subscribers
+`community.filter.latest` | Filter strip: Latest | Understand filter preference
+`community.filter.unanswered` | Filter strip: Unanswered | Track interest in unanswered threads
+`community.filter.tag` | Tag pill selection | Gauge tag-based navigation
+
+All `community.*` and `cta.community.*` events include payload properties:
+- `surface`: "community"
+- `filter`: current filter when relevant
+- `position`: location of the control (e.g., "header", "footer")
+- `tag`: selected tag for tag filter events
+
+Events are emitted only after consent; before consent, event senders must no-op.

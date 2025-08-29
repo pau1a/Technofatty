@@ -1,16 +1,166 @@
 {% extends "coresite/base.html" %}
+{% load seo_tags jsonld %}
 
-{% block structured_data %}{{ block.super }}{% endblock %}
-
-{% block content %}
-  <section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
-    <div class="wrap">
-      <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
-      <div class="scaffold__body">
-        {% include "coresite/partials/global/status_placeholder.html" %}
-        <!-- Empty placeholder container. Content to be built in later passes. -->
-      </div>
-    </div>
-  </section>
+{% block meta %}
+  {% with meta_description="Get practical answers from peers and TF staff on growth, content, analytics, and tools in the Technofatty Community." meta_robots=meta_robots meta_title=meta_title %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+  {% if prev_page_url %}<link rel="prev" href="{{ prev_page_url }}">{% endif %}
+  {% if next_page_url %}<link rel="next" href="{{ next_page_url }}">{% endif %}
 {% endblock %}
 
+{% block structured_data %}
+  {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
+  {% jsonld %}
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ resolved_canonical }}#webpage",
+      "url": "{{ resolved_canonical }}",
+      "name": "{{ page_title|escapejs }}",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "{{ resolved_canonical }}#breadcrumb",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":"{{ site_base_url }}/"},
+        {"@type":"ListItem","position":2,"name":"{{ page_title|escapejs }}","item":"{{ resolved_canonical }}"}
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "{{ resolved_canonical }}#list",
+      "itemListElement": [
+        {% for thread in threads %}{"@type":"ListItem","position":{{ forloop.counter }},"url":"{{ site_base_url }}/community/t/{{ thread.slug }}/"}{% if not forloop.last %},{% endif %}{% endfor %}
+      ]
+    }
+  ]
+}
+  {% endjsonld %}
+{% endblock %}
+
+{% block content %}
+<section class="community-hub" aria-labelledby="{{ page_id }}-heading">
+  <a class="skip-link" href="#content">Skip to threads</a>
+  <div class="wrap">
+    <h1 id="{{ page_id }}-heading">Technofatty Community</h1>
+    <p class="community-subhead">Get practical answers from peers and TF staff on growth, content, analytics, and tools.</p>
+    <div class="community-ctas">
+      <a class="btn btn--cta" href="/community/ask/" data-analytics-event="cta.community.ask_question" data-analytics-meta='{"surface":"community","position":"header","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Ask a Question</a>
+      <a class="btn btn--alt" href="/subscribe/" data-analytics-event="cta.community.subscribe_updates" data-analytics-meta='{"surface":"community","position":"header","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Subscribe to Updates</a>
+    </div>
+    <nav class="community-filterbar" aria-label="Thread filters">
+      <ul class="community-filters">
+        <li><a href="?filter=latest" aria-current="{% if filter == 'latest' and not tag %}page{% endif %}" data-analytics-event="community.filter.latest" data-analytics-meta='{"surface":"community","filter":"latest","position":"filterbar"}'>Latest</a></li>
+        <li><a href="?filter=unanswered" aria-current="{% if filter == 'unanswered' %}page{% endif %}" data-analytics-event="community.filter.unanswered" data-analytics-meta='{"surface":"community","filter":"unanswered","position":"filterbar"}'>Unanswered</a></li>
+      </ul>
+    </nav>
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="pager" aria-label="Pagination">
+      {% if page_obj.has_previous %}
+        <a class="pager__prev" rel="prev" href="?page={{ page_obj.previous_page_number }}{% if filter != 'latest' %}&filter={{ filter }}{% endif %}{% if tag %}&tag={{ tag }}{% endif %}" aria-label="Previous Page">Previous Page</a>
+      {% endif %}
+      <span class="pager__current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="pager__next" rel="next" href="?page={{ page_obj.next_page_number }}{% if filter != 'latest' %}&filter={{ filter }}{% endif %}{% if tag %}&tag={{ tag }}{% endif %}" aria-label="Next Page">Next Page</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+    <main id="content">
+      {% if error %}
+        <p>We're having trouble right now. Please try again later.</p>
+        <div class="community-ctas">
+        <a class="btn btn--cta" href="/community/ask/" data-analytics-event="cta.community.ask_question" data-analytics-meta='{"surface":"community","position":"error","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Ask a Question</a>
+          <a class="btn btn--alt" href="/subscribe/" data-analytics-event="cta.community.subscribe_updates" data-analytics-meta='{"surface":"community","position":"error","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Subscribe to Updates</a>
+        </div>
+      {% elif threads %}
+      <ul class="thread-list">
+        {% for thread in threads %}
+        <li class="thread-card">
+          <article>
+            <h2><a href="/community/t/{{ thread.slug }}/">{{ thread.title }}</a></h2>
+            <ul class="thread-tags">
+              {% for t in thread.tags|slice:':3' %}
+                <li><a href="?tag={{ t }}" data-analytics-event="community.filter.tag" data-analytics-meta='{"surface":"community","tag":"{{ t }}","position":"thread_card"}'>#{{ t }}</a></li>
+              {% endfor %}
+            </ul>
+            <p class="thread-meta">
+              <span class="thread-author">{{ thread.author }}</span> ·
+              {{ thread.replies }} replies ·
+              <time datetime="{{ thread.updated|date:'Y-m-d' }}">{{ thread.updated|date:'d M Y' }}</time>
+              {% if thread.answered %} · <span class="thread-answered" aria-label="Answered">✓</span>{% endif %}
+            </p>
+          </article>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        {% if filter == 'unanswered' %}
+          <p>No threads match that yet.</p>
+        {% else %}
+          <p>Be the first to ask…</p>
+        {% endif %}
+        <div class="community-ctas">
+        <a class="btn btn--cta" href="/community/ask/" data-analytics-event="cta.community.ask_question" data-analytics-meta='{"surface":"community","position":"empty","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Ask a Question</a>
+          <a class="btn btn--alt" href="/subscribe/" data-analytics-event="cta.community.subscribe_updates" data-analytics-meta='{"surface":"community","position":"empty","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Subscribe to Updates</a>
+        </div>
+      {% endif %}
+    </main>
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="pager" aria-label="Pagination">
+      {% if page_obj.has_previous %}
+        <a class="pager__prev" rel="prev" href="?page={{ page_obj.previous_page_number }}{% if filter != 'latest' %}&filter={{ filter }}{% endif %}{% if tag %}&tag={{ tag }}{% endif %}" aria-label="Previous Page">Previous Page</a>
+      {% endif %}
+      <span class="pager__current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="pager__next" rel="next" href="?page={{ page_obj.next_page_number }}{% if filter != 'latest' %}&filter={{ filter }}{% endif %}{% if tag %}&tag={{ tag }}{% endif %}" aria-label="Next Page">Next Page</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+    {% if related_content.knowledge or related_content.tools or related_content.case_studies %}
+    <section aria-labelledby="related-heading" class="related-content">
+      <h2 id="related-heading">Related across TF</h2>
+      <div class="related-groups">
+        {% for item in related_content.knowledge %}
+        <div class="related-card">
+          <span class="related-label">From Knowledge</span>
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+        {% endfor %}
+        {% for item in related_content.tools %}
+        <div class="related-card">
+          <span class="related-label">From Tools</span>
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+        {% endfor %}
+        {% for item in related_content.case_studies %}
+        <div class="related-card">
+          <span class="related-label">From Case Studies</span>
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+    <footer class="community-footer">
+      <a href="/code-of-conduct/">Code of Conduct</a>
+      <a href="/subscribe/" data-analytics-event="cta.community.subscribe_updates" data-analytics-meta='{"surface":"community","position":"footer","filter":"{{ filter }}"{% if tag %},"tag":"{{ tag }}"{% endif %}}'>Subscribe</a>
+    </footer>
+  </div>
+</section>
+{% endblock %}
+
+{% block body_scripts %}
+{{ block.super }}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var payload = {surface:'community', filter:'{{ filter }}'};
+  {% if tag %}payload.tag='{{ tag }}';{% endif %}
+  if (window.tfSend) { window.tfSend('community.view_hub', payload); }
+});
+</script>
+{% endblock %}

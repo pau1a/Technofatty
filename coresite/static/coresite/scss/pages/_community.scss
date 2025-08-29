@@ -1,0 +1,88 @@
+/* Community hub page */
+.community-hub {
+  padding-block: map-get($section-pad-y, base);
+  @include mq(md) { padding-block: map-get($section-pad-y, md); }
+}
+
+/* Accessible skip link */
+.skip-link {
+  position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+}
+.skip-link:focus {
+  position: static; width: auto; height: auto; padding: s(2) s(3);
+  background: c(bg-alt); color: c(text); border: bw(sm) solid c(blue);
+  border-radius: r(sm);
+}
+
+.community-filters {
+  display: flex;
+  gap: s(3);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 s(4) 0;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    @include focus-ring(c(blue));
+  }
+}
+
+.thread-card {
+  border-bottom: bw(sm) solid c(border);
+  padding: s(4) 0;
+
+  &:last-child { border-bottom: none; }
+
+  h2 {
+    font-size: fs(lg);
+    margin: 0 0 s(2) 0;
+  }
+
+  .thread-tags {
+    list-style: none;
+    display: flex;
+    gap: s(2);
+    padding: 0;
+    margin: 0 0 s(2) 0;
+  }
+
+  .thread-meta {
+    font-size: fs(sm);
+    color: c(text-muted);
+    .thread-author { font-weight: 600; }
+  }
+}
+
+.related-content {
+  margin-top: s(6);
+  .related-groups {
+    display: grid;
+    gap: s(3);
+  }
+  .related-card {
+    border: bw(sm) solid c(border);
+    padding: s(3);
+    .related-label {
+      font-size: fs(xs);
+      color: c(text-muted);
+      display: block;
+      margin-bottom: s(1);
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      @include focus-ring(c(blue));
+    }
+  }
+}
+
+.community-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: s(6);
+
+  a {
+    @include focus-ring(c(blue));
+  }
+}

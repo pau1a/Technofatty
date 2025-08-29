@@ -1,142 +1,68 @@
-# Mandate for Ged — Deliverables for `/community/`
+# Community Hub
 
-This is a **strategy + design directive**. Ged’s job is to implement it faithfully, with no improvisation. It will live in `docs/community-hub.md` so that all contributors treat it as source-of-truth.
+## Overview
 
----
+The Community Hub lists discussion threads and allows visitors to browse, ask new questions, or subscribe for updates.
 
-## 1. Page Identity
+### Headline & Subhead
+- **Technofatty Community** (H1)
+- Subhead: "Get practical answers from peers and TF staff on growth, content, analytics, and tools."
 
-* **H1:** `Technofatty Community`
-* **Subhead:** one crisp sentence: *“Get practical answers from peers and TF staff on growth, content, analytics, and tools.”*
-* **Primary CTA (accent button):** “Ask a Question”
-* **Secondary CTA (secondary button):** “Subscribe to Updates”
-* **Meta title (≤60 chars):** `Technofatty Community — Questions & Discussions`
-* **Meta description (≤155 chars):** `Ask questions, get practical answers, and learn from peers and TF staff across growth, content, analytics, and tools.`
+### Calls to Action
+- **Ask a Question** – primary CTA directing users to create a new thread.
+- **Subscribe to Updates** – secondary CTA for email notifications.
 
----
+### Filters
+Server‑rendered filter strip with:
+- **Latest** – default view.
+- **Unanswered** – shows threads without an accepted answer.
+Tag filtering is available via tag pills on thread cards.
 
-## 2. Above-the-Fold Layout
+### Pagination
+Top and bottom pagers navigate through thread pages.
 
-* Global header remains intact (nav + logo).
-* Beneath header: H1, subhead, two CTAs.
-* **Filter strip** below CTAs: [Latest] [Unanswered] [Tags] — must be server-rendered (progressive enhancement), not JS-only.
-* First two–three thread cards visible immediately (mobile-first viewport).
+### Thread Cards
+- Title (H2) linking to the thread
+- Tag pills linking to tag-filtered views
+- Byline showing the author
+- Reply count and updated timestamp
+- Optional "✓ answered" indicator when accepted answer exists
 
----
+### Related Content
+A block titled **Related across TF** shows up to:
+- Two Knowledge Articles
+- One Tool
+- One Case Study
+Items render as cards with small source labels (e.g., "From Knowledge") and collapse when content is missing. Results are based on shared tags with the current filter.
 
-## 3. Thread Card Contract
+### Accessibility
+- Global “Skip to content” targets the thread list.
+- Landmarks: `main`, `nav`, and `footer` are present.
+- All controls are keyboard reachable with visible focus rings and non–color cues.
 
-Each card is an H2 link. Must include:
+### Performance
+- Minimal server rendering; no blocking scripts.
+- Pagination limits payload to 10 threads per page.
 
-* Title (full, wrap lines).
-* 2–3 tags (max).
-* Reply count + “last updated” timestamp.
-* Optional: small byline for human flavor.
-* If answered: muted ✓ marker, visually distinct but not dominant.
+### SEO
+- `<title>` ≤60 chars and `<meta name="description">` ≤155 chars.
+- Canonical URL points to `/community/`.
+- JSON-LD: `CollectionPage` containing an `ItemList` for threads and `BreadcrumbList` for navigation.
+- Robots: set `<meta name="robots">` and `X-Robots-Tag` to `index,follow` only when `COMMUNITY_INDEXABLE` is true; otherwise `noindex,nofollow`.
 
-Accessibility rules:
+### Telemetry
+- `community.view_hub`
+- `cta.community.ask_question`
+- `cta.community.subscribe_updates`
+- `community.filter.latest`
+- `community.filter.unanswered`
+- `community.filter.tag` (includes selected tag in metadata)
 
-* Semantic headings (H2).
-* Focus outlines and labels enforced via SCSS tokens.
-* Contrast at WCAG AA minimum.
+All community events include payload properties:
+- `surface` – always "community"
+- `filter` – current filter when relevant
+- `position` – location of the control (e.g., "header", "footer")
+- `tag` – selected tag for tag events
 
----
-
-## 4. List & Pagination
-
-* List is paginated, not infinite scroll.
-* Page numbers + prev/next at top and bottom.
-* Empty states: friendly message + CTA to create thread.
-
----
-
-## 5. Related Across TF Block
-
-* Appears after thread list.
-* Pulls in: 2 Knowledge Articles, 1 Tool, 1 Case Study, based on tag overlap.
-* Uses existing card pattern with a label (“From Knowledge / Tools / Case Studies”).
-* If no matches, block collapses — no filler.
-
----
-
-## 6. Footer Anchors
-
-* Always includes link to **Community Code of Conduct**.
-* Newsletter signup repeats gently (a second chance).
-
----
-
-## 7. Structured Data
-
-Emit JSON-LD:
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Technofatty Community — Questions & Discussions",
-  "url": "https://technofatty.com/community/",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {"@type":"ListItem","position":1,"name":"Home","item":"https://technofatty.com/"},
-      {"@type":"ListItem","position":2,"name":"Community","item":"https://technofatty.com/community/"}
-    ]
-  },
-  "mainEntity": {
-    "@type": "ItemList",
-    "itemListOrder": "https://schema.org/ItemListOrderDescending",
-    "numberOfItems": 10,
-    "itemListElement": []
-  }
-}
-```
-
-Ged must populate `itemListElement` with thread links dynamically.
-
----
-
-## 8. Telemetry & Consent
-
-* Fire only after consent cookie is present (ConsentMiddleware).
-* Events:
-
-  * `community.view_hub` (on load)
-  * `community.filter_change` (with `filter=latest|unanswered|tags`)
-  * `community.cta_click` (with `cta=ask|subscribe`)
-* Namespace: `surface=community`
-
----
-
-## 9. Performance & Assets
-
-* Text-first: no hero video.
-* Thumbnails only if strictly necessary; if so, must declare width/height + lazyload.
-* CSS critical path only; Bootstrap + SCSS tokens; no ad-hoc hex.
-
----
-
-## 10. Accessibility Enforcement
-
-* “Skip to content” link must land on list.
-* Proper landmarks (`<main>`, `<nav>`, `<footer>`).
-* Focus outlines visible.
-* Tokens control spacing, colors, focus states.
-
----
-
-## 11. Crosslinks & Neural Net Philosophy
-
-* Hub is not siloed. It links sideways into Knowledge, Tools, Case Studies, Blog.
-* Every thread card page must also link back into Hub (“Return to Community”).
-* Tag taxonomy must be consistent across all sections.
-
----
-
-This page is therefore:
-
-* The **indexable doorway** to community (with env flag controlling robots.txt).
-* A **subscription driver** (Pulizzi’s content marketing doctrine).
-* A **trust anchor** (conduct + governance visible).
-* A **lateral node** in the TF neural net.
+Events are emitted only after consent; before consent, event senders must no-op.
 
