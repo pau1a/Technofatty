@@ -14,11 +14,13 @@ from .models import (
     ContactEvent,
     StatusChoices,
 )
-from ckeditor.widgets import CKEditorWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 
 class KnowledgeArticleAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorWidget(), required=False)
+    content = forms.CharField(
+        widget=CKEditor5Widget(config_name="default"), required=False
+    )
 
     class Meta:
         model = KnowledgeArticle

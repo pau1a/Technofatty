@@ -67,6 +67,7 @@ account_patterns = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
     path('', include('coresite.urls')),
     path('newsletter/', include('newsletter.urls')),
     path('robots.txt', core_views.robots_txt, name="robots_txt"),

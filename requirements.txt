@@ -1,6 +1,6 @@
 asgiref==3.8.1
 Django==4.2.23
-django-ckeditor==6.7.1
+django-ckeditor-5==0.2.9
 django-compressor==4.4
 django-sass-processor==1.4.1
 easy-thumbnails==2.9.1

@@ -94,7 +94,7 @@ INSTALLED_APPS = [
     "sass_processor",
     "compressor",
     'easy_thumbnails',
-    'ckeditor',
+    'django_ckeditor_5',
 ]
 
 MIDDLEWARE = [
@@ -296,10 +296,22 @@ CONSENT_COOKIE_HTTPONLY = (
 
 
 # -------------------------------------------------
-# CKEditor
+# CKEditor 5
 # -------------------------------------------------
-CKEDITOR_CONFIGS = {
+CKEDITOR_5_CONFIGS = {
     "default": {
-        "toolbar": "full",
+        "toolbar": [
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "link",
+            "bulletedList",
+            "numberedList",
+            "blockQuote",
+        ],
     }
 }
+
+# store uploaded assets under MEDIA_ROOT/ckeditor5/
+CKEDITOR_5_FILE_UPLOAD_PATH = "ckeditor5/"
