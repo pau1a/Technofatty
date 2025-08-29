@@ -13,8 +13,12 @@ from .feeds import (
     blog_json_feed,
     knowledge_json_feed,
 )
+from .health import db_health, cache_health, live_health
 
 urlpatterns = [
+    path("health/db/", db_health, name="health_db"),
+    path("health/cache/", cache_health, name="health_cache"),
+    path("health/live/", live_health, name="health_live"),
     path("", views.homepage, name="home"),
     path("consent/accept/", views.consent_accept, name="consent_accept"),
     path("consent/decline/", views.consent_decline, name="consent_decline"),

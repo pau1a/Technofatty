@@ -59,6 +59,20 @@ Use `tool_detail.view` with the tool identifier on individual tool pages:
 </script>
 ```
 
+## Log aggregation
+
+The analytics wrapper logs send outcomes to a `window.logAggregator` object when available, falling back to `console`. The aggregator should expose `info`, `warn`, and `error` methods that accept a structured payload:
+
+```js
+window.logAggregator = {
+  info:  (data) => {},
+  warn:  (data) => {},
+  error: (data) => {}
+};
+```
+
+Avoid including personal data in event metadata; scrub emails, phone numbers, or other identifiers before sending or logging.
+
 ## Current events
 
 These events support upcoming filtering and pagination features:

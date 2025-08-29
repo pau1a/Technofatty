@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
       /* ignore */
     }
 
-    body.dataset.consentGranted = 'true';
+    body.dataset.consentGranted = state === 'accepted' ? 'true' : 'false';
+    document.dispatchEvent(new Event('tf:consent-updated'));
     hideBanner();
   }
 
