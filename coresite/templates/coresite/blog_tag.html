@@ -1,15 +1,50 @@
 {% extends "coresite/base.html" %}
+{% load jsonld seo_tags %}
 
 {% block meta %}
   {% with meta_description="Posts tagged #"|add:page_title|add:"." %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
 {% endblock %}
-{% block structured_data %}{{ block.super }}{% endblock %}
+{% block structured_data %}
+  {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
+  {% jsonld %}
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "{{ resolved_canonical }}#webpage",
+        "url": "{{ resolved_canonical }}",
+        "name": "{{ page_title|escapejs }}",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "{{ resolved_canonical }}#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://technofatty.com/"},
+          {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://technofatty.com/blog/"},
+          {"@type": "ListItem", "position": 3, "name": "{{ page_title|escapejs }}", "item": "{{ resolved_canonical }}"}
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "@id": "{{ resolved_canonical }}#list",
+        "itemListElement": [
+          {% for post in posts %}{"@type": "ListItem", "position": {{ forloop.counter }}, "url": "https://technofatty.com/blog/{{ post.slug }}/"}{% if not forloop.last %},{% endif %}{% endfor %}
+        ]
+      }
+    ]
+  }
+  {% endjsonld %}
+{% endblock %}
 {% block content %}
   <section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
     <div class="wrap">
       <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
+      {% if tag_description %}<p>{{ tag_description }}</p>{% endif %}
       <div class="scaffold__body">
           {% include "coresite/partials/global/status_placeholder.html" %}
         <p>Back to Blog</p>
@@ -32,6 +67,31 @@
           <a href="{{ next_page_url }}">Older posts</a>
         </nav>
         {% include "coresite/partials/newsletter_signup.html" %}
+        {% if related_content.knowledge or related_content.tools or related_content.case_studies %}
+        <section aria-labelledby="related-heading" class="related-content">
+          <h2 id="related-heading">Related across TF</h2>
+          <div class="related-groups">
+            {% for item in related_content.knowledge %}
+            <div class="related-card">
+              <span class="related-label">From Knowledge</span>
+              <a href="{{ item.url }}">{{ item.title }}</a>
+            </div>
+            {% endfor %}
+            {% for item in related_content.tools %}
+            <div class="related-card">
+              <span class="related-label">From Tools</span>
+              <a href="{{ item.url }}">{{ item.title }}</a>
+            </div>
+            {% endfor %}
+            {% for item in related_content.case_studies %}
+            <div class="related-card">
+              <span class="related-label">From Case Studies</span>
+              <a href="{{ item.url }}">{{ item.title }}</a>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
       </div>
     </div>
   </section>

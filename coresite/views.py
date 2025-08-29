@@ -882,14 +882,30 @@ def blog_tag(request, tag_slug: str):
         if any(t.get("slug") == tag_slug for t in p.tags)
     ]
     tag_title = tag_slug.replace("-", " ").title()
+    tag_description = ""
+    for post in posts:
+        for t in post.tags:
+            if t.get("slug") == tag_slug:
+                tag_description = t.get("description", "")
+                break
+        if tag_description:
+            break
+
+    related = {}
+    for key, items in RELATED_CONTENT_ITEMS.items():
+        filtered = [i for i in items if tag_slug in i["tags"]]
+        related[key] = filtered[:2] if key == "knowledge" else filtered[:1]
+
     context = {
         "footer": footer,
         "page_id": "blog-tag",
         "page_title": tag_title,
+        "tag_description": tag_description,
         "posts": posts,
         "next_page_url": "#",
         "prev_page_url": "#",
         "canonical_url": f"/blog/tag/{tag_slug}/",
+        "related_content": related,
     }
     return render(request, "coresite/blog_tag.html", context)
 
