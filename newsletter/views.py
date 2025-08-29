@@ -2,11 +2,9 @@ import hashlib
 import time
 
 from django.conf import settings
-from django.contrib import messages
 from django.core.cache import cache
 from django.http import HttpResponseNotAllowed
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.shortcuts import render
 
 from .copy import get_copy
 from .forms import NewsletterSubscribeForm
@@ -14,63 +12,96 @@ from .providers import Result, get_provider
 from .utils import log_newsletter_event
 
 
-def newsletter_subscribe(request):
-    if request.method != "POST":
-        return HttpResponseNotAllowed(["POST"])
+def _render_noindex(request, template, context):
+    """Render a template with noindex header."""
+    response = render(request, template, context)
+    response["X-Robots-Tag"] = "noindex"
+    return response
 
+
+def newsletter_form(request):
+    """Render newsletter signup form and handle submissions."""
     copy = get_copy()
+    if request.method == "GET":
+        form = NewsletterSubscribeForm()
+        context = {
+            "form": form,
+            "copy": copy,
+            "page_id": "newsletter-form",
+            "page_title": "Subscribe to Newsletter",
+            "meta_title": "Subscribe to Newsletter",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/form.html", context)
+
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["GET", "POST"])
+
     email_input = request.POST.get("email", "").strip().lower()
     log_newsletter_event(request, "newsletter_subscribe_attempt", email=email_input)
 
     if request.POST.get("website"):
-        messages.success(
-            request,
-            copy["success_no_confirm"] if settings.OPT_IN_MODE == "single" else copy["success"],
-        )
         log_newsletter_event(
             request, "newsletter_subscribe_failure", email=email_input, result="honeypot"
         )
-        return redirect(reverse("home") + "#signup")
+        message = (
+            copy["success"]
+            if settings.OPT_IN_MODE == "double"
+            else copy["success_no_confirm"]
+        )
+        context = {
+            "message": message,
+            "copy": copy,
+            "page_id": "newsletter-confirm",
+            "page_title": "Subscription Received",
+            "meta_title": "Subscription Received",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/confirm.html", context)
 
     form = NewsletterSubscribeForm(request.POST)
     if not form.is_valid():
-        if "email" in form.errors:
-            messages.error(request, form.errors["email"][0])
-            log_newsletter_event(
-                request, "newsletter_subscribe_failure", email=email_input, result="validation"
-            )
-        else:
-            messages.success(
-                request,
-                copy["success_no_confirm"] if settings.OPT_IN_MODE == "single" else copy["success"],
-            )
-            log_newsletter_event(
-                request, "newsletter_subscribe_failure", email=email_input, result="honeypot"
-            )
-        return redirect(reverse("home") + "#signup")
+        log_newsletter_event(
+            request, "newsletter_subscribe_failure", email=email_input, result="validation"
+        )
+        context = {
+            "form": form,
+            "copy": copy,
+            "page_id": "newsletter-form",
+            "page_title": "Subscribe to Newsletter",
+            "meta_title": "Subscribe to Newsletter",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/form.html", context)
 
     email = form.cleaned_data["email"].strip().lower()
     email_hash = hashlib.sha256(email.encode()).hexdigest()
     ip = request.META.get("REMOTE_ADDR", "")
 
     limits = getattr(
-        settings,
-        "NEWSLETTER_RATE_LIMITS",
-        {"ip_per_hour": 10, "email_per_hour": 5},
+        settings, "NEWSLETTER_RATE_LIMITS", {"ip_per_hour": 10, "email_per_hour": 5}
     )
     ip_key = f"nl:ip:{ip}"
     email_key = f"nl:email:{email_hash}"
     if cache.get(ip_key, 0) >= limits.get("ip_per_hour", 10) or cache.get(
         email_key, 0
     ) >= limits.get("email_per_hour", 5):
-        messages.error(request, copy["server_busy"])
         log_newsletter_event(
             request,
             "newsletter_subscribe_failure",
             email=email,
             result=Result.SERVER_BUSY.value,
         )
-        return redirect(reverse("home") + "#signup")
+        form.add_error(None, copy["server_busy"])
+        context = {
+            "form": form,
+            "copy": copy,
+            "page_id": "newsletter-form",
+            "page_title": "Subscribe to Newsletter",
+            "meta_title": "Subscribe to Newsletter",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/form.html", context)
 
     cache.set(ip_key, cache.get(ip_key, 0) + 1, 3600)
     cache.set(email_key, cache.get(email_key, 0) + 1, 3600)
@@ -84,7 +115,6 @@ def newsletter_subscribe(request):
         duration = (time.monotonic() - start) * 1000
     except TimeoutError:
         duration = (time.monotonic() - start) * 1000
-        messages.error(request, copy["server_busy"])
         log_newsletter_event(
             request,
             "newsletter_subscribe_failure",
@@ -92,10 +122,18 @@ def newsletter_subscribe(request):
             result=Result.SERVER_BUSY.value,
             duration_ms=duration,
         )
-        return redirect(reverse("home") + "#signup")
+        form.add_error(None, copy["server_busy"])
+        context = {
+            "form": form,
+            "copy": copy,
+            "page_id": "newsletter-form",
+            "page_title": "Subscribe to Newsletter",
+            "meta_title": "Subscribe to Newsletter",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/form.html", context)
     except Exception:
         duration = (time.monotonic() - start) * 1000
-        messages.error(request, copy["error"])
         log_newsletter_event(
             request,
             "newsletter_subscribe_failure",
@@ -103,13 +141,22 @@ def newsletter_subscribe(request):
             result=Result.ERROR.value,
             duration_ms=duration,
         )
-        return redirect(reverse("home") + "#signup")
+        form.add_error(None, copy["error"])
+        context = {
+            "form": form,
+            "copy": copy,
+            "page_id": "newsletter-form",
+            "page_title": "Subscribe to Newsletter",
+            "meta_title": "Subscribe to Newsletter",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/form.html", context)
 
     if result in (Result.SUCCESS, Result.ALREADY, Result.NEEDS_CONFIRM):
         if settings.OPT_IN_MODE == "double" or result == Result.NEEDS_CONFIRM:
-            messages.success(request, copy["success"])
+            message = copy["success"]
         else:
-            messages.success(request, copy["success_no_confirm"])
+            message = copy["success_no_confirm"]
         log_newsletter_event(
             request,
             "newsletter_subscribe_success",
@@ -117,23 +164,39 @@ def newsletter_subscribe(request):
             result=result.value,
             duration_ms=duration,
         )
-    elif result == Result.SERVER_BUSY:
-        messages.error(request, copy["server_busy"])
-        log_newsletter_event(
-            request,
-            "newsletter_subscribe_failure",
-            email=email,
-            result=result.value,
-            duration_ms=duration,
-        )
-    else:
-        messages.error(request, copy["error"])
-        log_newsletter_event(
-            request,
-            "newsletter_subscribe_failure",
-            email=email,
-            result=result.value,
-            duration_ms=duration,
-        )
+        context = {
+            "message": message,
+            "copy": copy,
+            "page_id": "newsletter-confirm",
+            "page_title": "Subscription Received",
+            "meta_title": "Subscription Received",
+            "meta_robots": "noindex",
+        }
+        return _render_noindex(request, "newsletter/confirm.html", context)
 
-    return redirect(reverse("home") + "#signup")
+    if result == Result.SERVER_BUSY:
+        form.add_error(None, copy["server_busy"])
+    else:
+        form.add_error(None, copy["error"])
+    log_newsletter_event(
+        request,
+        "newsletter_subscribe_failure",
+        email=email,
+        result=result.value,
+        duration_ms=duration,
+    )
+    context = {
+        "form": form,
+        "copy": copy,
+        "page_id": "newsletter-form",
+        "page_title": "Subscribe to Newsletter",
+        "meta_title": "Subscribe to Newsletter",
+        "meta_robots": "noindex",
+    }
+    return _render_noindex(request, "newsletter/form.html", context)
+
+
+def newsletter_subscribe(request):
+    """Backward compatible alias for newsletter_form."""
+    return newsletter_form(request)
+

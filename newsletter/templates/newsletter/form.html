@@ -1,0 +1,24 @@
+{% extends "coresite/base.html" %}
+{% load static %}
+
+{% block meta %}
+  {% with meta_title=page_title meta_robots=meta_robots %}
+    {% include "coresite/partials/seo/meta_head.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block content %}
+<h1>Subscribe to the Newsletter</h1>
+<p>{{ copy.consent|default:"By subscribing, you consent to receive emails from Technofatty." }}</p>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div>
+    {{ form.email.label_tag }} {{ form.email }}
+    {% if form.email.errors %}<div class="error">{{ form.email.errors|striptags }}</div>{% endif %}
+  </div>
+  {{ form.website }}
+  <button type="submit">Subscribe</button>
+</form>
+{% endblock %}
+
