@@ -598,7 +598,7 @@ def community(request):
     filter_param = request.GET.get("filter", "latest")
     tag = request.GET.get("tag")
     page_number = int(request.GET.get("page", 1))
-    robots = "index,follow" if settings.COMMUNITY_INDEXABLE else "noindex,nofollow"
+    robots = "index,follow"
 
     error = False
     from django.core.paginator import Paginator, EmptyPage
