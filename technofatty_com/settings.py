@@ -70,6 +70,10 @@ SITE_BASE_URL = os.environ.get("SITE_BASE_URL", f"https://{SITE_CANONICAL_HOST}"
 # Only the lowercase string "true" enables indexing.
 TOOLS_INDEXABLE = os.environ.get("TOOLS_INDEXABLE", "false").lower() == "true"
 
+# Whether case study pages should be indexable by search engines.
+# Mirroring the tools setting, only the lowercase string "true" enables indexing.
+CASE_STUDIES_INDEXABLE = os.environ.get("CASE_STUDIES_INDEXABLE", "false").lower() == "true"
+
 # -------------------------------------------------
 # Applications
 # -------------------------------------------------

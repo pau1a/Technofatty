@@ -1,16 +1,35 @@
 {% extends "coresite/base.html" %}
-
-{% block structured_data %}{{ block.super }}{% endblock %}
+{% load jsonld seo_tags %}
 
 {% block meta %}
-  {% with meta_description="Case study details from Technofatty." og_type="article" %}
+  {% with meta_description=case_study.summary|default:"Case study from Technofatty." og_type="article" %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
 {% endblock %}
 
-{% block content %}
-<h1>Case Study Title</h1>
-{% include "coresite/partials/global/status_placeholder.html" %}
+{% block structured_data %}
+  {{ block.super }}
+  {% canonical_url canonical_url as resolved_canonical %}
+  {% jsonld %}
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ case_study.title|escapejs }}",
+    "url": "{{ resolved_canonical }}",
+    "dateModified": "{{ case_study.updated_at|date:'c' }}"{% if case_study.image %},
+    "image": "{{ case_study.image.url|escapejs }}"{% endif %}
+  }
+  {% endjsonld %}
+{% endblock %}
 
-<div class="container content"></div>
+{% block content %}
+<section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
+  <div class="wrap">
+    <h1 id="{{ page_id }}-heading">{{ case_study.title }}</h1>
+    <div class="scaffold__body">
+      {% include "coresite/partials/global/status_placeholder.html" %}
+    </div>
+  </div>
+</section>
+{% include "coresite/partials/newsletter_signup.html" %}
 {% endblock %}
