@@ -1016,6 +1016,11 @@ def blog_post(request, post_slug: str):
     primary_goal_meta = None
     if post.primary_goal == PrimaryGoalChoices.NEWSLETTER:
         primary_goal_meta = json.dumps({"form": "newsletter", "post": post.slug})
+
+    related = {}
+    for key, items in RELATED_CONTENT_ITEMS.items():
+        filtered = [i for i in items if set(tags) & set(i["tags"])]
+        related[key] = filtered[:2] if key == "knowledge" else filtered[:1]
     context = {
         "footer": footer,
         "page_id": "post",
@@ -1023,6 +1028,7 @@ def blog_post(request, post_slug: str):
         "post": post,
         "canonical_url": post.canonical_url,
         "related_discussions": _related_threads(tags),
+        "related_content": related,
         "breadcrumbs": breadcrumbs,
         "blog_label": blog_link["label"] if blog_link else "Blog",
         "primary_goal_meta": primary_goal_meta,
