@@ -38,6 +38,23 @@
   margin-bottom: s(6);
 }
 
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: s(2);
+  margin-bottom: s(5);
+
+  select,
+  button {
+    font-size: fs(sm);
+    padding: s(1) s(2);
+  }
+
+  .filter-reset {
+    font-size: fs(sm);
+  }
+}
+
 .post-grid {
   display: grid;
   grid-template-columns: 1fr;

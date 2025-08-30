@@ -65,34 +65,61 @@
       <div class="scaffold__body">
           {% include "coresite/partials/global/status_placeholder.html" %}
           <p>Latest news and insights from Technofatty.</p>
-          <div class="blog-layout">
-            <div class="blog-layout__main">
-              {% if featured_post %}
-              <article class="card featured-post">
-                <h2 class="card__title"><a class="card__link" href="{% url 'blog_post' featured_post.slug %}">{{ featured_post.title }}</a></h2>
-                <p class="post-meta">
-                  <time datetime="{{ featured_post.date|date:'Y-m-d' }}">{{ featured_post.date|date:'d M Y' }}</time> ·
-                  <a href="{% url 'blog_category' featured_post.category.slug %}">{{ featured_post.category.title }}</a>
-                </p>
-                <p class="post-excerpt">{{ featured_post.excerpt }}</p>
-                <p><a class="card__link" href="{% url 'blog_post' featured_post.slug %}">Read more →</a></p>
-              </article>
-              {% endif %}
-              <div class="post-grid">
-                {% for post in posts %}
-                <article class="card post-card">
-                  <h2 class="card__title"><a class="card__link" href="{% url 'blog_post' post.slug %}">{{ post.title }}</a></h2>
+            <div class="blog-layout">
+              <div class="blog-layout__main">
+                <form class="blog-filters" method="get">
+                  <label for="filter-category">Category</label>
+                  <select id="filter-category" name="category">
+                    <option value="">All</option>
+                    {% for c in categories %}
+                    <option value="{{ c.slug }}" {% if selected_category == c.slug %}selected{% endif %}>{{ c.title }}</option>
+                    {% endfor %}
+                  </select>
+                  <label for="filter-tag">Tag</label>
+                  <select id="filter-tag" name="tag">
+                    <option value="">All</option>
+                    {% for t in tags %}
+                    <option value="{{ t.slug }}" {% if selected_tag == t.slug %}selected{% endif %}>{{ t.title }}</option>
+                    {% endfor %}
+                  </select>
+                  <label for="filter-time">Time</label>
+                  <select id="filter-time" name="time">
+                    <option value="">All</option>
+                    {% for year in times %}
+                    <option value="{{ year }}" {% if selected_time == year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                  </select>
+                  <button type="submit">Filter</button>
+                  {% if selected_category or selected_tag or selected_time %}
+                  <a href="{% url 'blog' %}" class="filter-reset">Reset</a>
+                  {% endif %}
+                </form>
+                {% if featured_post %}
+                <article class="card featured-post">
+                  <h2 class="card__title"><a class="card__link" href="{% url 'blog_post' featured_post.slug %}">{{ featured_post.title }}</a></h2>
                   <p class="post-meta">
-                    <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:'d M Y' }}</time> ·
-                    <a href="{% url 'blog_category' post.category.slug %}">{{ post.category.title }}</a>
+                    <time datetime="{{ featured_post.published_at|date:'Y-m-d' }}">{{ featured_post.published_at|date:'d M Y' }}</time> ·
+                    <a href="{% url 'blog_category' featured_post.category_slug %}">{{ featured_post.category_title }}</a>
                   </p>
-                  <p class="post-excerpt">{{ post.excerpt }}</p>
-                  <p><a class="card__link" href="{% url 'blog_post' post.slug %}">Read more →</a></p>
+                  <p class="post-excerpt">{{ featured_post.excerpt }}</p>
+                  <p><a class="card__link" href="{% url 'blog_post' featured_post.slug %}">Read more →</a></p>
                 </article>
-                {% endfor %}
-              </div>
+                {% endif %}
+                <div class="post-grid">
+                  {% for post in posts %}
+                  <article class="card post-card">
+                    <h2 class="card__title"><a class="card__link" href="{% url 'blog_post' post.slug %}">{{ post.title }}</a></h2>
+                    <p class="post-meta">
+                      <time datetime="{{ post.published_at|date:'Y-m-d' }}">{{ post.published_at|date:'d M Y' }}</time> ·
+                      <a href="{% url 'blog_category' post.category_slug %}">{{ post.category_title }}</a>
+                    </p>
+                    <p class="post-excerpt">{{ post.excerpt }}</p>
+                    <p><a class="card__link" href="{% url 'blog_post' post.slug %}">Read more →</a></p>
+                  </article>
+                  {% endfor %}
+                </div>
             </div>
-            <aside class="topics" aria-labelledby="topics-heading">
+              <aside class="topics" aria-labelledby="topics-heading">
               <h2 id="topics-heading">Topics</h2>
               <ul class="topics__list">
                 {% for category in categories %}
