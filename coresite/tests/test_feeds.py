@@ -17,6 +17,10 @@ def test_blog_rss_feed(client):
         slug="test-post",
         status=StatusChoices.PUBLISHED,
         published_at=timezone.now(),
+        meta_title="Test Post",
+        meta_description="Desc",
+        og_image_url="https://example.com/og.png",
+        twitter_image_url="https://example.com/tw.png",
     )
     response = client.get(reverse("blog_rss"))
     assert response.status_code == 200
@@ -31,6 +35,10 @@ def test_blog_atom_feed(client):
         slug="atom-post",
         status=StatusChoices.PUBLISHED,
         published_at=timezone.now(),
+        meta_title="Atom Post",
+        meta_description="Desc",
+        og_image_url="https://example.com/og.png",
+        twitter_image_url="https://example.com/tw.png",
     )
     response = client.get(reverse("blog_atom"))
     assert response.status_code == 200
@@ -44,6 +52,10 @@ def test_blog_json_feed(client):
         slug="json-post",
         status=StatusChoices.PUBLISHED,
         published_at=timezone.now(),
+        meta_title="JSON Post",
+        meta_description="Desc",
+        og_image_url="https://example.com/og.png",
+        twitter_image_url="https://example.com/tw.png",
     )
     response = client.get(reverse("blog_json"))
     assert response.status_code == 200

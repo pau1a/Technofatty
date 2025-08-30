@@ -963,7 +963,7 @@ def blog_post(request, post_slug: str):
         "page_id": "post",
         "page_title": post["title"],
         "post": post,
-        "canonical_url": f"/blog/{post_slug}/",
+        "canonical_url": post.canonical_url,
         "related_discussions": _related_threads(tags),
     }
     return render(request, "coresite/blog_detail.html", context)

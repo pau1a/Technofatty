@@ -55,6 +55,10 @@ def test_related_discussions_on_blog_post(client):
         category_slug="general",
         category_title="General",
         tags=[{"slug": "deployment", "title": "Deployment"}],
+        meta_title="Tag Post",
+        meta_description="Desc",
+        og_image_url="https://example.com/og.png",
+        twitter_image_url="https://example.com/tw.png",
     )
     res = client.get(reverse("blog_post", args=[post.slug]))
     assert "Related discussions" in res.content.decode()

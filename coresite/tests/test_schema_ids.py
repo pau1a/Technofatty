@@ -18,6 +18,10 @@ def test_blog_post_schema_ids(client, db):
         slug="test-post",
         status=StatusChoices.PUBLISHED,
         published_at=timezone.now(),
+        meta_title="Test Post",
+        meta_description="Desc",
+        og_image_url="https://example.com/og.png",
+        twitter_image_url="https://example.com/tw.png",
     )
     resp = client.get("/blog/test-post/")
     assert resp.status_code == 200
