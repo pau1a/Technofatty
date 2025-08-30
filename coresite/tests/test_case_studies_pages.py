@@ -38,7 +38,12 @@ def test_case_study_detail_page(client):
     )
     assert res["X-Robots-Tag"] == expected
     assert f'<h1 id="case-study-detail-heading">{study.title}</h1>' in html
+    assert '<nav class="breadcrumbs"' in html
     assert '"@type": "Article"' in html
+    assert '"@type": "BreadcrumbList"' in html
+    assert '"inLanguage": "en"' in html
+    assert '"datePublished":' in html
+    assert 'http://testserver/case-studies/' in html
 
 
 @pytest.mark.django_db

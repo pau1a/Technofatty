@@ -10,14 +10,37 @@
 {% block structured_data %}
   {{ block.super }}
   {% canonical_url canonical_url as resolved_canonical %}
+  {% canonical_url '/' as site_base_url %}
+  {% canonical_url '/case-studies/' as case_studies_url %}
   {% jsonld %}
   {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ case_study.title|escapejs }}",
-    "url": "{{ resolved_canonical }}",
-    "dateModified": "{{ case_study.updated_at|date:'c' }}"{% if case_study.image %},
-    "image": "{{ case_study.image.url|escapejs }}"{% endif %}
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "{{ resolved_canonical }}#article",
+        "headline": "{{ case_study.title|escapejs }}",
+        "inLanguage": "en",
+        "url": "{{ resolved_canonical }}",
+        "datePublished": "{{ case_study.created_at|date:'c' }}",
+        "dateModified": "{{ case_study.updated_at|date:'c' }}"{% if case_study.image %},
+        "image": {
+          "@type": "ImageObject",
+          "url": "{{ case_study.image.url|escapejs }}"{% if case_study.image.width and case_study.image.height %},
+          "width": {{ case_study.image.width }},
+          "height": {{ case_study.image.height }}{% endif %}
+        }{% endif %}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "{{ resolved_canonical }}#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site_base_url }}"},
+          {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "{{ case_studies_url }}"},
+          {"@type": "ListItem", "position": 3, "name": "{{ case_study.title|escapejs }}", "item": "{{ resolved_canonical }}"}
+        ]
+      }
+    ]
   }
   {% endjsonld %}
 {% endblock %}
@@ -25,6 +48,13 @@
 {% block content %}
 <section class="section section--scaffold" aria-labelledby="{{ page_id }}-heading">
   <div class="wrap">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/case-studies/">Case Studies</a></li>
+        <li aria-current="page">{{ case_study.title }}</li>
+      </ol>
+    </nav>
     <h1 id="{{ page_id }}-heading">{{ case_study.title }}</h1>
     <div class="scaffold__body">
       {% include "coresite/partials/global/status_placeholder.html" %}
