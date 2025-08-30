@@ -9,6 +9,7 @@ Knowledge (content system) → `knowledge.md`
 Blog (editorial tie-ins) → `blog.md`  
 Telemetry & data layer → `telemetry.md`  
 PR & release hygiene → `pr-playbook.md`
+Content template → `content-template.md`
 
 ## How to use this folder
 Capture ideas as they surface. Link them across docs rather than duplicating. Prefer small, frequent commits that keep rationale next to decisions.
