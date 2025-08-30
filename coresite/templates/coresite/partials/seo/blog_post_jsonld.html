@@ -34,8 +34,9 @@
       "@id": "{{ canonical_url }}#breadcrumb",
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://technofatty.com/"},
-        {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://technofatty.com/blog/"},
-        {"@type": "ListItem", "position": 3, "name": "{{ post.title|escapejs }}", "item": "{{ canonical_url }}"}
+        {"@type": "ListItem", "position": 2, "name": "{{ blog_label|escapejs }}", "item": "https://technofatty.com/blog/"},
+        {"@type": "ListItem", "position": 3, "name": "{{ post.category_title|escapejs }}", "item": "https://technofatty.com/blog/category/{{ post.category_slug }}/"},
+        {"@type": "ListItem", "position": 4, "name": "{{ post.title|escapejs }}", "item": "{{ canonical_url }}"}
       ]
     }
   ]
