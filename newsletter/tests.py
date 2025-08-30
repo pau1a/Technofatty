@@ -66,6 +66,97 @@ class NewsletterViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn("We’re having trouble right now", response.content.decode())
 
+
+class NewsletterBlockUtilsTests(TestCase):
+    @override_settings(SITE_BASE_URL="https://example.com")
+    def test_render_block_contains_required_fields(self):
+        from coresite.models import BlogPost
+        from newsletter.utils import extract_block_context, render_block
+
+        long_html = "<p>" + "x" * 210 + "</p>"
+        post = BlogPost.objects.create(
+            title="A title",
+            excerpt=long_html,
+            og_image_url="/media/test.png",
+        )
+
+        ctx = extract_block_context(post)
+        expected_excerpt = "x" * 200 + "…"
+        self.assertEqual(
+            ctx,
+            {
+                "title": "A title",
+                "excerpt": expected_excerpt,
+                "image_url": "https://example.com/media/test.png",
+                "url": f"https://example.com{post.canonical_url}?utm_source=newsletter&utm_medium=email&utm_campaign=weekly",
+                "alt": "A title",
+            },
+        )
+
+        html = render_block(post)
+        self.assertIn("A title", html)
+        self.assertIn(expected_excerpt, html)
+        self.assertIn("https://example.com/media/test.png", html)
+        self.assertIn('alt="A title"', html)
+
+    @override_settings(SITE_BASE_URL="")
+    def test_block_context_respects_missing_site_base(self):
+        from coresite.models import BlogPost
+        from newsletter.utils import extract_block_context
+
+        post = BlogPost.objects.create(
+            title="Title",
+            excerpt="<p>hello world</p>",
+            og_image_url="/media/test.png",
+        )
+
+        ctx = extract_block_context(post)
+        self.assertEqual(
+            ctx["url"],
+            f"{post.canonical_url}?utm_source=newsletter&utm_medium=email&utm_campaign=weekly",
+        )
+        self.assertEqual(ctx["image_url"], "/media/test.png")
+
+    @override_settings(NEWSLETTER_UTM={"source": "src", "medium": "med", "campaign": "camp"})
+    def test_custom_utm_parameters(self):
+        from coresite.models import BlogPost
+        from newsletter.utils import extract_block_context
+
+        post = BlogPost.objects.create(title="Title", og_image_url="/media/test.png")
+        ctx = extract_block_context(post)
+        self.assertIn(
+            f"{post.canonical_url}?utm_source=src&utm_medium=med&utm_campaign=camp",
+            ctx["url"],
+        )
+
+    @override_settings(SITE_BASE_URL="https://example.com")
+    def test_imagefield_preferred_over_og_image(self):
+        class Dummy:
+            title = "Img"
+            image = type("Img", (), {"url": "/media/img.png"})()
+            og_image_url = "/media/og.png"
+            canonical_url = "/dummy/"
+
+        from newsletter.utils import extract_block_context
+
+        ctx = extract_block_context(Dummy())
+        self.assertEqual(ctx["image_url"], "https://example.com/media/img.png")
+        self.assertNotIn("og.png", ctx["image_url"])
+
+    @override_settings(SITE_BASE_URL="https://example.com")
+    def test_management_command_separates_blocks(self):
+        from coresite.models import BlogPost
+        from django.core.management import call_command
+        from io import StringIO
+
+        BlogPost.objects.create(title="First", slug="first")
+        BlogPost.objects.create(title="Second", slug="second")
+
+        out = StringIO()
+        call_command("newsletter_block", "first", "second", stdout=out)
+        output = out.getvalue()
+        self.assertIn("\n\n", output)
+
     def test_unknown_exception_maps_error(self):
         with mock.patch("newsletter.providers.StubProvider.subscribe", side_effect=Exception):
             response = self.client.post(reverse("newsletter_form"), {"email": "e@example.com"})
