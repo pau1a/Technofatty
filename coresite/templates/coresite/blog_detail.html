@@ -12,7 +12,7 @@
 {% block structured_data %}
   {{ block.super }}
   {% canonical_url canonical_url as resolved_canonical %}
-  {% include "coresite/partials/seo/blog_post_jsonld.html" with post=post canonical_url=resolved_canonical %}
+  {% include "coresite/partials/seo/blog_post_jsonld.html" with post=post canonical_url=resolved_canonical blog_label=blog_label %}
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
     <div class="wrap">
         <div class="scaffold__body">
           {% include "coresite/partials/global/status_placeholder.html" %}
-          <p class="back-link">← Back to Blog</p>
+          {% include "coresite/partials/global/breadcrumbs.html" with crumbs=breadcrumbs %}
           <h1 id="{{ page_id }}-heading">{{ page_title }}</h1>
           <p class="post-meta">
             <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:'d M Y' }}</time> ·

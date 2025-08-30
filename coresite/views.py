@@ -26,6 +26,7 @@ from .signals import get_signals_content
 from .support import get_support_content
 from .community import get_community_content
 from .footer import get_footer_content
+from coresite.context_processors import NAV_LINKS
 from . import moderation
 from django.contrib.admin.views.decorators import staff_member_required
 from utils import backlog
@@ -993,6 +994,23 @@ def blog_post(request, post_slug: str):
     footer = get_footer_content()
     post = get_object_or_404(BlogPost.published, slug=post_slug)
     tags = _content_tags(post)
+    blog_link = next((l for l in NAV_LINKS if l["url"] == "blog"), None)
+    breadcrumbs = [
+        {"title": "Home", "url": reverse("home")},
+    ]
+    if blog_link:
+        breadcrumbs.append(
+            {"title": blog_link["label"], "url": reverse(blog_link["url"])}
+        )
+    else:
+        breadcrumbs.append({"title": "Blog", "url": reverse("blog")})
+    breadcrumbs.append(
+        {
+            "title": post.category_title,
+            "url": reverse("blog_category", args=[post.category_slug]),
+        }
+    )
+    breadcrumbs.append({"title": post["title"], "url": post.canonical_url})
     context = {
         "footer": footer,
         "page_id": "post",
@@ -1000,6 +1018,8 @@ def blog_post(request, post_slug: str):
         "post": post,
         "canonical_url": post.canonical_url,
         "related_discussions": _related_threads(tags),
+        "breadcrumbs": breadcrumbs,
+        "blog_label": blog_link["label"] if blog_link else "Blog",
     }
     return render(request, "coresite/blog_detail.html", context)
 
