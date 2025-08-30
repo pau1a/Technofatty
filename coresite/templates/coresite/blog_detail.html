@@ -33,5 +33,91 @@
         </div>
         {% include "coresite/partials/_related_discussions.html" %}
       </div>
-    </section>
+  </section>
   {% endblock %}
+
+{% block body_scripts %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var slug = '{{ post.slug|escapejs }}';
+      var viewSent = false;
+      function sendView() {
+        if (window.tfSend && !viewSent) {
+          viewSent = true;
+          window.tfSend('blog_post_view', { post: slug });
+        }
+      }
+      sendView();
+      document.addEventListener('tf:consent-updated', sendView);
+
+      var article = document.querySelector('.post-body');
+      if (article) {
+        function isOnSite(pathPrefix, href) {
+          try {
+            var u = new URL(href, window.location.origin);
+            return u.origin === window.location.origin && u.pathname.startsWith(pathPrefix);
+          } catch (e) {
+            return false;
+          }
+        }
+        article.querySelectorAll('a').forEach(function (link) {
+          var href = link.getAttribute('href') || '';
+          if (link.dataset.analyticsEvent) return;
+          if (link.dataset.blogCta !== undefined) {
+            link.dataset.analyticsEvent = 'blog_cta_click';
+            link.dataset.analyticsMeta = JSON.stringify({ post: slug, target: href, utm: location.search.slice(1) });
+          } else if (isOnSite('/tools/', href)) {
+            link.dataset.analyticsEvent = 'blog_click_tool';
+            link.dataset.analyticsMeta = JSON.stringify({ post: slug, target: href });
+          } else if (isOnSite('/knowledge/', href)) {
+            link.dataset.analyticsEvent = 'blog_click_article';
+            link.dataset.analyticsMeta = JSON.stringify({ post: slug, target: href });
+          }
+        });
+      }
+
+      var fired = { start: false, mid: false, end: false };
+      function tick() {
+        if (!article || !window.tfSend) return;
+        var total = article.scrollHeight || article.offsetHeight || 0;
+        if (!total) return;
+        var top = article.getBoundingClientRect().top + window.scrollY;
+        var seen = Math.max(0, (window.scrollY + window.innerHeight - top));
+        var progress = seen / total;
+
+        if (progress > 0 && !fired.start) {
+          fired.start = true;
+          window.tfSend('blog_read_start', { post: slug });
+        }
+        if (progress >= 0.5 && !fired.mid) {
+          fired.mid = true;
+          window.tfSend('blog_read_50', { post: slug });
+        }
+        if (progress >= 0.95 && !fired.end) {
+          fired.end = true;
+          window.tfSend('blog_read_95', { post: slug });
+          off();
+        }
+      }
+      var scheduled = false;
+      function onScroll() {
+        if (!scheduled) {
+          scheduled = true;
+          requestAnimationFrame(function () {
+            scheduled = false;
+            tick();
+          });
+        }
+      }
+      function on() {
+        document.addEventListener('scroll', onScroll, { passive: true });
+      }
+      function off() {
+        document.removeEventListener('scroll', onScroll);
+      }
+      on();
+      tick();
+    });
+  </script>
+{% endblock %}

@@ -74,19 +74,25 @@
             {% for item in related_content.knowledge %}
             <div class="related-card">
               <span class="related-label">From Knowledge</span>
-              <a href="{{ item.url }}">{{ item.title }}</a>
+              <a href="{{ item.url }}"
+                 data-analytics-event="blog_related_click"
+                 data-analytics-meta='{"type":"knowledge","target":"{{ item.url|escapejs }}"}'>{{ item.title }}</a>
             </div>
             {% endfor %}
             {% for item in related_content.tools %}
             <div class="related-card">
               <span class="related-label">From Tools</span>
-              <a href="{{ item.url }}">{{ item.title }}</a>
+              <a href="{{ item.url }}"
+                 data-analytics-event="blog_related_click"
+                 data-analytics-meta='{"type":"tool","target":"{{ item.url|escapejs }}"}'>{{ item.title }}</a>
             </div>
             {% endfor %}
             {% for item in related_content.case_studies %}
             <div class="related-card">
               <span class="related-label">From Case Studies</span>
-              <a href="{{ item.url }}">{{ item.title }}</a>
+              <a href="{{ item.url }}"
+                 data-analytics-event="blog_related_click"
+                 data-analytics-meta='{"type":"case_study","target":"{{ item.url|escapejs }}"}'>{{ item.title }}</a>
             </div>
             {% endfor %}
           </div>
