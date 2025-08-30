@@ -48,7 +48,8 @@ def _run_ga4(consent_granted, enabled=True, provide_api=True):
           function hasConsent(){{return body.dataset.consentRequired!=='true'||body.dataset.consentGranted==='true';}}
           function isActive(){{return enabled&&hasConsent();}}
           function log(k,d){{logs.push([k,d]);}}
-          function send(n,m){{if(!isActive())return;m=m||{{}};try{{if(p==='plausible'&&window.plausible){{window.plausible(n,{{props:m}});log('info',{{event:n,meta:m,provider:p,ok:true}});}}else if(p==='ga4'&&window.gtag){{window.gtag('event',n,m);log('info',{{event:n,meta:m,provider:p,ok:true}});}}else{{log('warn',{{event:n,meta:m,provider:p,ok:false,reason:'provider-missing'}});}}}}catch(e){{log('error',{{event:n,meta:m,provider:p,ok:false,error:e.toString()}});}}}}
+          function uid(){{try{{return crypto.randomUUID()}}catch(e){{return Date.now().toString(36)+Math.random().toString(36).slice(2);}}}}
+          function send(n,m){{if(!isActive())return;m=m||{{}};var id=m.id||uid();m.id=id;try{{if(p==='plausible'&&window.plausible){{window.plausible(n,{{props:m}});log('info',{{id:id,event:n,meta:m,provider:p,ok:true}});}}else if(p==='ga4'&&window.gtag){{window.gtag('event',n,m);log('info',{{id:id,event:n,meta:m,provider:p,ok:true}});}}else{{log('warn',{{id:id,event:n,meta:m,provider:p,ok:false,reason:'provider-missing'}});}}}}catch(e){{log('error',{{id:id,event:n,meta:m,provider:p,ok:false,error:e.toString()}});}}}}
           if(isActive()){{window.tfSend=send;}}
           document.addEventListener('tf:consent-updated',function(){{if(isActive()&&!window.tfSend){{window.tfSend=send;}}}});
         }})();
@@ -71,15 +72,32 @@ def test_tf_send_plausible_respects_consent():
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
 def test_tf_send_plausible_sends_with_consent():
     result = _run_plausible(True)
-    assert result["calls"] == [['evt', {'props': {'foo': 'bar'}}]]
-    assert result["logs"] == [['info', {'event': 'evt', 'meta': {'foo': 'bar'}, 'provider': 'plausible', 'ok': True}]]
+    call = result["calls"][0]
+    assert call[0] == 'evt'
+    assert call[1]['props']['foo'] == 'bar'
+    assert 'id' in call[1]['props']
+    log = result["logs"][0]
+    assert log[0] == 'info'
+    data = log[1]
+    assert data['event'] == 'evt'
+    assert data['provider'] == 'plausible'
+    assert data['ok'] is True
+    assert data['meta']['foo'] == 'bar'
+    assert 'id' in data and data['id'] == data['meta']['id']
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
 def test_tf_send_logs_when_provider_missing():
     result = _run_plausible(True, provide_api=False)
     assert result["calls"] == []
-    assert result["logs"] == [['warn', {'event': 'evt', 'meta': {'foo': 'bar'}, 'provider': 'plausible', 'ok': False, 'reason': 'provider-missing'}]]
+    log = result["logs"][0]
+    assert log[0] == 'warn'
+    data = log[1]
+    assert data['event'] == 'evt'
+    assert data['provider'] == 'plausible'
+    assert data['ok'] is False
+    assert data['reason'] == 'provider-missing'
+    assert 'id' in data and 'id' in data['meta']
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
@@ -91,8 +109,19 @@ def test_tf_send_ga4_respects_consent():
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
 def test_tf_send_ga4_sends_with_consent():
     result = _run_ga4(True)
-    assert result["calls"] == [['event', 'evt', {'foo': 'bar'}]]
-    assert result["logs"] == [['info', {'event': 'evt', 'meta': {'foo': 'bar'}, 'provider': 'ga4', 'ok': True}]]
+    call = result["calls"][0]
+    assert call[0] == 'event'
+    assert call[1] == 'evt'
+    assert call[2]['foo'] == 'bar'
+    assert 'id' in call[2]
+    log = result["logs"][0]
+    assert log[0] == 'info'
+    data = log[1]
+    assert data['event'] == 'evt'
+    assert data['provider'] == 'ga4'
+    assert data['ok'] is True
+    assert data['meta']['foo'] == 'bar'
+    assert 'id' in data and data['id'] == data['meta']['id']
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
@@ -110,7 +139,8 @@ def test_tf_send_enables_after_consent_event():
           function hasConsent(){return body.dataset.consentRequired!=='true'||body.dataset.consentGranted==='true';}
           function isActive(){return enabled&&hasConsent();}
           function log(k,d){logs.push([k,d]);}
-          function send(n,m){if(!isActive())return;m=m||{};try{if(p==='plausible'&&window.plausible){window.plausible(n,{props:m});log('info',{event:n,meta:m,provider:p,ok:true});}else if(p==='ga4'&&window.gtag){window.gtag('event',n,m);log('info',{event:n,meta:m,provider:p,ok:true});}else{log('warn',{event:n,meta:m,provider:p,ok:false,reason:'provider-missing'});}}catch(e){log('error',{event:n,meta:m,provider:p,ok:false,error:e.toString()});}}
+          function uid(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2);}}
+          function send(n,m){if(!isActive())return;m=m||{};var id=m.id||uid();m.id=id;try{if(p==='plausible'&&window.plausible){window.plausible(n,{props:m});log('info',{id:id,event:n,meta:m,provider:p,ok:true});}else if(p==='ga4'&&window.gtag){window.gtag('event',n,m);log('info',{id:id,event:n,meta:m,provider:p,ok:true});}else{log('warn',{id:id,event:n,meta:m,provider:p,ok:false,reason:'provider-missing'});}}catch(e){log('error',{id:id,event:n,meta:m,provider:p,ok:false,error:e.toString()});}}
           if(isActive()){window.tfSend=send;}
           document.addEventListener('tf:consent-updated',function(){if(isActive()&&!window.tfSend){window.tfSend=send;}});
         })();
@@ -125,6 +155,12 @@ def test_tf_send_enables_after_consent_event():
     )
     result = subprocess.run(['node', '-e', script], capture_output=True, text=True, check=True)
     data = json.loads(result.stdout.strip())
-    assert data["calls"] == [['post', {'props': {}}]]
-    assert data["logs"][-1] == ['info', {'event': 'post', 'meta': {}, 'provider': 'plausible', 'ok': True}]
+    assert 'id' in data["calls"][0][1]['props']
+    log = data["logs"][-1]
+    assert log[0] == 'info'
+    d = log[1]
+    assert d['event'] == 'post'
+    assert d['provider'] == 'plausible'
+    assert d['ok'] is True
+    assert 'id' in d and d['id'] == d['meta']['id']
 
