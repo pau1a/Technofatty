@@ -269,6 +269,17 @@ class BlogPost(TimestampedModel):
             )
         if not self.canonical_url and self.slug:
             self.canonical_url = f"/blog/{self.slug}/"
+        regen = False
+        if self.pk:
+            prev = BlogPost.objects.filter(pk=self.pk).values("meta_title").first()
+            if prev and prev.get("meta_title") != self.meta_title:
+                regen = True
+        if not self.og_image_url or not self.twitter_image_url or regen:
+            from .services.social_images import generate_social_images
+
+            og_url, twitter_url = generate_social_images(self, force=regen)
+            self.og_image_url = og_url
+            self.twitter_image_url = twitter_url
         self.full_clean()
         super().save(*args, **kwargs)
 
