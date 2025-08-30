@@ -1,5 +1,7 @@
 # Analytics Events
 
+Each event includes a unique `id` property used to stitch sessions into funnels. Events must only be sent after consent is granted.
+
 Event Name | Location | Business Goal
 --- | --- | ---
 `cta.nav.join` | Header primary CTA "Join Us" | Grow community membership
@@ -22,6 +24,10 @@ Event Name | Location | Business Goal
 `community.filter.latest` | Filter strip: Latest | Understand filter preference
 `community.filter.unanswered` | Filter strip: Unanswered | Track interest in unanswered threads
 `community.filter.tag` | Tag pill selection | Gauge tag-based navigation
+
+Required properties for every event:
+
+- `id` – UUID generated client-side for funnel analysis
 
 All `community.*` and `cta.community.*` events include payload properties:
 - `surface`: "community"
