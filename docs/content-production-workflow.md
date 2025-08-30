@@ -17,6 +17,7 @@
   - Stakeholder or manager approval
 - **Artifacts & activities**
   - Editorial checklist (grammar, style guide adherence, inclusive language, links)
+  - Record any absent Knowledge or Tool links in a backlog (spreadsheet or issue tracker) for future content creation
   - Track changes/comments or pull requests for revision history
   - Formal approval record (signed-off checklist or workflow ticket)
   - Version bump (v0.2, v0.3) after edits and approvals
