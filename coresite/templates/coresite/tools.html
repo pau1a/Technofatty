@@ -55,6 +55,13 @@
                 data-analytics-url="{{ tool.url }}"
                 aria-label="Open {{ tool.title }}"
               >Open tool</a></p>
+              {% if tool.links %}
+                <ul class="tool-card__links">
+                  {% for link in tool.links %}
+                    <li><a href="{{ link.url }}" class="tool-card__link">{{ link.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             </article>
           {% endfor %}
         </div>

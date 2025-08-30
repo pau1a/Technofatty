@@ -28,6 +28,7 @@ from .community import get_community_content
 from .footer import get_footer_content
 from . import moderation
 from django.contrib.admin.views.decorators import staff_member_required
+from utils import backlog
 
 
 KNOWLEDGE_SUB_SECTIONS = [
@@ -639,24 +640,29 @@ def resources(request):
     )
 
 
-def tools(request):
-    footer = get_footer_content()
-    robots = "index,follow" if settings.TOOLS_INDEXABLE else "noindex,nofollow"
-    tools_list = [
+def _get_tools_tools_list():
+    return [
         {
             "title": "ROI Calculator",
             "description": "Estimate returns from your AI marketing spend.",
             "url": "/tools/roi-calculator/",
             "slug": "roi-calculator",
+            "links": [
+                {"title": "Docs", "url": "/knowledge/roi-calculator/"},
+            ],
         },
         {
             "title": "Content Ideator",
             "description": "Generate growth ideas powered by machine intelligence.",
             "url": "/tools/content-ideator/",
             "slug": "content-ideator",
+            "links": [],
         },
     ]
-    learn_items = [
+
+
+def _get_tools_knowledge_items():
+    return [
         {
             "title": "What is AI marketing?",
             "url": "/knowledge/ai-marketing/",
@@ -666,7 +672,10 @@ def tools(request):
             "url": "/knowledge/ai-roi/",
         },
     ]
-    blog_items = [
+
+
+def _get_tools_blog_items():
+    return [
         {
             "title": "Launching our ROI tool",
             "url": "/blog/roi-tool/",
@@ -676,6 +685,18 @@ def tools(request):
             "url": "/blog/ai-tips-q4/",
         },
     ]
+
+
+def tools(request):
+    footer = get_footer_content()
+    robots = "index,follow" if settings.TOOLS_INDEXABLE else "noindex,nofollow"
+    tools_list = _get_tools_tools_list()
+    learn_items = _get_tools_knowledge_items()
+    blog_items = _get_tools_blog_items()
+    if not tools_list:
+        backlog.log_gap("tools", "tools_page")
+    if not learn_items:
+        backlog.log_gap("knowledge", "tools_page")
     context = {
         "footer": footer,
         "page_id": "tools",

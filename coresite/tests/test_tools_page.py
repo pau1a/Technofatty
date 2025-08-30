@@ -32,3 +32,42 @@ def test_focus_style_exists_in_css():
     sass = pytest.importorskip("sass")
     css = sass.compile(filename="coresite/static/coresite/scss/main.scss")
     assert ".tools__link:focus-visible" in css
+
+
+def test_optional_tool_links_render(client, monkeypatch):
+    from coresite import views
+
+    monkeypatch.setattr(
+        views,
+        "_get_tools_tools_list",
+        lambda: [
+            {
+                "title": "Example",
+                "description": "Demo",
+                "url": "/tools/example/",
+                "slug": "example",
+                "links": [{"title": "Docs", "url": "/docs/example/"}],
+            }
+        ],
+    )
+    res = client.get(reverse("tools"))
+    html = res.content.decode()
+    assert 'href="/docs/example/"' in html
+    assert ">Docs<" in html
+
+
+def test_tools_page_logs_gaps_when_empty(client, monkeypatch):
+    from coresite import views
+    from utils import backlog
+
+    monkeypatch.setattr(views, "_get_tools_tools_list", lambda: [])
+    monkeypatch.setattr(views, "_get_tools_knowledge_items", lambda: [])
+    calls = []
+
+    def fake_log(kind, location):
+        calls.append((kind, location))
+
+    monkeypatch.setattr(backlog, "log_gap", fake_log)
+    client.get(reverse("tools"))
+    assert ("tools", "tools_page") in calls
+    assert ("knowledge", "tools_page") in calls
