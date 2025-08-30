@@ -1,27 +1,31 @@
 {# See docs/structured-data.md#seo-meta_head for context keys #}
 {% load seo_tags %}
 {% canonical_url canonical_url as resolved_canonical %}
-{% if meta_title %}
-<title>{{ meta_title }}</title>
-<meta property="og:title" content="{{ meta_title }}">
-<meta name="twitter:title" content="{{ meta_title }}">
-{% elif page_title %}{% with full_title=page_title|add:' | Technofatty' %}
-<title>{{ full_title }}</title>
-<meta property="og:title" content="{{ full_title }}">
-<meta name="twitter:title" content="{{ full_title }}">
+{% if meta_title %}{% with mt=meta_title|truncatechars:60 %}
+<title>{{ mt }}</title>
+<meta property="og:title" content="{{ mt }}">
+<meta name="twitter:title" content="{{ mt }}">
 {% endwith %}
+{% elif page_title %}{% with full_title=page_title|add:' | Technofatty' %}{% with mt=full_title|truncatechars:60 %}
+<title>{{ mt }}</title>
+<meta property="og:title" content="{{ mt }}">
+<meta name="twitter:title" content="{{ mt }}">
+{% endwith %}{% endwith %}
 {% else %}
 <title>Technofatty</title>
 <meta property="og:title" content="Technofatty">
 <meta name="twitter:title" content="Technofatty">
 {% endif %}
-{% with desc=meta_description|default:"Tech resources and community." %}
+{% with desc=meta_description|default:"Tech resources and community."|truncatechars:155 %}
 <meta name="description" content="{{ desc }}">
 <meta property="og:description" content="{{ desc }}">
 <meta name="twitter:description" content="{{ desc }}">
 {% endwith %}
 {% if meta_robots %}<meta name="robots" content="{{ meta_robots }}">{% endif %}
 <link rel="canonical" href="{{ resolved_canonical }}">
+{% if request and request.build_absolute_uri != resolved_canonical %}
+<!-- canonical-mismatch -->
+{% endif %}
 <meta property="og:url" content="{{ resolved_canonical }}">
 <meta property="og:type" content="{{ og_type|default:'website' }}">
 <meta property="og:site_name" content="Technofatty">
