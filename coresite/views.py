@@ -76,7 +76,7 @@ THREADS = [
     {
         "title": "How do I deploy Technofatty?",
         "slug": "deploy-technofatty",
-        "tags": ["deployment", "tf"],
+        "tags": ["deployment"],
         "replies": 3,
         "updated": datetime(2024, 1, 15),
         "answered": True,
@@ -124,6 +124,37 @@ RELATED_CONTENT_ITEMS = {
         {"title": "ACME scales with TF", "url": "/case-studies/acme/", "tags": ["scaling"]},
     ],
 }
+
+# Tags for non-article content to align taxonomy across the site.
+TOOL_TAGS = {
+    "tf-cli": ["deployment"],
+    "roi-calculator": ["scaling"],
+    "content-ideator": ["community"],
+}
+
+CASE_STUDY_TAGS = {
+    "acme": ["scaling"],
+    "alpha": ["deployment"],
+    "beta": ["scaling"],
+}
+
+
+def _content_tags(obj):
+    """Return a list of tag slugs for the given content object."""
+    if isinstance(obj, KnowledgeArticle):
+        return list(obj.tags.values_list("slug", flat=True))
+    if isinstance(obj, BlogPost):
+        return [t.get("slug") for t in obj.tags or []]
+    if isinstance(obj, Tool):
+        return TOOL_TAGS.get(obj.slug, [])
+    if isinstance(obj, CaseStudy):
+        return CASE_STUDY_TAGS.get(obj.slug, [])
+    return []
+
+
+def _related_threads(tags):
+    """Return threads that share any of the given tags."""
+    return [t for t in THREADS if set(tags) & set(t["tags"])][:3]
 
 
 # Placeholder thread content for individual thread pages.
@@ -485,6 +516,7 @@ def knowledge_article(request, category_slug: str, article_slug: str):
             )
             related_articles.extend(tag_related)
 
+    tags = _content_tags(article)
     context = {
         "footer": footer,
         "page_id": f"knowledge-{article_slug}",
@@ -493,6 +525,7 @@ def knowledge_article(request, category_slug: str, article_slug: str):
         "article": article,
         "canonical_url": f"/knowledge/{category_slug}/{article_slug}/",
         "related_articles": related_articles,
+        "related_discussions": _related_threads(tags),
     }
     return render(request, "coresite/knowledge/article.html", context)
 
@@ -573,6 +606,7 @@ def case_study_detail(request, slug: str):
         lookup["is_published"] = True
     footer = get_footer_content()
     study = get_object_or_404(CaseStudy, **lookup)
+    tags = _content_tags(study)
     context = {
         "footer": footer,
         "page_id": "case-study-detail",
@@ -580,6 +614,7 @@ def case_study_detail(request, slug: str):
         "canonical_url": f"/case-studies/{study.slug}/",
         "case_study": study,
         "meta_robots": _CASE_STUDY_ROBOTS,
+        "related_discussions": _related_threads(tags),
     }
     response = render(request, "coresite/case_studies/detail.html", context)
     response["X-Robots-Tag"] = _CASE_STUDY_ROBOTS
@@ -665,6 +700,7 @@ def tool_detail(request, slug: str):
     footer = get_footer_content()
     tool = get_object_or_404(Tool.objects.published(), slug=slug)
     robots = "index,follow" if settings.TOOLS_INDEXABLE else "noindex,nofollow"
+    tags = _content_tags(tool)
     context = {
         "footer": footer,
         "page_id": "tool-detail",
@@ -673,6 +709,7 @@ def tool_detail(request, slug: str):
         "tool_slug": tool.slug,
         "canonical_url": f"/tools/{tool.slug}/",
         "meta_robots": robots,
+        "related_discussions": _related_threads(tags),
     }
     response = render(request, "coresite/tool_detail.html", context)
     response["X-Robots-Tag"] = robots
@@ -899,12 +936,14 @@ def blog(request):
 def blog_post(request, post_slug: str):
     footer = get_footer_content()
     post = get_object_or_404(BlogPost.published, slug=post_slug)
+    tags = _content_tags(post)
     context = {
         "footer": footer,
         "page_id": "post",
         "page_title": post["title"],
         "post": post,
         "canonical_url": f"/blog/{post_slug}/",
+        "related_discussions": _related_threads(tags),
     }
     return render(request, "coresite/blog_detail.html", context)
 

@@ -1,0 +1,12 @@
+{% if related_discussions %}
+<section class="related-discussions" aria-labelledby="related-discussions-heading">
+  <div class="wrap">
+    <h2 id="related-discussions-heading">Related discussions</h2>
+    <ul class="discussion-list">
+      {% for thread in related_discussions %}
+      <li><a href="/community/t/{{ thread.slug }}/">{{ thread.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
