@@ -206,7 +206,7 @@ class KnowledgeArticle(TimestampedModel):
 
 class BlogPost(TimestampedModel):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
     status = models.CharField(
         max_length=20,
         choices=StatusChoices.choices,
@@ -218,12 +218,49 @@ class BlogPost(TimestampedModel):
     category_slug = models.SlugField(max_length=100, blank=True)
     category_title = models.CharField(max_length=100, blank=True)
     tags = models.JSONField(default=list, blank=True)
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+    canonical_url = models.URLField(blank=True)
+    og_image_url = models.URLField(blank=True)
+    twitter_image_url = models.URLField(blank=True)
 
     objects = models.Manager()
     published = PublishedManager()
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        super().clean()
+        errors = {}
+        if self.status == StatusChoices.PUBLISHED:
+            required = [
+                "meta_title",
+                "meta_description",
+                "canonical_url",
+                "og_image_url",
+                "twitter_image_url",
+            ]
+            for field in required:
+                if not getattr(self, field):
+                    errors[field] = "This field is required for published posts."
+        if self.meta_title and len(self.meta_title) > 60:
+            errors["meta_title"] = "Ensure this value has at most 60 characters."
+        if self.meta_description and len(self.meta_description) > 155:
+            errors["meta_description"] = "Ensure this value has at most 155 characters."
+        if errors:
+            raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        base = self.slug or self.title
+        if base:
+            self.slug = _generate_unique_slug(
+                base, BlogPost.objects.exclude(pk=self.pk), fallback="blog-post"
+            )
+        if not self.canonical_url and self.slug:
+            self.canonical_url = f"/blog/{self.slug}/"
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class Tool(TimestampedModel):

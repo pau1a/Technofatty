@@ -2,7 +2,7 @@
 {% load jsonld seo_tags %}
 
 {% block meta %}
-  {% with meta_description=post.excerpt|default:'A blog post on Technofatty.' og_type='article' %}
+  {% with meta_title=post.meta_title meta_description=post.meta_description|default:post.excerpt|default:'A blog post on Technofatty.' og_type='article' og_image_url=post.og_image_url %}
     {% include "coresite/partials/seo/meta_head.html" %}
   {% endwith %}
   {% if post.date %}<meta property="article:published_time" content="{{ post.date|date:'c' }}">{% endif %}

@@ -10,7 +10,7 @@
         "@type": "WebPage",
         "@id": "{{ canonical_url }}#webpage"
       },
-      "headline": "{{ post.title|escapejs }}",
+      "headline": "{{ post.meta_title|default:post.title|escapejs }}",
       "url": "{{ canonical_url }}",
       "datePublished": "{{ post.date|date:'c' }}",
       "dateModified": "{{ post.updated|default:post.date|date:'c' }}",
@@ -26,7 +26,7 @@
         "name": "Technofatty",
         "url": "https://technofatty.com/"
       },
-      "description": "{{ post.excerpt|default:'A blog post on Technofatty.'|escapejs }}",
+      "description": "{{ post.meta_description|default:post.excerpt|default:'A blog post on Technofatty.'|escapejs }}",
       "inLanguage": "en"
     },
     {

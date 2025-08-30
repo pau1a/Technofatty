@@ -23,6 +23,10 @@ def test_blog_tag_page_renders_description_cta_and_related(client, settings):
                 "description": "About deployment",
             }
         ],
+        meta_title="Tag Post",
+        meta_description="Desc",
+        og_image_url="https://example.com/og.png",
+        twitter_image_url="https://example.com/tw.png",
     )
 
     response = client.get(reverse("blog_tag", args=["deployment"]))
