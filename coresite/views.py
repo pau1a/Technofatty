@@ -900,8 +900,23 @@ def blog(request):
         return HttpResponsePermanentRedirect(reverse("blog"))
 
     footer = get_footer_content()
-    posts_qs = BlogPost.published.order_by("-published_at")
-    posts = list(posts_qs)
+    all_posts = list(BlogPost.published.order_by("-published_at"))
+
+    category_slug = request.GET.get("category")
+    tag_slug = request.GET.get("tag")
+    time_str = request.GET.get("time")
+
+    posts = all_posts
+    if category_slug:
+        posts = [p for p in posts if p.category_slug == category_slug]
+    if tag_slug:
+        posts = [p for p in posts if any(t.get("slug") == tag_slug for t in p.tags)]
+    if time_str:
+        posts = [
+            p
+            for p in posts
+            if p.published_at and p.published_at.strftime("%Y") == time_str
+        ]
 
     # Basic pagination over in-memory posts to enable proper SEO signals.
     from django.core.paginator import Paginator, EmptyPage
@@ -919,15 +934,31 @@ def blog(request):
 
     categories = {
         (p.category_slug, p.category_title)
-        for p in posts
+        for p in all_posts
         if p.category_slug
     }
     tags = {
-        (t["slug"], t["title"]) for p in posts for t in p.tags
+        (t["slug"], t["title"]) for p in all_posts for t in p.tags
+    }
+    times = {
+        p.published_at.strftime("%Y")
+        for p in all_posts
+        if p.published_at
     }
 
     def absolute_page_url(num: int) -> str:
-        return "/blog/" if num == 1 else f"/blog/?page={num}"
+        params = {}
+        if category_slug:
+            params["category"] = category_slug
+        if tag_slug:
+            params["tag"] = tag_slug
+        if time_str:
+            params["time"] = time_str
+        if num != 1:
+            params["page"] = num
+        if not params:
+            return "/blog/"
+        return "/blog/?" + urlencode(params)
 
     prev_page = absolute_page_url(page_number - 1) if page_obj.has_previous() else None
     next_page = absolute_page_url(page_number + 1) if page_obj.has_next() else None
@@ -945,6 +976,10 @@ def blog(request):
         "tags": [
             {"slug": slug, "title": title} for slug, title in sorted(tags)
         ],
+        "times": sorted(times, reverse=True),
+        "selected_category": category_slug,
+        "selected_tag": tag_slug,
+        "selected_time": time_str,
         "next_page_url": next_page,
         "prev_page_url": prev_page,
         "canonical_url": absolute_page_url(page_number),
