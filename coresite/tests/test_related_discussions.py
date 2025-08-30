@@ -9,6 +9,7 @@ from coresite.models import (
     CaseStudy,
     BlogPost,
     StatusChoices,
+    PrimaryGoalChoices,
 )
 
 
@@ -59,6 +60,9 @@ def test_related_discussions_on_blog_post(client):
         meta_description="Desc",
         og_image_url="https://example.com/og.png",
         twitter_image_url="https://example.com/tw.png",
+        primary_goal=PrimaryGoalChoices.NEWSLETTER,
     )
     res = client.get(reverse("blog_post", args=[post.slug]))
-    assert "Related discussions" in res.content.decode()
+    content = res.content.decode()
+    assert "Related discussions" in content
+    assert "Subscribe for short, useful tech & music tips" in content

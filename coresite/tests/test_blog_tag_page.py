@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 from django.utils import timezone
-from coresite.models import BlogPost, StatusChoices
+from coresite.models import BlogPost, StatusChoices, PrimaryGoalChoices
 
 
 @pytest.mark.django_db
@@ -24,9 +24,10 @@ def test_blog_tag_page_renders_description_cta_and_related(client, settings):
             }
         ],
         meta_title="Tag Post",
-        meta_description="Desc",
-        og_image_url="https://example.com/og.png",
-        twitter_image_url="https://example.com/tw.png",
+       meta_description="Desc",
+       og_image_url="https://example.com/og.png",
+       twitter_image_url="https://example.com/tw.png",
+        primary_goal=PrimaryGoalChoices.NEWSLETTER,
     )
 
     response = client.get(reverse("blog_tag", args=["deployment"]))

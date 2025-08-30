@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from django.utils import timezone
 
-from coresite.models import BlogPost, StatusChoices
+from coresite.models import BlogPost, StatusChoices, PrimaryGoalChoices
 
 
 @pytest.mark.django_db
@@ -25,6 +25,7 @@ def test_blog_filters_by_category_tag_time(client, settings):
         meta_description="Desc",
         og_image_url="https://example.com/og.png",
         twitter_image_url="https://example.com/tw.png",
+        primary_goal=PrimaryGoalChoices.NEWSLETTER,
     )
 
     BlogPost.objects.create(
@@ -41,6 +42,7 @@ def test_blog_filters_by_category_tag_time(client, settings):
         meta_description="Desc",
         og_image_url="https://example.com/og.png",
         twitter_image_url="https://example.com/tw.png",
+        primary_goal=PrimaryGoalChoices.NEWSLETTER,
     )
 
     res = client.get(reverse("blog"), {"category": "tech"})
