@@ -17,11 +17,13 @@ from .models import (
     Tool,
     CaseStudy,
     SITEMAP_CACHE_KEY,
+    PrimaryGoalChoices,
 )
 from .forms import ContactForm
 from .notifiers import ContactNotifier
 from datetime import datetime
 import hashlib
+import json
 from .signals import get_signals_content
 from .support import get_support_content
 from .community import get_community_content
@@ -1011,6 +1013,9 @@ def blog_post(request, post_slug: str):
         }
     )
     breadcrumbs.append({"title": post["title"], "url": post.canonical_url})
+    primary_goal_meta = None
+    if post.primary_goal == PrimaryGoalChoices.NEWSLETTER:
+        primary_goal_meta = json.dumps({"form": "newsletter", "post": post.slug})
     context = {
         "footer": footer,
         "page_id": "post",
@@ -1020,6 +1025,7 @@ def blog_post(request, post_slug: str):
         "related_discussions": _related_threads(tags),
         "breadcrumbs": breadcrumbs,
         "blog_label": blog_link["label"] if blog_link else "Blog",
+        "primary_goal_meta": primary_goal_meta,
     }
     return render(request, "coresite/blog_detail.html", context)
 

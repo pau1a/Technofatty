@@ -23,6 +23,11 @@ class SubtypeChoices(models.TextChoices):
     QUICK_WIN = "quick_win", "Quick Win"
 
 
+class PrimaryGoalChoices(models.TextChoices):
+    NEWSLETTER = "newsletter", "Newsletter sign-up"
+    NONE = "none", "None"
+
+
 class PublishedManager(models.Manager):
     """Manager that returns only published items."""
 
@@ -223,6 +228,11 @@ class BlogPost(TimestampedModel):
     canonical_url = models.URLField(blank=True)
     og_image_url = models.URLField(blank=True)
     twitter_image_url = models.URLField(blank=True)
+    primary_goal = models.CharField(
+        max_length=50,
+        choices=PrimaryGoalChoices.choices,
+        default=PrimaryGoalChoices.NEWSLETTER,
+    )
 
     objects = models.Manager()
     published = PublishedManager()

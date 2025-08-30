@@ -12,7 +12,7 @@
     {% if messages %}
       {% for m in messages %}
         {% if forloop.first %}
-          <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="is-{{ m.tags }}" aria-busy="false" data-analytics-event="form.newsletter.submit" data-analytics-meta='{"form":"newsletter"}'>
+          <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" class="is-{{ m.tags }}" aria-busy="false" data-analytics-event="form.newsletter.submit" data-analytics-meta="{{ analytics_meta|default:'{\"form\":\"newsletter\"}'|safe }}">
             {% csrf_token %}
             <fieldset>
               <legend class="visually-hidden">Newsletter</legend>
@@ -28,14 +28,14 @@
                       aria-label="Subscribe to the newsletter"
                       class="btn btn--cta radius-md"
                       data-analytics-event="cta.newsletter.subscribe"
-                      data-analytics-meta='{"form":"newsletter"}'>{{ APPROVED_CTA|default:'Subscribe' }}</button>
+                      data-analytics-meta="{{ analytics_meta|default:'{\"form\":\"newsletter\"}'|safe }}">{{ APPROVED_CTA|default:'Subscribe' }}</button>
               <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" class="form-message is-{{ m.tags }}">{{ m }}</div>
             </fieldset>
           </form>
         {% endif %}
       {% endfor %}
     {% else %}
-      <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" aria-busy="false" data-analytics-event="form.newsletter.submit" data-analytics-meta='{"form":"newsletter"}'>
+      <form id="newsletter_form" method="post" action="{% url 'newsletter_subscribe' %}" aria-busy="false" data-analytics-event="form.newsletter.submit" data-analytics-meta="{{ analytics_meta|default:'{\"form\":\"newsletter\"}'|safe }}">
         {% csrf_token %}
         <fieldset>
           <legend class="visually-hidden">Newsletter</legend>
@@ -51,7 +51,7 @@
                   aria-label="Subscribe to the newsletter"
                   class="btn btn--cta radius-md"
                   data-analytics-event="cta.newsletter.subscribe"
-                  data-analytics-meta='{"form":"newsletter"}'>{{ APPROVED_CTA|default:'Subscribe' }}</button>
+                  data-analytics-meta="{{ analytics_meta|default:'{\"form\":\"newsletter\"}'|safe }}">{{ APPROVED_CTA|default:'Subscribe' }}</button>
           <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true" class="form-message"></div>
         </fieldset>
       </form>
