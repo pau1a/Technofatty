@@ -5,15 +5,41 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "url": "https://example.com/blog/my-post",
-  "datePublished": "2024-05-01T10:00:00+00:00",
-  "dateModified": "2024-05-02T12:00:00+00:00",
-  "author": {
-    "@type": "Person",
-    "name": "Alice",
-    "url": "https://example.com/authors/alice"
-  }
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://example.com/blog/my-post#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://example.com/blog/my-post#webpage"
+      },
+      "headline": "Blog Post",
+      "url": "https://example.com/blog/my-post",
+      "datePublished": "2024-05-01T10:00:00+00:00",
+      "dateModified": "2024-05-02T12:00:00+00:00",
+      "author": {
+        "@type": "Organization",
+        "name": "Example",
+        "url": "https://example.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Example",
+        "url": "https://example.com/"
+      },
+      "description": "Sample post excerpt",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://example.com/blog/my-post#breadcrumb",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://example.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://example.com/blog/"},
+        {"@type": "ListItem", "position": 3, "name": "Blog Post", "item": "https://example.com/blog/my-post"}
+      ]
+    }
+  ]
 }
 </script>
 </head>

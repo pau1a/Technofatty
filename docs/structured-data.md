@@ -182,6 +182,11 @@ This document lists required and optional context dictionary keys for each templ
 - Required: canonical_url
 - Optional: page_title, meta_description, og_type, og_image_url
 
+<a id="seo-blog_post_jsonld"></a>
+### seo/blog_post_jsonld.html
+- Required: post, canonical_url
+- Optional: None
+
 <a id="seo-structured_data"></a>
 ### seo/structured_data.html
 - Required: None

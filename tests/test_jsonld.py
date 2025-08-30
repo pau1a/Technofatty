@@ -124,3 +124,17 @@ def test_case_study_detail_schema(case_study_json):
     assert case_study_json["@type"] == "Article"
     assert case_study_json["url"] == "https://example.com/case-studies/acme"
     assert case_study_json["publisher"]["@type"] == "Organization"
+
+
+@pytest.fixture
+def blog_post_json():
+    html = (FIXTURES_DIR / "blog_post.html").read_text()
+    return _extract_json(html)
+
+
+def test_blog_post_schema(blog_post_json):
+    graph = {item["@type"]: item for item in blog_post_json["@graph"]}
+    post = graph["BlogPosting"]
+    breadcrumb = graph["BreadcrumbList"]
+    assert post["url"] == "https://example.com/blog/my-post"
+    assert breadcrumb["itemListElement"][2]["item"] == "https://example.com/blog/my-post"

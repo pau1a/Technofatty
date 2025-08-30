@@ -1,0 +1,43 @@
+{% load jsonld %}
+{% jsonld %}
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "{{ canonical_url }}#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ canonical_url }}#webpage"
+      },
+      "headline": "{{ post.title|escapejs }}",
+      "url": "{{ canonical_url }}",
+      "datePublished": "{{ post.date|date:'c' }}",
+      "dateModified": "{{ post.updated|default:post.date|date:'c' }}",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://technofatty.com/#organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://technofatty.com/#organization",
+        "name": "Technofatty",
+        "url": "https://technofatty.com/"
+      },
+      "description": "{{ post.excerpt|default:'A blog post on Technofatty.'|escapejs }}",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "{{ canonical_url }}#breadcrumb",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://technofatty.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://technofatty.com/blog/"},
+        {"@type": "ListItem", "position": 3, "name": "{{ post.title|escapejs }}", "item": "{{ canonical_url }}"}
+      ]
+    }
+  ]
+}
+{% endjsonld %}
