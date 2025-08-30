@@ -4,7 +4,9 @@
     <h2 id="related-discussions-heading">Related discussions</h2>
     <ul class="discussion-list">
       {% for thread in related_discussions %}
-      <li><a href="/community/t/{{ thread.slug }}/">{{ thread.title }}</a></li>
+      <li><a href="/community/t/{{ thread.slug }}/"
+             data-analytics-event="blog_related_click"
+             data-analytics-meta='{"type":"discussion","target":"{{ thread.slug|escapejs }}"}'>{{ thread.title }}</a></li>
       {% endfor %}
     </ul>
   </div>
