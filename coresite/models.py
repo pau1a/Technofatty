@@ -299,9 +299,17 @@ class CaseStudy(TimestampedModel):
         ]
 
 
-def _generate_unique_slug(title: str, queryset, fallback: str = "item"):
-    """Return a slug unique within the given queryset."""
-    base = slugify(title) or slugify(fallback) or "item"
+def _generate_unique_slug(value: str, queryset, fallback: str = "item"):
+    """Return a slugified string unique within the given queryset.
+
+    The input ``value`` can be a title or user-provided slug. It is first
+    normalised to a lowercase, hyphenated slug using ``slugify`` before
+    checking for collisions in ``queryset``. If a collision is found a
+    numeric suffix is appended (``-1``, ``-2``...) until a unique slug is
+    produced.
+    """
+
+    base = slugify(value) or slugify(fallback) or "item"
     slug = base
     counter = 1
     while queryset.filter(slug=slug).exists():
@@ -312,9 +320,12 @@ def _generate_unique_slug(title: str, queryset, fallback: str = "item"):
 
 @receiver(pre_save, sender=BlogPost)
 def set_blogpost_slug(sender, instance, **kwargs):
-    if not instance.slug and instance.title:
+    """Ensure BlogPost.slug is always a unique, normalised slug."""
+
+    base = instance.slug or instance.title
+    if base:
         instance.slug = _generate_unique_slug(
-            instance.title, BlogPost.objects.exclude(pk=instance.pk), fallback="blog-post"
+            base, BlogPost.objects.exclude(pk=instance.pk), fallback="blog-post"
         )
 
 
