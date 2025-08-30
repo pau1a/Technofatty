@@ -72,6 +72,7 @@
           <article class="post-body"></article>
           <p class="post-taxonomy">Filed under <a href="{% url 'blog_category' post.category.slug %}">{{ post.category.title }}</a> · {% for tag in post.tags %}<a href="{% url 'blog_tag' tag.slug %}">#{{ tag.title }}</a>{% if not forloop.last %} {% endif %}{% endfor %}</p>
         </div>
+        {% include "coresite/partials/_related_discussions.html" %}
       </div>
     </section>
   {% endblock %}
