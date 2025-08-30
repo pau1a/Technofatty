@@ -33,6 +33,37 @@
             {% include "coresite/partials/newsletter_block.html" with analytics_meta=primary_goal_meta %}
           {% endif %}
           <p class="post-taxonomy">Filed under <a href="{% url 'blog_category' post.category.slug %}">{{ post.category.title }}</a> · {% for tag in post.tags %}<a href="{% url 'blog_tag' tag.slug %}">#{{ tag.title }}</a>{% if not forloop.last %} {% endif %}{% endfor %}</p>
+          {% if related_content.knowledge or related_content.tools or related_content.case_studies %}
+          <section aria-labelledby="related-heading" class="related-content">
+            <h2 id="related-heading">Related across TF</h2>
+            <div class="related-groups">
+              {% for item in related_content.knowledge %}
+              <div class="related-card">
+                <span class="related-label">From Knowledge</span>
+                <a href="{{ item.url }}"
+                   data-analytics-event="blog_related_click"
+                   data-analytics-meta='{"type":"knowledge","target":"{{ item.url|escapejs }}"}'>{{ item.title }}</a>
+              </div>
+              {% endfor %}
+              {% for item in related_content.tools %}
+              <div class="related-card">
+                <span class="related-label">From Tools</span>
+                <a href="{{ item.url }}"
+                   data-analytics-event="blog_related_click"
+                   data-analytics-meta='{"type":"tool","target":"{{ item.url|escapejs }}"}'>{{ item.title }}</a>
+              </div>
+              {% endfor %}
+              {% for item in related_content.case_studies %}
+              <div class="related-card">
+                <span class="related-label">From Case Studies</span>
+                <a href="{{ item.url }}"
+                   data-analytics-event="blog_related_click"
+                   data-analytics-meta='{"type":"case_study","target":"{{ item.url|escapejs }}"}'>{{ item.title }}</a>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+          {% endif %}
         </div>
         {% include "coresite/partials/_related_discussions.html" %}
       </div>
